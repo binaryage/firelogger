@@ -57,7 +57,7 @@
     border-bottom: 1px solid #D7D7D7;
     padding: 1px 0px 2px 0px;
     color: #000;
-    height: 14px;
+    overflow: hidden;
 }
 
 .panelNode.searching .firepython-rec {
@@ -170,10 +170,40 @@
 }
 
 .firepython-rec > .rec-head.expanded > .rec-details {
-    margin-top: 10px;
     display: block;
 }
 
 .twisty {
     background-position: 2px 0;
+}
+
+.rec-traceback-table {
+    padding-left: 20px;
+}
+
+.rec-traceback-file {
+    min-width: 78px;
+}
+
+.rec-traceback-function {
+    color: #008;
+    min-width: 140px;
+}
+
+.rec-traceback-table td {
+    border-top: 1px dashed #ddd;
+}
+
+.rec-traceback-row.current {
+    font-weight: bold;
+}
+
+.rec-traceback-file {
+    color: gray;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.rec-traceback-file:hover {
+    color: black;
 }

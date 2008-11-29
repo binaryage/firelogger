@@ -346,7 +346,7 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             showLog: function(context, data, icon) {
                 var type = "simple";
-                if (data.exc_info) type = "exception"; 
+                if (data.exc_info && this._richFormatting) type = "exception";
                 var event = new FirePythonEvent(type, data, icon);
                 return this.publishEvent(context, event);
             },
@@ -610,12 +610,10 @@ FBL.ns(function() {
         Firebug.FirePython.Record = domplate(Firebug.Rep, {
             /////////////////////////////////////////////////////////////////////////////////////////
             tagException: 
-                DIV({ class: "rec-head closed $object|getIcon", _repObject: "$object"},
+                DIV({ class: "rec-head closed $object|getIcon", onclick: "$onToggleDetails", _repObject: "$object"},
                     IMG({ class: "rec-icon", src: "blank.gif"}),
-                    SPAN({ class: "rec-date" }, "$object|getDate"),
-                    A({ class: "rec-title", onclick: "$onToggleDetails" },
-                        SPAN({ class: "rec-msg"}, "")
-                    ),
+                    DIV({ class: "rec-date", onclick: "$onSourceNavigate" }, "$object|getDate"),
+                    DIV({ class: "rec-msg" }, ""),
                     DIV({ class: "rec-details" })
                 ),
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -663,29 +661,78 @@ FBL.ns(function() {
                 var path = event.data.pathname;
                 var line = event.data.lineno;
                 Firebug.FirePython.openSourceFile(path, line);
+                e.stopPropagation();
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             onToggleDetails: function(e) {
                 dbg(">>>FirePython.Record.onToggleDetails", arguments);
                 if (!isLeftClick(e)) return;
                 var event = this.lookupEventObject(e.currentTarget);
+                var firepython = getAncestorByClass(e.currentTarget, "firepython-rec");
+                var row = getChildByClass(firepython, "rec-head")
                 var details = getChildByClass(row, "rec-details");
 
                 toggleClass(row, "expanded");
                 toggleClass(row, "closed");
 
                 event.expanded = false;
-                if (hasClass(row, "expanded"))
-                {
+                if (hasClass(row, "expanded")) {
                     event.expanded = true;
                     this.showEventDetails(event, details);
                 }
             },
             /////////////////////////////////////////////////////////////////////////////////////////
+            renderTraceback: function(event) {
+                var exc_info = event.data.exc_info;
+                if (!exc_info) return "no exception info available";
+                var items = exc_info[2];
+                if (!items) return "no traceback available";
+
+                var formatFile = function(item) {
+                    var path = item[0];
+                    var line = item[1];
+                    var parts = path.split('/');
+                    var res = parts[parts.length-1];
+                    if (res=="") res = "?";
+                    if (line!=undefined) res += ":"+line;
+                    return res;
+                };
+                var formatFunction = function(item) {
+                    return item[2];
+                };
+                var formatLocation = function(item) {
+                    return item[3];
+                };
+
+                var s = ['<table class="rec-traceback-table">'];
+                for (var i=0; i<items.length; i++){
+                    var item = items[i];
+                    var extra = "";
+                    if (i == items.length-1) extra = " current";
+                    s.push('<tr class="rec-traceback-row row-'+i+''+extra+'">');
+                    var path = item[0];
+                    var line = item[1];
+                    s.push('<td class="rec-traceback-file" onclick=\'event.stopPropagation();top.Firebug.FirePython.openSourceFile("'+escapeJS(path)+'", '+line+');\'>');
+                    s.push(formatFile(item));
+                    s.push('</td>');
+                    s.push('<td class="rec-traceback-function">');
+                    s.push(formatFunction(item));
+                    s.push('</td>');
+                    s.push('<td class="rec-traceback-location">');
+                    s.push(formatLocation(item));
+                    s.push('</td>');
+                    s.push('</tr>')
+                };
+                s.push('</table>');
+                return s.join('');
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
             showEventDetails: function(event, details) {
-                var s = '';
-                var m = event.data;
-                details.innerHTML = "extra data";
+                var html = "";
+                switch (event.type) {
+                    case "exception": html = this.renderTraceback(event); break;
+                }
+                details.innerHTML = html;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             supportsObject: function(object) {
