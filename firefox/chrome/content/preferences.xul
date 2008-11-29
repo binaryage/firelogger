@@ -4,10 +4,12 @@
 <?xml-stylesheet href="chrome://browser/skin/preferences/preferences.css"?>
 <?xml-stylesheet href="chrome://browser/content/preferences/handlers.css"?>
 <?xml-stylesheet href="chrome://browser/skin/preferences/applications.css"?>
+<?xml-stylesheet href="chrome://firepython/skin/dialogs.css"?>
 <prefwindow xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
   id="firepython-preferences" title="FirePython Preferences" type="prefwindow"
   onload="sizeToContent()" windowtype="FirePython:Preferences" ondialoghelp="openPrefsHelp()">
   <script type="application/x-javascript" src="chrome://firepython/content/preferences.js"/>
+  <script type="application/x-javascript" src="chrome://firepython/content/rewriter.js"/>
   <prefpane id="firepython-preferences-main" label="Main" 
     onpaneload="mainPane.init()" 
     image="chrome://firepython/skin/preferences-main.png"
@@ -34,33 +36,42 @@
   <prefpane id="firepython-preferences-rewrites" label="Rewrites" 
     onpaneload="rewritesPane.init()" 
     onselect="rewritesPane.onSelectionChanged()"
-    ondblclick="rewritesPane.changeRewriteRule()"
     image="chrome://firepython/skin/preferences-rewrites.png"
     helpTopic="preferences#rewrites">
     <preferences>
     </preferences>
     <vbox flex="1">
-      <label id="firepython-preferences-rewrites-label" control="firepython-preferences-rewrites-list">
-          Path Rewrite Rules
-        </label>
-      <separator class="thin"/>
-      <tree id="firepython-preferences-rewrites-list" flex="1" rows="8" seltype="single" lastSelected="0" 
-        persist="lastSelected">
-        <treecols>
-          <treecol id="firepython-preferences-rewrites-list-original" flex="1" persist="width" label="Original Path"/>
-          <splitter class="tree-splitter"/>
-          <treecol id="firepython-preferences-rewrites-list-rewrited" flex="1" persist="width" label="Rewrited Path"/>
-        </treecols>
-        <treechildren/>
-      </tree>
+      <groupbox id="firepython-preferences-rewrites-table-group">
+        <caption label="Path Rewrite Rules"/>
+        <tree id="firepython-preferences-rewrites-list" flex="1" rows="8" seltype="single" lastSelected="0" persist="lastSelected">
+          <treecols>
+            <treecol id="firepython-preferences-rewrites-list-number" width="30px" label="#"/>
+            <splitter class="tree-splitter"/>
+            <treecol id="firepython-preferences-rewrites-list-original" flex="1" persist="width" label="Original Path"/>
+            <splitter class="tree-splitter"/>
+            <treecol id="firepython-preferences-rewrites-list-replacement" flex="1" persist="width" label="Replacement Path"/>
+          </treecols>
+          <treechildren ondblclick="rewritesPane.changeRewriteRule()"/>
+        </tree>
+        <separator class="thin"/>
+        <hbox>
+          <button id="firepython-preferences-rewrites-add-rule" label="Add" oncommand="rewritesPane.addRewriteRule()"/>
+          <button id="firepython-preferences-rewrites-remove-rule" label="Remove" oncommand="rewritesPane.removeRewriteRule()"/>
+          <button id="firepython-preferences-rewrites-change-rule" label="Change" oncommand="rewritesPane.changeRewriteRule()"/>
+          <spacer flex="1"/>
+          <button id="firepython-preferences-rewrites-move-up" label="Move Up" oncommand="rewritesPane.moveUpRewriteRule()"/>
+          <button id="firepython-preferences-rewrites-move-down" label="Move Down" oncommand="rewritesPane.moveDownRewriteRule()"/>
+        </hbox>
+      </groupbox>
+      <groupbox id="firepython-preferences-rewrites-tester-group">
+        <caption label="Path Rewrite Tester"/>
+        <hbox flex="1" class="firepython-preferences-rewrites-test-question">
+          <textbox id="firepython-preferences-rewrites-tester-input" class="padded" flex="1"/>
+          <button id="firepython-preferences-rewrites-tester-run" label="Test!" oncommand="rewritesPane.testRules()"/>
+        </hbox>
+        <label id="firepython-preferences-rewrites-tester-answer" flex="1">result path ...</label>
+        <label id="firepython-preferences-rewrites-tester-reason" flex="1">reasoning ...</label>
+      </groupbox>
     </vbox>
-    <separator class="thin"/>
-    <hbox>
-      <hbox flex="1" class="firepython-preferences-rewrites-buttons">
-        <button id="firepython-preferences-rewrites-add-rule" label="Add" oncommand="rewritesPane.addRewriteRule()"/>
-        <button id="firepython-preferences-rewrites-remove-rule" label="Remove" oncommand="rewritesPane.removeRewriteRule()"/>
-        <button id="firepython-preferences-rewrites-change-rule" label="Change" oncommand="rewritesPane.changeRewriteRule()"/>
-      </hbox>
-    </hbox>
   </prefpane>
 </prefwindow>

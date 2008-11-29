@@ -418,30 +418,30 @@ FBL.ns(function() {
             openSourceFile: function(path, line) {
                 dbg(">>>FirePython.openSourceFile", [path, line]);
                 if (!path) return;
-                // TODO: replace paths for appspot
-                // var editor = this.findPreferredEditor();
-                // if (!editor) { 
-                //     dbg(">>>no editor was found!");
-                //     return;
-                // }
-                // var args = [];
-                // if (editor.cmdline) {
-                //     args = editor.cmdline.split(" ");
-                //     for (var i=0; i<args.length; i++) {
-                //         dbg("x", args[i]);
-                //         args[i] = args[i].replace("%file", path);
-                //         args[i] = args[i].replace("%line", line);
-                //     }
-                // }
-                var editor = {
-                    executable: "/bin/mate"
-                };
-                var args= ["-l", line, path];
+                path = rewriter.rewritePath(path);
+                dbg(">>>FirePython.rewritePath", path);
+                var editor = this.findPreferredEditor();
+                if (!editor) { 
+                    alert('No external editor found!\nPlease add one into Firebug via Firebug Menu -> Open With Editor -> Configure Editors ...');
+                    dbg(">>>no editor was found!");
+                    return;
+                }
+                var args = [];
+                if (editor.cmdline) {
+                    args = editor.cmdline.split(" ");
+                    for (var i=0; i<args.length; i++) {
+                        args[i] = args[i].replace("$file", path);
+                        args[i] = args[i].replace("$line", line);
+                    }
+                }
                 dbg(">>>Lauching "+editor.executable, args);
                 try {
                     FBL.launchProgram(editor.executable, args);
                 }
-                catch (e) { dbg(">>>Launch exception", e); }
+                catch (e) { 
+                    alert("Failed to launch:\n"+editor.executable+"\n with parameters "+args+"\n\n"+e.message); 
+                    dbg(">>>Launch exception", e); 
+                }
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             getPref: function(name) {
