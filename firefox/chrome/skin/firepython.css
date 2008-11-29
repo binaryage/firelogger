@@ -3,6 +3,7 @@
 #fbFirePythonMenu {
     list-style-image: url(chrome://firepython/skin/icon16.png);
     -moz-opacity: 0.8;
+    margin-left: 10px;
 }
 
 #fbFirePythonMenu:hover,
@@ -14,10 +15,6 @@
 #fbFirePythonMenu > .toolbarbutton-text,
 #fbFirePythonMenu > .toolbarbutton-menu-dropmarker {
     display: none;
-}
-
-#fbFirePythonFilterDebugButton {
-    -moz-image-region: rect(auto,auto,auto,auto) !important;
 }
 
 #fbFirePythonFilters {
