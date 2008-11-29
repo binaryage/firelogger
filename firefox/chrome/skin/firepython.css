@@ -49,17 +49,18 @@
 #fbFirePythonFilterCriticalButton[checkState="0"] { list-style-image: url(chrome://firepython/skin/disabled-icon-log-critical.png); }
 #fbFirePythonFilterCriticalButton:hover[checkState="0"] { list-style-image: url(chrome://firepython/skin/disabled-hover-icon-log-critical.png); }
 
-.filter-debug .firepython-rec.subkind-log-debug { display: none !important; }
-.filter-info .firepython-rec.subkind-log-info { display: none !important; }
-.filter-warning .firepython-rec.subkind-log-warning { display: none !important; }
-.filter-error .firepython-rec.subkind-log-error { display: none !important; }
-.filter-critical .firepython-rec.subkind-log-critical { display: none !important; }
+.filter-debug .firepython-rec.icon-log-debug { display: none !important; }
+.filter-info .firepython-rec.icon-log-info { display: none !important; }
+.filter-warning .firepython-rec.icon-log-warning { display: none !important; }
+.filter-error .firepython-rec.icon-log-error { display: none !important; }
+.filter-critical .firepython-rec.icon-log-critical { display: none !important; }
 
 .firepython-rec {
     position: relative;
     border-bottom: 1px solid #D7D7D7;
-    padding: 1px 0 2px 0;
+    padding: 1px 0px 2px 0px;
     color: #000;
+    height: 14px;
 }
 
 .panelNode.searching .firepython-rec {
@@ -69,11 +70,6 @@
 .firepython-rec.matched {
     display: block !important;
     background-color: #FFFBBC;
-}
-
-.rec-args {
-    font-size: 80%;
-    margin-left: 10px;
 }
 
 .toolbar-text-button > .toolbarbutton-icon {
@@ -129,8 +125,6 @@
 }
 
 .rec-date {
-    font-family: Tahoma;
-    font-size: 8pt;
     color: gray;
     font-weight: normal;
     cursor: pointer;
@@ -138,21 +132,12 @@
     margin-left: 20px;
 }
 
-.rec-uri {
-    margin-left: 94px;
+.rec-msg {
+    margin-left: 104px;
 }
 
 .rec-date:hover {
     color: black;
-}
-
-.rec-info {
-    padding-left: 6px;
-    font-family: Tahoma;
-    font-size: 8pt;
-    color: black;
-    font-weight: normal;
-    padding-left: 100px;
 }
 
 .firepython-rec > .rec-head.log-debug > .rec-icon {

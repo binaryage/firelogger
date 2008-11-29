@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<?xml-stylesheet href="chrome://firepython/skin/panel.css"?>
+<?xml-stylesheet href="chrome://firepython/skin/firepython.css"?>
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <stringbundleset id="stringbundleset">
     <stringbundle id="strings_firepython" src="chrome://firepython/locale/firepython.properties"/>

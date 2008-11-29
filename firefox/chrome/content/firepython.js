@@ -164,6 +164,7 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             cachePrefs: function() {
                 this._password = this.getPref('password');
+                this._richFormatting = this.getPref('richFormatting');
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             start: function() {
@@ -344,12 +345,9 @@ FBL.ns(function() {
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             showLog: function(context, data, icon) {
-                var event = new FirePythonEvent("log", data, icon);
-                return this.publishEvent(context, event);
-            },
-            /////////////////////////////////////////////////////////////////////////////////////////
-            showException: function(context, data, icon) {
-                var event = new FirePythonEvent("exception", data, icon);
+                var type = "simple";
+                if (data.exc_info) type = "exception"; 
+                var event = new FirePythonEvent(type, data, icon);
                 return this.publishEvent(context, event);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -610,41 +608,35 @@ FBL.ns(function() {
         // Firebug.FirePython.Record
         //
         Firebug.FirePython.Record = domplate(Firebug.Rep, {
+            /////////////////////////////////////////////////////////////////////////////////////////
             tagException: 
                 DIV({ class: "rec-head closed $object|getIcon", _repObject: "$object"},
+                    IMG({ class: "rec-icon", src: "blank.gif"}),
+                    SPAN({ class: "rec-date" }, "$object|getDate"),
                     A({ class: "rec-title", onclick: "$onToggleDetails" },
-                        IMG({ class: "rec-icon", src: "blank.gif"}),
-                        SPAN({ class: "rec-date" }, "$object|getDate"),
-                        SPAN({ class: "rec-uri" }, "$object|getCaption"),
-                        SPAN({ class: "rec-info"}, "$object|getInfo")
+                        SPAN({ class: "rec-msg"}, "")
                     ),
                     DIV({ class: "rec-details" })
                 ),
-    
-            tagLog:
+            /////////////////////////////////////////////////////////////////////////////////////////
+            tagSimple:
                 DIV({ class: "rec-head $object|getIcon", _repObject: "$object" },
                     IMG({ class: "rec-icon", src: "blank.gif" }),
                     DIV({ class: "rec-date", onclick: "$onSourceNavigate" }, "$object|getDate"),
-                    DIV({ class: "rec-uri" }, "$object|getCaption")
+                    DIV({ class: "rec-msg" }, "")
                 ),
-
+            /////////////////////////////////////////////////////////////////////////////////////////
             tagMessage:
                 DIV({ class: "rec-head $object|getIcon", _repObject: "$object" },
                     A({ class: "rec-title" },
                         IMG({ class: "rec-icon", src: "blank.gif" }),
-                        SPAN({ class: "rec-uri" }, "$object|getCaption")
+                        SPAN({ class: "rec-msg" }, "$object|getCaption")
                     )
                 ),
-    
             /////////////////////////////////////////////////////////////////////////////////////////
-            getCaption: function(event) {
+            getMessage: function(event) {
                 dbg(">>>FirePython.Record.getCaption", arguments);
-                switch (event.type) {
-                    case "message":
-                    case "log":
-                    case "exception": return event.data.message;
-                }
-                return "???";
+                return event.data.message;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             getIcon: function(event) {
@@ -655,12 +647,6 @@ FBL.ns(function() {
             getDate: function(event) {
                 dbg(">>>FirePython.Record.getDate", arguments);
                 return '[' + event.data.time + ']';
-            },
-            /////////////////////////////////////////////////////////////////////////////////////////
-            getInfo: function(event) {
-                dbg(">>>FirePython.Record.getInfo", arguments);
-                var m = event.data;
-                return "some info";
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             lookupEventObject: function(target) {
@@ -736,12 +722,7 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             applyCSS: function() {
                 dbg(">>>FirePythonPanel.applyCSS");
-                this.applyPanelCSS("chrome://firepython/skin/panel.css");
-                this.applyPanelCSS("chrome://firepython/skin/panel.css");
-            },
-            /////////////////////////////////////////////////////////////////////////////////////////
-            safeGetURI: function(browser) {
-                try { return this.context.browser.currentURI; } catch(exc) {}
+                this.applyPanelCSS("chrome://firepython/skin/firepython.css");
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             publish: function(event) {
@@ -823,28 +804,42 @@ FBL.ns(function() {
                 return row;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
+            renderFormattedMessage: function(object, row, rep) {
+                var lookupArg = function(index) {
+                    if (object.data.args && object.data.args.length>index) {
+                        return object.data.args[index];
+                    }
+                };
+                var dest = getChildByClass(row.childNodes[0], "rec-msg");
+                var parts = object.data.template.split(/%[a-zA-Z]{0,1}/);
+                if (parts[parts.length-1]=="") parts.pop();
+                for (var i=0; i<parts.length; i++) {
+                    var part = parts[i];
+                    FirebugReps.Text.tag.append({object: part}, dest);
+                    var arg = lookupArg(i);
+                    if (arg) {
+                        var r = Firebug.getRep(arg);
+                        r.tag.append({object: arg}, dest);
+                    }
+                }
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            renderPlainMessage: function(object, row, rep) {
+                var dest = getChildByClass(row.childNodes[0], "rec-msg");
+                FirebugReps.Text.tag.append({object: object.data.message}, dest);
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
             appendObject: function(object, row, rep) {
                 dbg(">>>FirePythonPanel.appendObject", arguments);
                 var rep = rep ? rep: Firebug.getRep(object);
                 var typeName = "tag"+capitalize(object.type);
-                setClass(row, "kind-"+object.type);
-                setClass(row, "subkind-"+object.icon);
+                setClass(row, "type-"+object.type);
+                setClass(row, "icon-"+object.icon);
                 var res = rep[typeName].append({ object: object }, row);
-                if (object.data.args && object.data.args.length>0) {
-                    var dest = getChildByClass(row.childNodes[0], "rec-uri");
-                    var ael = this.document.createElement('span');
-                    setClass(ael, "rec-args");
-                    var args = object.data.args;
-                    var i = 0;
-                    for (var a in args) {
-                        var o = args[a];
-                        var r = Firebug.getRep(o);
-                        if (i) FirebugReps.Text.tag.append({object: ", "}, ael);
-                        r.tag.append({object: o}, ael);
-                        i = i + 1;
-                    }
-                    dest.appendChild(ael);
-                }
+                if (Firebug.FirePython._richFormatting)
+                    this.renderFormattedMessage(object, row, rep);
+                else
+                    this.renderPlainMessage(object, row, rep);
                 if (object.expanded) {
                     rep.onToggleDetails({ currentTarget: row.childNodes[0].childNodes[0] });
                 }
@@ -877,4 +872,3 @@ FBL.ns(function() {
         Firebug.registerPanel(Firebug.FirePythonPanel);
     }
 });
-// close custom scope
