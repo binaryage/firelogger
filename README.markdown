@@ -22,7 +22,7 @@ It should be simple, but make sure you have these tools on your paths:
     cd firepython
     rake
   
-After that our XPI should be available in ``firepython/build/firepython-X.Y.xpi``.
+After that your XPI should be available in ``build/firepython-X.Y.xpi``.
 
 You should be able to install XPI file into Firefox: ``File -> Open File`` ... and browse for ``firepython-X.Y.xpi``.
 
