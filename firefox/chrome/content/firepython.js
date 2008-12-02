@@ -152,13 +152,14 @@ FBL.ns(function() {
                 if (!version) return false;
                 var a = version.split('.');
                 if (a.length<2) return false;
-                // we want Firebug version 1.3+ (including alphas/betas and other weird stuff)
-                return parseInt(a[0], 10)>=1 && parseInt(a[1], 10)>=3;
+                // we want Firebug version 1.2+ (including alphas/betas and other weird stuff)
+                return parseInt(a[0], 10)>=1 && parseInt(a[1], 10)>=2;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             versionCheck: function(context) {
-                if (!this.checkFirebugVersion()) {
-                    this.showMessage(context, "FirePython Firefox extension works best with Firebug 1.3 or higher. Please upgrade Firebug to the latest version.", "warning");
+                if (!this.checkFirebugVersion() && !context.firePythonVersionWarningShown) {
+                    this.showMessage(context, "FirePython Firefox extension works with Firebug 1.2 or higher (you have "+Firebug.getVersion()+"). Please upgrade Firebug to the latest version.", "sys-warning");
+                    context.firePythonVersionWarningShown = true;
                 }
             },
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -224,33 +225,51 @@ FBL.ns(function() {
             initialize: function() {
                 dbg(">>>FirePython.initialize");
                 this.panelName = 'FirePython';
-                this.description = "Python logging tools for web developers";
+                this.description = "Python logging tools for web developers.";
                 Firebug.ActivableModule.initialize.apply(this, arguments);
                 firepythonPrefs.addObserver(this.getPrefDomain(), this, false);
                 this.start();
             },
             /////////////////////////////////////////////////////////////////////////////////////////
-            shutdown: function()
-            {
+            shutdown: function() {
                 dbg(">>>FirePython.shutdown");
+                this.stop();
                 firepythonPrefs.removeObserver(this.getPrefDomain(), this, false);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
-            initializeUI: function()
-            {
+            initializeUI: function() {
                 dbg(">>>FirePython.initializeUI");
                 Firebug.ActivableModule.initializeUI.apply(this, arguments);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
-            onPanelActivate: function(context, init) {
-                dbg(">>>FirePython.onPanelActivate");
+            onPanelActivate: function(context, init, panelName) {
                 Firebug.ActivableModule.onPanelActivate.apply(this, arguments);
+                if (panelName != this.panelName) return;
+                dbg(">>>FirePython.onPanelActivate");
                 if (!init) context.window.location.reload();
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             onPanelDeactivate: function(context, destroy, deactivatedPanelName) {
                 dbg(">>>FirePython.onPanelDeactivate");
                 Firebug.ActivableModule.onPanelDeactivate.apply(this, arguments);
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            onFirstPanelActivate: function(context, init) {
+                dbg(">>>FirePython.onFirstPanelActivate");
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            onLastPanelDeactivate: function(context, destroy) {
+                dbg(">>>FirePython.onLastPanelDeactivate");
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            onSuspendFirebug: function(context) {
+                dbg(">>>FirePython.onSuspendFirebug");
+                this.stop();
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            onResumeFirebug: function(context) {
+                dbg(">>>FirePython.onResumeFirebug");
+                this.start();
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             mixinContext: function(context) {
@@ -309,9 +328,9 @@ FBL.ns(function() {
                 Firebug.ActivableModule.showPanel.apply(this, arguments);
                 var isFirePython = panel && panel.name == "FirePython";
                 if (isFirePython) {
-                    if ((!Firebug.NetMonitor.isEnabled(panel.context) || !Firebug.Console.isEnabled(panel.context)) && !panel.context.fireGAEWarningShown) {
-                        this.showMessage(panel.context, 'You must have the Firebug Console and Net panels enabled to use FirePython!', "warning");
-                        panel.context.fireGAEWarningShown = true;
+                    if ((!Firebug.NetMonitor.isEnabled(panel.context) || !Firebug.Console.isEnabled(panel.context)) && !panel.context.firePythonWarningShown) {
+                        this.showMessage(panel.context, 'You must have the Firebug Console and Net panels enabled to use FirePython!', "sys-warning");
+                        panel.context.firePythonWarningShown = true;
                     }
                     this.currentPanel = panel;
                     this.updatePanel();
@@ -376,6 +395,7 @@ FBL.ns(function() {
             publishEvent: function(context, event) {
                 if (!context) return;
                 dbg(">>>FirePython.publishEvent", arguments);
+                if (!this.isEnabled(context)) return;
                 var panel = context.getPanel("FirePython");
                 if (panel) panel.publish(event);
             },
@@ -626,14 +646,13 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             tagMessage:
                 DIV({ class: "rec-head $object|getIcon", _repObject: "$object" },
-                    A({ class: "rec-title" },
-                        IMG({ class: "rec-icon", src: "blank.gif" }),
-                        SPAN({ class: "rec-msg" }, "$object|getCaption")
-                    )
+                    IMG({ class: "rec-icon", src: "blank.gif" }),
+                    DIV({ class: "rec-date" }, "$object|getDate"),
+                    DIV({ class: "rec-msg" }, "$object|getMessage")
                 ),
             /////////////////////////////////////////////////////////////////////////////////////////
             getMessage: function(event) {
-                dbg(">>>FirePython.Record.getCaption", arguments);
+                dbg(">>>FirePython.Record.getMessage", arguments);
                 return event.data.message;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -752,7 +771,7 @@ FBL.ns(function() {
         // Firebug.FirePythonPanel
         //
         Firebug.FirePythonPanel = function() {}
-        Firebug.FirePythonPanel.prototype = extend(Firebug.AblePanel, {
+        Firebug.FirePythonPanel.prototype = extend(Firebug.AblePanel||Firebug.Panel, { // AblePanel was introduced in 1.3
             name: "FirePython",
             title: "FirePython",
             searchable: true,
@@ -858,6 +877,7 @@ FBL.ns(function() {
                     }
                 };
                 var dest = getChildByClass(row.childNodes[0], "rec-msg");
+                dest.innerHTML = "";
                 var parts = object.data.template.split(/%[a-zA-Z]{0,1}/);
                 if (parts[parts.length-1]=="") parts.pop();
                 for (var i=0; i<parts.length; i++) {
@@ -873,6 +893,7 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             renderPlainMessage: function(object, row, rep) {
                 var dest = getChildByClass(row.childNodes[0], "rec-msg");
+                dest.innerHTML = "";
                 FirebugReps.Text.tag.append({object: object.data.message}, dest);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -883,7 +904,7 @@ FBL.ns(function() {
                 setClass(row, "type-"+object.type);
                 setClass(row, "icon-"+object.icon);
                 var res = rep[typeName].append({ object: object }, row);
-                if (Firebug.FirePython._richFormatting)
+                if (Firebug.FirePython._richFormatting && object.data.template)
                     this.renderFormattedMessage(object, row, rep);
                 else
                     this.renderPlainMessage(object, row, rep);

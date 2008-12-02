@@ -4,7 +4,7 @@ require 'rubygems'
 
 ROOT = File.expand_path('./..')
 TMP = File.join(ROOT, 'tmp')
-EXT = File.join(ROOT, 'extension')
+EXT = File.join(ROOT, 'firefox')
 SKIN = File.join(EXT, 'chrome', 'skin') 
 
 OSX = PLATFORM =~ /darwin/

@@ -55,7 +55,7 @@
 .firepython-rec {
     position: relative;
     border-bottom: 1px solid #D7D7D7;
-    padding: 1px 0px 2px 0px;
+    padding: 1px 0px;
     color: #000;
     overflow: hidden;
 }
@@ -99,12 +99,6 @@
 
 .firepython-rec {
     cursor: default;
-}
-
-.firepython-rec,
-.firepython-rec .objectLink-sourceLink {
-    background-image: url('group.gif');
-    background-repeat: no-repeat;
 }
 
 .firepython-rec.expanded {
@@ -152,17 +146,17 @@
 .firepython-rec > .rec-head.log-critical > .rec-icon {
     background-image: url(icon-log-critical.png);
 }
-.firepython-rec > .rec-head.error > .rec-icon {
-    background-image: url(icon-error.png);
+.firepython-rec > .rec-head.sys-error > .rec-icon {
+    background-image: url(icon-sys-error.png);
 }
-.firepython-rec > .rec-head.info > .rec-icon {
-    background-image: url(icon-info.png);
+.firepython-rec > .rec-head.sys-info > .rec-icon {
+    background-image: url(icon-sys-info.png);
 }
-.firepython-rec > .rec-head.warning > .rec-icon {
-    background-image: url(icon-warning.png);
+.firepython-rec > .rec-head.sys-warning > .rec-icon {
+    background-image: url(icon-sys-warning.png);
 }
-.firepython-rec > .rec-head.lightbulb > .rec-icon {
-    background-image: url(icon-lightbulb.png);
+.firepython-rec > .rec-head.sys-tip > .rec-icon {
+    background-image: url(icon-sys-tip.png);
 }
 
 .firepython-rec > .rec-head > .rec-details {
