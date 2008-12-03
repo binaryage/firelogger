@@ -326,7 +326,7 @@ FBL.ns(function() {
             showPanel: function(browser, panel) {
                 dbg(">>>FirePython.showPanel", panel);
                 Firebug.ActivableModule.showPanel.apply(this, arguments);
-                var isFirePython = panel && panel.name == "FirePython";
+                var isFirePython = panel && panel.name == this.panelName;
                 if (isFirePython) {
                     if ((!Firebug.NetMonitor.isEnabled(panel.context) || !Firebug.Console.isEnabled(panel.context)) && !panel.context.firePythonWarningShown) {
                         this.showMessage(panel.context, 'You must have the Firebug Console and Net panels enabled to use FirePython!', "sys-warning");
@@ -450,8 +450,8 @@ FBL.ns(function() {
                 if (editor.cmdline) {
                     args = editor.cmdline.split(" ");
                     for (var i=0; i<args.length; i++) {
-                        args[i] = args[i].replace("$file", path);
-                        args[i] = args[i].replace("$line", line);
+                        args[i] = args[i].replace("%file", path);
+                        args[i] = args[i].replace("%line", line);
                     }
                 }
                 dbg(">>>Lauching "+editor.executable, args);
@@ -872,19 +872,27 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             renderFormattedMessage: function(object, row, rep) {
                 var lookupArg = function(index) {
-                    if (object.data.args && object.data.args.length>index) {
+                    if (object.data.args && index<object.data.args.length) {
                         return object.data.args[index];
                     }
                 };
                 var dest = getChildByClass(row.childNodes[0], "rec-msg");
                 dest.innerHTML = "";
-                var parts = object.data.template.split(/%[a-zA-Z]{0,1}/);
+                var parts = (object.data.template+" ").split(/%[a-zA-Z]{0,1}/);
                 if (parts[parts.length-1]=="") parts.pop();
                 for (var i=0; i<parts.length; i++) {
                     var part = parts[i];
                     FirebugReps.Text.tag.append({object: part}, dest);
-                    var arg = lookupArg(i);
-                    if (arg) {
+                    if (i<parts.length-1) {
+                        var arg = lookupArg(i);
+                        // when passed one parameter of type dict to logging function in python, 
+                        // for example: logging.info("info %s", keywords)
+                        // we get this dict as raw args property (NOT wrapped in array!)
+                        // I don't understand this, it seems it is again some *python magic* (tm)
+                        if (arg==undefined && i==0 && object.data.args) {
+                            // args is defined object, use it as a first parameter
+                            arg = object.data.args;
+                        }
                         var r = Firebug.getRep(arg);
                         r.tag.append({object: arg}, dest);
                     }
