@@ -125,6 +125,17 @@
 
 .rec-msg {
     margin-left: 104px;
+    padding-top: 0px;
+}
+
+.type-exception .rec-msg {
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    font-family: arial;
+    -moz-border-radius: 2px;
+    margin-left: 104px;
+    padding-left: 2px;
 }
 
 .rec-date:hover {

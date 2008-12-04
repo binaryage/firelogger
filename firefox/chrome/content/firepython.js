@@ -878,7 +878,10 @@ FBL.ns(function() {
                 };
                 var dest = getChildByClass(row.childNodes[0], "rec-msg");
                 dest.innerHTML = "";
-                var parts = (object.data.template+" ").split(/%[a-zA-Z]{0,1}/);
+                var template = object.data.template;
+                if (typeof template != "string") template = template._; // this is a special case for exceptions
+                if (!template) template = "?";
+                var parts = (template+" ").split(/%[a-zA-Z]{0,1}/);
                 if (parts[parts.length-1]=="") parts.pop();
                 for (var i=0; i<parts.length; i++) {
                     var part = parts[i];
