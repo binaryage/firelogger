@@ -58,6 +58,7 @@
     padding: 1px 0px;
     color: #000;
     overflow: hidden;
+    padding-right: 2px;
 }
 
 .panelNode.searching .firepython-rec {
@@ -136,6 +137,7 @@
     -moz-border-radius: 2px;
     margin-left: 104px;
     padding-left: 2px;
+    padding-right: 2px;
 }
 
 .rec-date:hover {
