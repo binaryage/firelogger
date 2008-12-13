@@ -716,6 +716,10 @@ FBL.ns(function() {
             onToggleDetails: function(e) {
                 dbg(">>>FirePython.Record.onToggleDetails", arguments);
                 if (!isLeftClick(e)) return;
+                // do not toggle if clicked on locals property
+                var clickedOnObjectLink = getAncestorByClass(e.target, "objectLink");
+                if (clickedOnObjectLink) return;
+                
                 var event = this.lookupEventObject(e.currentTarget);
                 var firepython = getAncestorByClass(e.currentTarget, "firepython-rec");
                 var row = getChildByClass(firepython, "rec-head")
@@ -770,10 +774,27 @@ FBL.ns(function() {
                     s.push('<td class="rec-traceback-location">');
                     s.push(formatLocation(item));
                     s.push('</td>');
+                    s.push('<td class="rec-traceback-locals traceback-frame-'+i+'" >');
+                    // placeholder for dynamic items
+                    s.push('</td>');
                     s.push('</tr>')
                 };
                 s.push('</table>');
                 return s.join('');
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            renderDynamicItems: function(event, node) {
+                var frames = event.data.exc_frames;
+                if (!frames) return;
+                
+                for (var i=0; i<frames.length; i++) {
+                    var frame = frames[i];
+                    var dest = getElementByClass(node, "traceback-frame-"+i);
+                    if (dest) {
+                        var r = Firebug.getRep(frame);
+                        r.tag.append({object: frame}, dest);
+                    }
+                }
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             showEventDetails: function(event, details) {
@@ -782,6 +803,9 @@ FBL.ns(function() {
                     case "exception": html = this.renderTraceback(event); break;
                 }
                 details.innerHTML = html;
+                switch (event.type) {
+                    case "exception": this.renderDynamicItems(event, details); break;
+                }
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             supportsObject: function(object) {
