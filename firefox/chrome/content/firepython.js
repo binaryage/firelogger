@@ -46,22 +46,6 @@ FBL.ns(function() {
             return document.getElementById("strings_firepython").getFormattedString(name, args);
         };
         
-        if (!top.FirebugChrome.selectFirePythonOriginal) {
-            top.FirebugChrome.selectFirePythonOriginal = top.FirebugChrome.select;
-            // this monkeypatching is responsible for intercepting object inspection 
-            // FirePythonWatches panel intercepts all object inspections only when FirePython panel is visible
-            top.FirebugChrome.select = function(object, panelName, sidePanelName, forceUpdate) {
-                if (Firebug.FirePython.currentPanel) {
-                    var panel = FirebugContext.getPanel("FirePythonWatches");
-                    if (panel) {
-                        panel.select(object, forceUpdate);
-                        return;
-                    }
-                }
-                return top.FirebugChrome.selectFirePythonOriginal.apply(top.FirebugChrome, arguments);
-            };
-        }
-        
         ////////////////////////////////////////////////////////////////////////
         var FirePythonEvent = function(type, data, icon) {
             this.type = type;
@@ -243,6 +227,7 @@ FBL.ns(function() {
                 this.panelName = 'FirePython';
                 this.description = "Python logging tools for web developers.";
                 Firebug.ActivableModule.initialize.apply(this, arguments);
+                this.patchChrome(top.FirebugChrome, FirebugContext);
                 firepythonPrefs.addObserver(this.getPrefDomain(), this, false);
                 this.start();
             },
@@ -316,9 +301,29 @@ FBL.ns(function() {
                 Firebug.ActivableModule.destroyContext.apply(this, arguments);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
+            patchChrome: function(chrome, context) {
+                if (!chrome.selectFirePythonOriginal) {
+                    dbg(">>>FirePython.patchChrome");
+                    chrome.selectFirePythonOriginal = chrome.select;
+                    // this monkeypatching is responsible for intercepting object inspection 
+                    // FirePythonWatches panel intercepts all object inspections only when FirePython panel is visible
+                    chrome.select = function(object, panelName, sidePanelName, forceUpdate) {
+                        if (Firebug.FirePython.currentPanel) {
+                            var panel = FirebugContext.getPanel("FirePythonWatches");
+                            if (panel) {
+                                panel.select(object, forceUpdate);
+                                return;
+                            }
+                        }
+                        return chrome.selectFirePythonOriginal.apply(chrome, arguments);
+                    };
+                }
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
             reattachContext: function(browser, context) {
                 dbg(">>>FirePython.reattachContext");
                 Firebug.ActivableModule.reattachContext.apply(this, arguments);
+                this.patchChrome(browser.chrome, context);
                 var panel = context.getPanel("FirePython");
                 if (!panel) return;
                 panel.applyCSS();
