@@ -736,7 +736,8 @@ FBL.ns(function() {
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             renderTraceback: function(event) {
-                var exc_info = event.data.exc_info;
+                if (!event.data.exc_info) return "no exception info available";
+                var exc_info = event.data.exc_info['py/tuple'];
                 if (!exc_info) return "no exception info available";
                 var items = exc_info[2];
                 if (!items) return "no traceback available";
@@ -759,7 +760,7 @@ FBL.ns(function() {
 
                 var s = ['<table class="rec-traceback-table">'];
                 for (var i=0; i<items.length; i++){
-                    var item = items[i];
+                    var item = items[i]['py/tuple'];
                     var extra = "";
                     if (i == items.length-1) extra = " current";
                     s.push('<tr class="rec-traceback-row row-'+i+''+extra+'">');
@@ -927,8 +928,11 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             renderFormattedMessage: function(object, row, rep) {
                 var lookupArg = function(index) {
-                    if (object.data.args && index<object.data.args.length) {
-                        return object.data.args[index];
+                    if (object.data.args && object.data.args["py/tuple"]) {
+                        return object.data.args["py/tuple"][index];
+                    }
+                    if (index==0 && object.data.args) {
+                        return object.data.args;
                     }
                 };
                 var dest = getChildByClass(row.childNodes[0], "rec-msg");
@@ -943,14 +947,6 @@ FBL.ns(function() {
                     FirebugReps.Text.tag.append({object: part}, dest);
                     if (i<parts.length-1) {
                         var arg = lookupArg(i);
-                        // when passed one parameter of type dict to logging function in python, 
-                        // for example: logging.info("info %s", keywords)
-                        // we get this dict as raw args property (NOT wrapped in array!)
-                        // I don't understand this, it seems it is again some *python magic* (tm)
-                        if (arg==undefined && i==0 && object.data.args) {
-                            // args is defined object, use it as a first parameter
-                            arg = object.data.args;
-                        }
                         var r = Firebug.getRep(arg);
                         r.tag.append({object: arg}, dest);
                     }
