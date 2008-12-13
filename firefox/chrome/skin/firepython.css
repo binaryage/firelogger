@@ -184,8 +184,15 @@
     background-position: 2px 0;
 }
 
+.rec-traceback-icon {
+    padding: 0;
+    margin: 0;
+    width: 20px;
+    background-image: url(traceback-arrow.png);
+    background-repeat: no-repeat;
+}
+
 .rec-traceback-table {
-    padding-left: 20px;
 }
 
 .rec-traceback-file {

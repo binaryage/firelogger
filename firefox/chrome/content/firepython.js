@@ -765,6 +765,7 @@ FBL.ns(function() {
                     s.push('<tr class="rec-traceback-row row-'+i+''+extra+'">');
                     var path = item[0];
                     var line = item[1];
+                    s.push('<td class="rec-traceback-icon"></td>')
                     s.push('<td class="rec-traceback-file" onclick=\'event.stopPropagation();top.Firebug.FirePython.openSourceFile("'+escapeJS(path)+'", '+line+');\'>');
                     s.push(formatFile(item));
                     s.push('</td>');
