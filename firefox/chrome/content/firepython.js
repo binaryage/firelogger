@@ -45,7 +45,23 @@ FBL.ns(function() {
         FBL.$FIREPYTHON_STRF = function(name, args) {
             return document.getElementById("strings_firepython").getFormattedString(name, args);
         };
-    
+        
+        if (!top.FirebugChrome.selectFirePythonOriginal) {
+            top.FirebugChrome.selectFirePythonOriginal = top.FirebugChrome.select;
+            // this monkeypatching is responsible for intercepting object inspection 
+            // FirePythonWatches panel intercepts all object inspections only when FirePython panel is visible
+            top.FirebugChrome.select = function(object, panelName, sidePanelName, forceUpdate) {
+                if (Firebug.FirePython.currentPanel) {
+                    var panel = FirebugContext.getPanel("FirePythonWatches");
+                    if (panel) {
+                        panel.select(object, forceUpdate);
+                        return;
+                    }
+                }
+                return top.FirebugChrome.selectFirePythonOriginal.apply(top.FirebugChrome, arguments);
+            };
+        }
+        
         ////////////////////////////////////////////////////////////////////////
         var FirePythonEvent = function(type, data, icon) {
             this.type = type;
@@ -334,6 +350,15 @@ FBL.ns(function() {
                     }
                     this.currentPanel = panel;
                     this.updatePanel();
+
+                    // default DOMPanel behavior is to show top level window object
+                    // this is a good place to reset it to empty object
+                    var watchesPanel = panel.context.getPanel("FirePythonWatches");
+                    if (watchesPanel) {
+                        watchesPanel.select({});
+                    }
+                } else {
+                    this.currentPanel = null;
                 }
             },
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -946,8 +971,19 @@ FBL.ns(function() {
             }
         });
     
+        ////////////////////////////////////////////////////////////////////////
+        // Firebug.WatchesFirePythonPanel
+        //
+        Firebug.WatchesFirePythonPanel = function () {};
+        Firebug.WatchesFirePythonPanel.prototype = extend(Firebug.DOMPanel.prototype, {
+            name: "FirePythonWatches",
+            title: "Python Watches",
+            parentPanel: "FirePython",
+        });
+    
         Firebug.registerActivableModule(Firebug.FirePython);
         Firebug.registerRep(Firebug.FirePython.Record);
         Firebug.registerPanel(Firebug.FirePythonPanel);
+        Firebug.registerPanel(Firebug.WatchesFirePythonPanel);
     }
 });
