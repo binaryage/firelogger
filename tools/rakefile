@@ -55,7 +55,7 @@ def convert_to_hover(mask, prefix="hover-", postfix="")
     dn = File.join(File.dirname(fn), prefix+File.basename(fn, ".*")+postfix+File.extname(fn))
     puts green("  #{File.basename(fn)} -> #{File.basename(dn)}")
     image = ImageList.new(fn)
-    r = image.level(0, 1.8)
+    r = image.level(0, 2.5)
     r.write(dn)
   end
 end
