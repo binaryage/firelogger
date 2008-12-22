@@ -17,8 +17,8 @@ It should be simple, but make sure you have these tools on your paths:
 
 ## Build steps:
 
-    git clone git://github.com/woid/firepython-addon.git
-    git clone git://github.com/woid/firepython.git
+    git clone git://github.com/darwin/firepython-addon.git
+    git clone git://github.com/darwin/firepython.git
     cd firepython
     rake
   
@@ -28,6 +28,6 @@ You should be able to install XPI file into Firefox: ``File -> Open File`` ... a
 
 Remember, that you should be also using latest FirePython library on server-side.
 
-[screenshot]: http://github.com/woid/firepython-addon/tree/master/support/screenshot.png?raw=true "FirePython in action"
+[screenshot]: http://github.com/darwin/firepython-addon/tree/master/support/screenshot.png?raw=true "FirePython in action"
 [firebug]: https://addons.mozilla.org/en-US/firefox/addon/1843
-[homepage]: http://github.com/woid/firepython
+[homepage]: http://github.com/darwin/firepython
