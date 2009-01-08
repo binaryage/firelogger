@@ -130,8 +130,8 @@
 }
 
 .rec-logger {
-    position: absolute;
-    right: 4px;
+    float: right;
+    margin-right: 4px;
     color: white;
     -moz-border-radius: 2px;
     padding: 0px 3px;
@@ -217,6 +217,7 @@
 
 .rec-traceback-table td {
     border-top: 1px dashed #ddd;
+    vertical-align: top;
 }
 
 .rec-traceback-row.current {
