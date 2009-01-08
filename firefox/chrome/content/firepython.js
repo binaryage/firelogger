@@ -53,6 +53,18 @@ FBL.ns(function() {
             this.icon = icon;
             this.expanded = false;
         };
+
+        function colorForName(name) {
+            var niceColors = ["red", "blue", "magenta", "brown", "black", 
+                              "darkgreen", "blueviolet", "cadetblue", "crimson", "darkgoldenrod",
+                              "darkgrey", "darkslateblue", "firebrick", "midnightblue", "orangered", "navy"];
+            var code = 0;
+            for (var i=0; i<name.length; i++) {
+                code += name.charCodeAt(i);
+            }
+            var color = niceColors[code % niceColors.length];
+            return color;
+        }
         
         ////////////////////////////////////////////////////////////////////////
         // Firebug.FirePythonContextMixin
@@ -671,6 +683,7 @@ FBL.ns(function() {
                 DIV({ class: "rec-head closed $object|getIcon", onclick: "$onToggleDetails", _repObject: "$object"},
                     IMG({ class: "rec-icon", src: "blank.gif"}),
                     DIV({ class: "rec-date", onclick: "$onSourceNavigate" }, "$object|getDate"),
+                    DIV({ class: "rec-logger", style:"$object|getLoggerStyle", title:"logger name" }, "$object|getLoggerName"),
                     DIV({ class: "rec-msg" }, ""),
                     DIV({ class: "rec-details" })
                 ),
@@ -679,6 +692,7 @@ FBL.ns(function() {
                 DIV({ class: "rec-head $object|getIcon", _repObject: "$object" },
                     IMG({ class: "rec-icon", src: "blank.gif" }),
                     DIV({ class: "rec-date", onclick: "$onSourceNavigate" }, "$object|getDate"),
+                    DIV({ class: "rec-logger", style:"$object|getLoggerStyle", title:"logger name" }, "$object|getLoggerName"),
                     DIV({ class: "rec-msg" }, "")
                 ),
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -702,6 +716,17 @@ FBL.ns(function() {
             getDate: function(event) {
                 dbg(">>>FirePython.Record.getDate", arguments);
                 return '[' + event.data.time + ']';
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            getLoggerName: function(event) {
+                dbg(">>>FirePython.Record.getLogger", arguments);
+                return event.data.name || "?";
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            getLoggerStyle: function(event) {
+                dbg(">>>FirePython.Record.getLoggerStyle", arguments);
+                var color = colorForName(event.data.name || "?");
+                return "background-color:"+color;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             lookupEventObject: function(target) {

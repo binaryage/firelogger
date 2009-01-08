@@ -129,6 +129,17 @@
     padding-top: 0px;
 }
 
+.rec-logger {
+    position: absolute;
+    right: 4px;
+    color: white;
+    -moz-border-radius: 2px;
+    padding: 0px 3px;
+    padding-bottom: 1px;
+    min-width: 50px;
+    text-align: center;
+}
+
 .type-exception .rec-msg {
     background-color: red;
     color: white;
