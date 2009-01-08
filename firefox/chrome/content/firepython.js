@@ -137,20 +137,30 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             processDataPacket: function(packet) {
                 dbg(">>>FirePythonContextMixin.processDataPacket", packet);
-                if (!packet) return;
+                var logs = [];
+                if (!packet) return logs;
                 if (packet.logs) {
                     for (var i=0; i < packet.logs.length; i++) {
                         var log = packet.logs[i];
-                        Firebug.FirePython.showLog(this, log, "log-"+log.level);
+                        logs.push(log);
                     }
                 }
+                return logs;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             processRequest: function(url, packets) {
                 dbg(">>>FirePythonContextMixin.processRequest ("+url+")", packets);
+                var logs = [];
                 for (var i=0; i < packets.length; i++) {
                     var packet = packets[i];
-                    this.processDataPacket(packet);
+                    logs = logs.concat(this.processDataPacket(packet));
+                }
+                logs.sort(function(a,b) {
+                    return b.timestamp<a.timestamp;
+                });
+                for (var i=0; i<logs.length; i++) {
+                    var log = logs[i];
+                    Firebug.FirePython.showLog(this, log, "log-"+log.level);
                 }
             }
         };
