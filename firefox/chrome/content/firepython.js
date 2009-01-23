@@ -139,6 +139,9 @@ FBL.ns(function() {
                 dbg(">>>FirePythonContextMixin.processDataPacket", packet);
                 var logs = [];
                 if (!packet) return logs;
+                if (packet.error) { // internal error on python side
+                    Firebug.FirePython.showMessage(this, packet.error, "sys-error", packet.exc_info);
+                }
                 if (packet.logs) {
                     for (var i=0; i < packet.logs.length; i++) {
                         var log = packet.logs[i];
@@ -430,11 +433,14 @@ FBL.ns(function() {
                 return this.publishEvent(context, event);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
-            showMessage: function(context, text, icon) {
+            showMessage: function(context, text, icon, exc_info) {
                 if (!icon) icon = "info";
-                var event = new FirePythonEvent("message", {
+                type = "message";
+                if (exc_info) type = "messagewithexception";
+                var event = new FirePythonEvent(type, {
                     message: text,
-                    time: this.getCurrentTime()
+                    time: this.getCurrentTime(),
+                    exc_info: exc_info
                 }, icon);
                 return this.publishEvent(context, event);
             },
@@ -713,6 +719,14 @@ FBL.ns(function() {
                     DIV({ class: "rec-msg" }, "$object|getMessage")
                 ),
             /////////////////////////////////////////////////////////////////////////////////////////
+            tagMessagewithexception:
+                DIV({ class: "rec-head closed $object|getIcon", onclick: "$onToggleDetails", _repObject: "$object" },
+                    IMG({ class: "rec-icon", src: "blank.gif" }),
+                    DIV({ class: "rec-date" }, "$object|getDate"),
+                    DIV({ class: "rec-msg" }, "$object|getMessage"),
+                    DIV({ class: "rec-details" })
+                ),
+            /////////////////////////////////////////////////////////////////////////////////////////
             getMessage: function(event) {
                 dbg(">>>FirePython.Record.getMessage", arguments);
                 return event.data.message;
@@ -779,6 +793,7 @@ FBL.ns(function() {
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             renderTraceback: function(event) {
+                dbg(">>>FirePython.Record.renderTraceback", arguments);
                 if (!event.data.exc_info) return "no exception info available";
                 var exc_info = event.data.exc_info['py/tuple'];
                 if (!exc_info) return "no exception info available";
@@ -829,6 +844,7 @@ FBL.ns(function() {
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             renderDynamicItems: function(event, node) {
+                dbg(">>>FirePython.Record.renderDynamicItems", arguments);
                 var frames = event.data.exc_frames;
                 if (!frames) return;
                 
@@ -843,13 +859,20 @@ FBL.ns(function() {
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             showEventDetails: function(event, details) {
+                dbg(">>>FirePython.Record.showEventDetails", arguments);
                 var html = "";
                 switch (event.type) {
-                    case "exception": html = this.renderTraceback(event); break;
+                    case "exception": 
+                    case "messagewithexception": 
+                        html = this.renderTraceback(event); 
+                        break;
                 }
                 details.innerHTML = html;
                 switch (event.type) {
-                    case "exception": this.renderDynamicItems(event, details); break;
+                    case "exception":
+                    case "messagewithexception": 
+                        this.renderDynamicItems(event, details); 
+                        break;
                 }
             },
             /////////////////////////////////////////////////////////////////////////////////////////

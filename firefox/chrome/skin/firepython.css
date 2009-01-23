@@ -139,7 +139,7 @@
     text-align: center;
 }
 
-.type-exception .rec-msg {
+.type-exception .rec-msg, .type-messagewithexception .rec-msg {
     background-color: red;
     color: white;
     font-weight: bold;
