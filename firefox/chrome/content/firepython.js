@@ -139,8 +139,11 @@ FBL.ns(function() {
                 dbg(">>>FirePythonContextMixin.processDataPacket", packet);
                 var logs = [];
                 if (!packet) return logs;
-                if (packet.error) { // internal error on python side
-                    Firebug.FirePython.showMessage(this, packet.error, "sys-error", packet.exc_info);
+                if (packet.errors) { // internal errors on python side
+                    for (var i=0; i<packet.errors.length; i++) {
+                        var error = packet.errors[i];
+                        Firebug.FirePython.showMessage(this, error.message, "sys-error", error.exc_info);
+                    }
                 }
                 if (packet.logs) {
                     for (var i=0; i < packet.logs.length; i++) {
