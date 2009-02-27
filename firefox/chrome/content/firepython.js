@@ -14,7 +14,7 @@ FBL.ns(function() {
 
         const firepythonPrefs = firepythonPrefService.getService(nsIPrefBranch2);
         const firepythonURLs = {
-            main: "http://github.com/woid/firepython"
+            main: "http://github.com/darwin/firepython"
         };
         const firepythonPrefDomain = "extensions.firepython";
         var firepythonOptionUpdateMap = {};
@@ -29,8 +29,8 @@ FBL.ns(function() {
     
         function dbg() {
             if (FBTrace && FBTrace.DBG_FIREPYTHON) { 
-                if (/FirePythonPanel/.test(arguments[0])) return;
-                if (/FirePython.Record/.test(arguments[0])) return;
+                // if (/FirePythonPanel/.test(arguments[0])) return;
+                // if (/FirePython.Record/.test(arguments[0])) return;
                 FBTrace.sysout.apply(this, arguments);
             }
         }
@@ -217,10 +217,16 @@ FBL.ns(function() {
                 Firebug.NetMonitor.removeListener(this);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
-            // Used for FB1.2 (>= b4)
+            // Used for FB1.2 (>= b4) < FB1.4 r2050
             onLoad: function(context, file) {
                 dbg(">>>FirePython.onLoad", [context, file]);
                 this.mixinContext(context); // onLoad may be called before initContext, so we may need to mixin here
+                context.queueFile(file);
+            },
+            // Used for FB1.4 >=r2050
+            onResponse: function(context, file) {
+                dbg(">>>FirePython.onResponse", [context, file]);
+                this.mixinContext(context); // onResponse may be called before initContext, so we may need to mixin here
                 context.queueFile(file);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
