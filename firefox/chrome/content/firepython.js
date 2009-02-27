@@ -29,8 +29,9 @@ FBL.ns(function() {
     
         function dbg() {
             if (FBTrace && FBTrace.DBG_FIREPYTHON) { 
-                // if (/FirePythonPanel/.test(arguments[0])) return;
-                // if (/FirePython.Record/.test(arguments[0])) return;
+                if (/FirePythonPanel/.test(arguments[0])) return;
+                if (/FirePython.Record/.test(arguments[0])) return;
+                if (/FirePython.PythonTuple/.test(arguments[0])) return;
                 FBTrace.sysout.apply(this, arguments);
             }
         }
@@ -1081,10 +1082,125 @@ FBL.ns(function() {
             title: "Python Watches",
             parentPanel: "FirePython",
         });
+
+        ////////////////////////////////////////////////////////////////////////
+        // JSON-like displaing for objects
+        //
+        var OBJECTBOX = this.OBJECTBOX =
+            SPAN({class: "objectBox objectBox-$className"});
+
+        var OBJECTBLOCK = this.OBJECTBLOCK =
+            DIV({class: "objectBox objectBox-$className"});
+
+        var OBJECTLINK = this.OBJECTLINK =
+            A({
+                class: "objectLink objectLink-$className",
+                _repObject: "$object"
+            });
+
+        FirebugReps.Obj = domplate(FirebugReps.Obj, {
+            tag: OBJECTLINK(
+                "{",
+                FOR("prop", "$object|propIterator",
+                    " $prop.name=",
+                    SPAN({class: "objectPropValue"}, "$prop.value|cropString")
+                ), 
+                " }"
+            ),
+            /////////////////////////////////////////////////////////////////////////////////////////
+            getTitle: function(object, context) {
+                return "{...}";
+            }
+        });
+    
+        ////////////////////////////////////////////////////////////////////////
+        // support Python tuples
+        //
+        Firebug.FirePython.PythonTuple = domplate(Firebug.Rep, {
+            className: "array",
+            /////////////////////////////////////////////////////////////////////////////////////////
+            tag:
+                OBJECTBOX({_repObject: "$object|getRealObject"},
+                    SPAN({class: "arrayLeftBracket"}, "("),
+                    FOR("item", "$object|arrayIterator",
+                        TAG("$item.tag", {object: "$item.object"}),
+                        SPAN({class: "arrayComma"}, "$item.delim")
+                    ),
+                    SPAN({class: "arrayRightBracket"}, ")")
+                ),
+            /////////////////////////////////////////////////////////////////////////////////////////
+            shortTag:
+                OBJECTBOX({_repObject: "$object|getRealObject"},
+                    SPAN({class: "arrayLeftBracket"}, "("),
+                    FOR("item", "$object|shortArrayIterator",
+                        TAG("$item.tag", {object: "$item.object"}),
+                        SPAN({class: "arrayComma"}, "$item.delim")
+                    ),
+                    SPAN({class: "arrayRightBracket"}, ")")
+                ),
+            /////////////////////////////////////////////////////////////////////////////////////////
+            arrayIterator: function(array) {
+                dbg(">>>FirePython.PythonTuple.arrayIterator", arguments);
+                array = array['py/tuple'] || [];
+                var items = [];
+                for (var i = 0; i < array.length; ++i) {
+                    var value = array[i];
+                    var rep = Firebug.getRep(value);
+                    var tag = rep.shortTag ? rep.shortTag : rep.tag;
+                    var delim = (i == array.length-1 ? "" : ", ");
+
+                    items.push({object: value, tag: tag, delim: delim});
+                }
+                return items;
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            shortArrayIterator: function(array) {
+                dbg(">>>FirePython.PythonTuple.shortArrayIterator", arguments);
+                array = array['py/tuple'] || [];
+                var items = [];
+                for (var i = 0; i < array.length && i < 3; ++i) {
+                    var value = array[i];
+                    var rep = Firebug.getRep(value);
+                    var tag = rep.shortTag ? rep.shortTag : rep.tag;
+                    var delim = (i == array.length-1 ? "" : ", ");
+
+                    items.push({object: value, tag: tag, delim: delim});
+                }
+
+                if (array.length > 3)
+                    items.push({object: (array.length-3) + " more...", tag: FirebugReps.Caption.tag, delim: ""});
+
+                return items;
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            getItemIndex: function(child) {
+                var arrayIndex = 0;
+                for (child = child.previousSibling; child; child = child.previousSibling)
+                {
+                    if (child.repObject)
+                        ++arrayIndex;
+                }
+                return arrayIndex;
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            supportsObject: function(object) {
+                return !!object['py/tuple'];
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            getRealObject: function(object) {
+                return object['py/tuple'];
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            getTitle: function(object, context) {
+                return "[" + object['py/tuple'].length + "]";
+            }
+        });
     
         Firebug.registerActivableModule(Firebug.FirePython);
         Firebug.registerRep(Firebug.FirePython.Record);
+        Firebug.registerRep(Firebug.FirePython.PythonTuple);
         Firebug.registerPanel(Firebug.FirePythonPanel);
         Firebug.registerPanel(Firebug.WatchesFirePythonPanel);
+        Firebug.setDefaultRep(FirebugReps.Obj);
     }
 });
