@@ -290,7 +290,10 @@ FBL.ns(function() {
                 Firebug.ActivableModule.onPanelActivate.apply(this, arguments);
                 if (panelName != this.panelName) return;
                 dbg(">>>FirePython.onPanelActivate");
-                if (!init) context.window.location.reload();
+                if (!init) { 
+                    context.window.location.reload();
+                    return;
+                }
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             onPanelDeactivate: function(context, destroy, deactivatedPanelName) {
@@ -335,8 +338,6 @@ FBL.ns(function() {
                 dbg(">>>FirePython.showContext");
                 Firebug.ActivableModule.showContext.apply(this, arguments);
                 this.versionCheck(context);
-                context.processRequestQueue();
-                context.processRequestQueueAutoFlushing = true;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             destroyContext: function(context) {
@@ -392,6 +393,8 @@ FBL.ns(function() {
                 Firebug.ActivableModule.showPanel.apply(this, arguments);
                 var isFirePython = panel && panel.name == this.panelName;
                 if (isFirePython) {
+                    panel.context.processRequestQueueAutoFlushing = true;
+                    panel.context.processRequestQueue();
                     if ((!Firebug.NetMonitor.isEnabled(panel.context) || !Firebug.Console.isEnabled(panel.context)) && !panel.context.firePythonWarningShown) {
                         this.showMessage(panel.context, 'You must have the Firebug Console and Net panels enabled to use FirePython!', "sys-warning");
                         panel.context.firePythonWarningShown = true;
@@ -406,6 +409,7 @@ FBL.ns(function() {
                         watchesPanel.select({});
                     }
                 } else {
+                    panel.context.processRequestQueueAutoFlushing = false;
                     this.currentPanel = null;
                 }
             },
