@@ -7,6 +7,7 @@ pref("extensions.firelogger.rewrites", "");
 
 pref("extensions.firelogger.password", "");
 pref("extensions.firelogger.richFormatting", true);
+pref("extensions.firelogger.showInternal", false);
 
 pref("extensions.firelogger.filterDebugLogs", false);
 pref("extensions.firelogger.filterInfoLogs", false);

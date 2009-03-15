@@ -203,6 +203,7 @@ FBL.ns(function() {
             cachePrefs: function() {
                 this._password = this.getPref('password');
                 this._richFormatting = this.getPref('richFormatting');
+                this._showInternal = this.getPref('showInternal');
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             start: function() {
@@ -542,6 +543,22 @@ FBL.ns(function() {
                 }
             },
             /////////////////////////////////////////////////////////////////////////////////////////
+            preprocessObject: function(o) {
+                if (this._showInternal) return o;
+                var worker = function(x) {
+                    if (typeof x != "object") return x;
+                    var res = {};
+                    for (i in x) {
+                        if (x.hasOwnProperty(i)) {
+                            if (i=="_") continue;
+                            res[i] = worker(x[i]);
+                        }
+                    }
+                    return res;
+                };
+                return worker(o);
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
             getPref: function(name) {
                 dbg(">>>FireLogger.getPref: "+name);
                 var prefName = fireloggerPrefDomain + "." + name;
@@ -865,7 +882,7 @@ FBL.ns(function() {
                     var dest = getElementByClass(node, "traceback-frame-"+i);
                     if (dest) {
                         var r = Firebug.getRep(frame);
-                        r.tag.append({object: frame}, dest);
+                        r.tag.append({object: Firebug.FireLogger.preprocessObject(frame)}, dest);
                     }
                 }
             },
@@ -1026,7 +1043,7 @@ FBL.ns(function() {
                     if (i<parts.length-1) {
                         var arg = lookupArg(i);
                         var r = Firebug.getRep(arg);
-                        r.tag.append({object: arg}, dest);
+                        r.tag.append({object: Firebug.FireLogger.preprocessObject(arg)}, dest);
                     }
                 }
             },
@@ -1177,8 +1194,7 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             getItemIndex: function(child) {
                 var arrayIndex = 0;
-                for (child = child.previousSibling; child; child = child.previousSibling)
-                {
+                for (child = child.previousSibling; child; child = child.previousSibling) {
                     if (child.repObject)
                         ++arrayIndex;
                 }
