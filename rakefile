@@ -158,7 +158,7 @@ task :xpi do
   end
   remove_dir(TMP) if File.exist?(TMP) # recursive!
   
-  puts "\ninstaller is in #{yellow(res)}, enjoy!"
+  puts "\nInstaller is prepared in #{yellow(res)}, enjoy!"
 end
 
 task :default => :xpi
