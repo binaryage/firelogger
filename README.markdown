@@ -8,9 +8,8 @@ FireLogger is a sexy logger console integrated into [Firebug][firebug]. You'll n
   * **[FireRuby][fireruby]** (in planning)
   * add your own here
 
-![screenshot][screenshot]
+<a href="http://cloud.github.com/downloads/darwin/firelogger/FireLogger-Screenshot-v0.3.png"><img src="http://cloud.github.com/downloads/darwin/firelogger/FireLogger-Screenshot-v0.3.png" width="900"/></a>
 
-[screenshot]: http://cloud.github.com/downloads/darwin/firepython/FirePython-Screenshot-v0.3.png "FireLogger in action"
 [firebug]: https://addons.mozilla.org/en-US/firefox/addon/1843
 [firepython]: http://github.com/darwin/firepython
 [fireruby]: http://github.com/darwin/fireruby
