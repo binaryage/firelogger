@@ -161,4 +161,19 @@ task :xpi do
   puts "\nInstaller is prepared in #{yellow(res)}, enjoy!"
 end
 
+desc "Resets version in all relevant sources"
+task :version do
+  check_if_addon_exists()
+  version = ARGV[1] or die("Please specify a version as first parameter")
+  firelogger_js_path = File.join(FIREFOX, 'chrome', 'content', 'firelogger.js')
+  if not patch(firelogger_js_path, /version: '([0-9\.])+'/, "version: '#{version}'")
+    puts "  #{red("patching had no effect")}"
+  end
+  install_rdf_path = File.join(FIREFOX, 'install.rdf')
+  if not patch(install_rdf_path, /<em:version>([0-9\.])+<\/em:version>/, "<em:version>#{version}</em:version>")
+    puts "  #{red("patching had no effect")}"
+  end
+  exit(0)
+end
+
 task :default => :xpi
