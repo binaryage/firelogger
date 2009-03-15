@@ -1,7 +1,7 @@
 var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
 
 function openHelpLink(topic) {
-    var url = "http://github.com/woid/firelogger/wikis/"+topic;
+    var url = "http://github.com/darwin/firelogger/wikis/"+topic;
     var args = window.arguments[0];
     var FBL = args.FBL;
     FBL.openNewTab(url);

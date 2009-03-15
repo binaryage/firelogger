@@ -16,7 +16,7 @@
     <em:name>FireLogger</em:name>
     <em:description>Python logging support for web developers</em:description>
     <em:creator>Antonin Hildebrand</em:creator>
-    <em:homepageURL>http://github.com/woid/firelogger</em:homepageURL>
+    <em:homepageURL>http://github.com/darwin/firelogger</em:homepageURL>
     <em:iconURL>chrome://firelogger/skin/icon.png</em:iconURL>
   </Description>
 </RDF>
