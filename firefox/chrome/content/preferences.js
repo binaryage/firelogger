@@ -1,7 +1,7 @@
 var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
 
 function openHelpLink(topic) {
-    var url = "http://github.com/woid/firepython/wikis/"+topic;
+    var url = "http://github.com/woid/firelogger/wikis/"+topic;
     var args = window.arguments[0];
     var FBL = args.FBL;
     FBL.openNewTab(url);
@@ -20,20 +20,20 @@ var mainPane = {
         var args = window.arguments[0];
         this._FBL = args.FBL;
 
-        this._disablePasswordProtectionButton = document.getElementById("firepython-preferences-main-disable-password-protection");
+        this._disablePasswordProtectionButton = document.getElementById("firelogger-preferences-main-disable-password-protection");
 
         this.update();
     },
     /////////////////////////////////////////////////////////////////////////////////////////
     disablePasswordProtection: function() {
-        prefs.setCharPref("extensions.firepython.password", "");
+        prefs.setCharPref("extensions.firelogger.password", "");
         this.update();
     },
     /////////////////////////////////////////////////////////////////////////////////////////
     update: function() {
         var that = this;
         setTimeout(function(){
-            var enabled = prefs.getCharPref("extensions.firepython.password").replace(/^\s+|\s+$/g,"")!="";
+            var enabled = prefs.getCharPref("extensions.firelogger.password").replace(/^\s+|\s+$/g,"")!="";
             that._disablePasswordProtectionButton.disabled = !enabled;
         }, 100);
     }
@@ -46,17 +46,17 @@ var rewritesPane = {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     getRewritesListNode: function() {
-        return document.getElementById("firepython-preferences-rewrites-list");
+        return document.getElementById("firelogger-preferences-rewrites-list");
     },
     /////////////////////////////////////////////////////////////////////////////////////////
     init: function() {
         var args = window.arguments[0];
         this._FBL = args.FBL;
 
-        this._removeButton = document.getElementById("firepython-preferences-rewrites-remove-rule");
-        this._changeButton = document.getElementById("firepython-preferences-rewrites-change-rule");
-        this._moveUpButton = document.getElementById("firepython-preferences-rewrites-move-up");
-        this._moveDownButton = document.getElementById("firepython-preferences-rewrites-move-down");
+        this._removeButton = document.getElementById("firelogger-preferences-rewrites-remove-rule");
+        this._changeButton = document.getElementById("firelogger-preferences-rewrites-change-rule");
+        this._moveUpButton = document.getElementById("firelogger-preferences-rewrites-move-up");
+        this._moveDownButton = document.getElementById("firelogger-preferences-rewrites-move-down");
 
         this._tree = this.getRewritesListNode();
         this._treeView = {
@@ -66,11 +66,11 @@ var rewritesPane = {
             get rowCount() { return this.data.length; },
             getCellText: function(row, column) {
                 switch(column.id) {
-                case "firepython-preferences-rewrites-list-number":
+                case "firelogger-preferences-rewrites-list-number":
                     return (row+1)+".";
-                case "firepython-preferences-rewrites-list-original":
+                case "firelogger-preferences-rewrites-list-original":
                     return this.data[row].original;
-                case "firepython-preferences-rewrites-list-replacement":
+                case "firelogger-preferences-rewrites-list-replacement":
                     return this.data[row].replacement;
                 }
                 return "";
@@ -135,7 +135,7 @@ var rewritesPane = {
     addRewriteRule: function() {
         var item = { original:"", flags:"i", replacement:"" };
         var result = {};
-        openDialog("chrome://firepython/content/rewrite-rule.xul",  "_blank", "modal,centerscreen", item, result);
+        openDialog("chrome://firelogger/content/rewrite-rule.xul",  "_blank", "modal,centerscreen", item, result);
         if (!result.saveChanges) return
         rewriter.addItem(item);
         this._treeView.data.push(item);
@@ -156,7 +156,7 @@ var rewritesPane = {
         if (selection.count!=1) return;
         var item = this._treeView.data[selection.currentIndex];
         var result = {};
-        openDialog("chrome://firepython/content/rewrite-rule.xul",  "_blank", "modal,centerscreen", item, result);
+        openDialog("chrome://firelogger/content/rewrite-rule.xul",  "_blank", "modal,centerscreen", item, result);
         if (result.saveChanges) {
             rewriter.saveItem(item);
         }
@@ -164,9 +164,9 @@ var rewritesPane = {
     },
     /////////////////////////////////////////////////////////////////////////////////////////
     testRules: function() {
-        var question = document.getElementById("firepython-preferences-rewrites-tester-input").value;
+        var question = document.getElementById("firelogger-preferences-rewrites-tester-input").value;
         var res = rewriter.rewritePath(question, true);
-        document.getElementById("firepython-preferences-rewrites-tester-answer").value = res[0];
-        document.getElementById("firepython-preferences-rewrites-tester-reason").value = res[1];
+        document.getElementById("firelogger-preferences-rewrites-tester-answer").value = res[0];
+        document.getElementById("firelogger-preferences-rewrites-tester-reason").value = res[1];
     }
 };

@@ -1,11 +1,16 @@
-# FirePython Addon
+# FireLogger Addon
 
-FirePython is a sexy Python logger console integrated into [Firebug][firebug]. You'll need Firebug 1.2 or higher.
+FireLogger is a sexy logger console integrated into [Firebug][firebug]. You'll need Firebug 1.2 or higher.
 
-## **Visit [main homepage here][homepage]**
+## Supported Languages
+
+  * **[FirePython][firepython]** (production ready)
+  * **[FireRuby][fireruby]** (in planning)
+  * add your own here
 
 ![screenshot][screenshot]
 
-[screenshot]: http://cloud.github.com/downloads/darwin/firepython/FirePython-Screenshot-v0.3.png "FirePython in action"
+[screenshot]: http://cloud.github.com/downloads/darwin/firepython/FirePython-Screenshot-v0.3.png "FireLogger in action"
 [firebug]: https://addons.mozilla.org/en-US/firefox/addon/1843
-[homepage]: http://github.com/darwin/firepython
+[firepython]: http://github.com/darwin/firepython
+[fireruby]: http://github.com/darwin/fireruby

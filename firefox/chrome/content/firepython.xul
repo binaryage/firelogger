@@ -1,47 +1,47 @@
 <?xml version="1.0"?>
-<?xml-stylesheet href="chrome://firepython/skin/firepython.css"?>
+<?xml-stylesheet href="chrome://firelogger/skin/firelogger.css"?>
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <stringbundleset id="stringbundleset">
-    <stringbundle id="strings_firepython" src="chrome://firepython/locale/firepython.properties"/>
+    <stringbundle id="strings_firelogger" src="chrome://firelogger/locale/firelogger.properties"/>
   </stringbundleset>
-  <script type="application/x-javascript" src="chrome://firepython/content/lib/utf8.js"/>
-  <script type="application/x-javascript" src="chrome://firepython/content/lib/json.js"/>
-  <script type="application/x-javascript" src="chrome://firepython/content/lib/base64.js"/>
-  <script type="application/x-javascript" src="chrome://firepython/content/lib/md5.js"/>
-  <script type="application/x-javascript" src="chrome://firepython/content/rewriter.js"/>
-  <script type="application/x-javascript" src="chrome://firepython/content/firepython.js"/>
+  <script type="application/x-javascript" src="chrome://firelogger/content/lib/utf8.js"/>
+  <script type="application/x-javascript" src="chrome://firelogger/content/lib/json.js"/>
+  <script type="application/x-javascript" src="chrome://firelogger/content/lib/base64.js"/>
+  <script type="application/x-javascript" src="chrome://firelogger/content/lib/md5.js"/>
+  <script type="application/x-javascript" src="chrome://firelogger/content/rewriter.js"/>
+  <script type="application/x-javascript" src="chrome://firelogger/content/firelogger.js"/>
   <commandset id="mainCommandSet">
-    <command id="cmd_FirePythonPreferences" oncommand="Firebug.FirePython.onPreferences()"/>
-    <command id="cmd_FirePythonSite" oncommand="Firebug.FirePython.onVisitWebsite('main')"/>
-    <command id="cmd_FirePythonClear" oncommand="Firebug.FirePython.onClear()"/>
-    <command id="cmd_FirePythonFilterDebug" oncommand="Firebug.FirePython.onFilterLogs('debug')"/>
-    <command id="cmd_FirePythonFilterInfo" oncommand="Firebug.FirePython.onFilterLogs('info')"/>
-    <command id="cmd_FirePythonFilterWarning" oncommand="Firebug.FirePython.onFilterLogs('warning')"/>
-    <command id="cmd_FirePythonFilterError" oncommand="Firebug.FirePython.onFilterLogs('error')"/>
-    <command id="cmd_FirePythonFilterCritical" oncommand="Firebug.FirePython.onFilterLogs('critical')"/>
+    <command id="cmd_FireLoggerPreferences" oncommand="Firebug.FireLogger.onPreferences()"/>
+    <command id="cmd_FireLoggerSite" oncommand="Firebug.FireLogger.onVisitWebsite('main')"/>
+    <command id="cmd_FireLoggerClear" oncommand="Firebug.FireLogger.onClear()"/>
+    <command id="cmd_FireLoggerFilterDebug" oncommand="Firebug.FireLogger.onFilterLogs('debug')"/>
+    <command id="cmd_FireLoggerFilterInfo" oncommand="Firebug.FireLogger.onFilterLogs('info')"/>
+    <command id="cmd_FireLoggerFilterWarning" oncommand="Firebug.FireLogger.onFilterLogs('warning')"/>
+    <command id="cmd_FireLoggerFilterError" oncommand="Firebug.FireLogger.onFilterLogs('error')"/>
+    <command id="cmd_FireLoggerFilterCritical" oncommand="Firebug.FireLogger.onFilterLogs('critical')"/>
   </commandset>
   <toolbar id="fbToolbar" align="center">
     <hbox id="fbToolbarInner" insertbefore="fbDetachButton" flex="1" align="center">
-      <hbox id="fbFirePythonFilters" insertafter="fbNetButtons" collapsed="true">
-          <toolbarbutton label="Clear" class="toolbar-text-button" command="cmd_FirePythonClear" tooltiptext="Click to clear FirePython console"/>
-          <toolbarbutton id="fbFirePythonFilterDebugButton" command="cmd_FirePythonFilterDebug" checked="true" type="checkbox" tooltiptext="Filter DEBUG logs" class="toolbar-image-button"/>
-          <toolbarbutton id="fbFirePythonFilterInfoButton" command="cmd_FirePythonFilterInfo" checked="true" type="checkbox" tooltiptext="Filter INFO logs" class="toolbar-image-button"/>
-          <toolbarbutton id="fbFirePythonFilterWarningButton" command="cmd_FirePythonFilterWarning" checked="true" type="checkbox" tooltiptext="Filter WARNING logs" class="toolbar-image-button"/>
-          <toolbarbutton id="fbFirePythonFilterErrorButton" command="cmd_FirePythonFilterError" checked="true" type="checkbox" tooltiptext="Filter ERROR logs" class="toolbar-image-button"/>
-          <toolbarbutton id="fbFirePythonFilterCriticalButton" command="cmd_FirePythonFilterCritical" checked="true" type="checkbox" tooltiptext="Filter CRITICAL logs" class="toolbar-image-button"/>
+      <hbox id="fbFireLoggerFilters" insertafter="fbNetButtons" collapsed="true">
+          <toolbarbutton label="Clear" class="toolbar-text-button" command="cmd_FireLoggerClear" tooltiptext="Click to clear FireLogger console"/>
+          <toolbarbutton id="fbFireLoggerFilterDebugButton" command="cmd_FireLoggerFilterDebug" checked="true" type="checkbox" tooltiptext="Filter DEBUG logs" class="toolbar-image-button"/>
+          <toolbarbutton id="fbFireLoggerFilterInfoButton" command="cmd_FireLoggerFilterInfo" checked="true" type="checkbox" tooltiptext="Filter INFO logs" class="toolbar-image-button"/>
+          <toolbarbutton id="fbFireLoggerFilterWarningButton" command="cmd_FireLoggerFilterWarning" checked="true" type="checkbox" tooltiptext="Filter WARNING logs" class="toolbar-image-button"/>
+          <toolbarbutton id="fbFireLoggerFilterErrorButton" command="cmd_FireLoggerFilterError" checked="true" type="checkbox" tooltiptext="Filter ERROR logs" class="toolbar-image-button"/>
+          <toolbarbutton id="fbFireLoggerFilterCriticalButton" command="cmd_FireLoggerFilterCritical" checked="true" type="checkbox" tooltiptext="Filter CRITICAL logs" class="toolbar-image-button"/>
       </hbox>
-      <hbox id="fbFirePythonButtons" insertafter="fbNetButtons" collapsed="true">
-        <toolbarbutton id="fbFirePythonMenu" type="menu" tooltiptext="FirePython menu">
-          <menupopup onpopupshowing="return Firebug.FirePython.onOptionsShowing(this);">
-            <menuitem label="Preferences..." disabled="true" command="cmd_FirePythonPreferences"/>
+      <hbox id="fbFireLoggerButtons" insertafter="fbNetButtons" collapsed="true">
+        <toolbarbutton id="fbFireLoggerMenu" type="menu" tooltiptext="FireLogger menu">
+          <menupopup onpopupshowing="return Firebug.FireLogger.onOptionsShowing(this);">
+            <menuitem label="Preferences..." disabled="true" command="cmd_FireLoggerPreferences"/>
             <menuseparator/>
-            <menuitem label="FirePython Website..." command="cmd_FirePythonSite"/>
+            <menuitem label="FireLogger Website..." command="cmd_FireLoggerSite"/>
           </menupopup>
         </toolbarbutton>
       </hbox>
     </hbox>
   </toolbar>
   <statusbar id="status-bar">
-    <statusbarpanel id="fbFirePythonStatusBarPanel" insertbefore="statusbar-display"/>
+    <statusbarpanel id="fbFireLoggerStatusBarPanel" insertbefore="statusbar-display"/>
   </statusbar>
 </overlay>

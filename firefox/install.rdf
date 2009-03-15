@@ -2,8 +2,8 @@
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
          xmlns:em="http://www.mozilla.org/2004/em-rdf#">
   <Description about="urn:mozilla:install-manifest">
-    <em:id>firepython@hildebrand.cz</em:id>
-    <em:version>0.2</em:version>
+    <em:id>firelogger@hildebrand.cz</em:id>
+    <em:version>0.3</em:version>
     <em:type>2</em:type>
     <!-- Firefox -->
     <em:targetApplication>
@@ -13,10 +13,10 @@
         <em:maxVersion>3.2a1pre</em:maxVersion>
       </Description>
     </em:targetApplication>
-    <em:name>FirePython</em:name>
+    <em:name>FireLogger</em:name>
     <em:description>Python logging support for web developers</em:description>
     <em:creator>Antonin Hildebrand</em:creator>
-    <em:homepageURL>http://github.com/woid/firepython</em:homepageURL>
-    <em:iconURL>chrome://firepython/skin/icon.png</em:iconURL>
+    <em:homepageURL>http://github.com/woid/firelogger</em:homepageURL>
+    <em:iconURL>chrome://firelogger/skin/icon.png</em:iconURL>
   </Description>
 </RDF>

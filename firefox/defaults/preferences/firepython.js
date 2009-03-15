@@ -1,15 +1,15 @@
-pref("extensions.firepython.enableLocalFiles", "");
-pref("extensions.firepython.enableSystemPages", "");
-pref("extensions.firepython.enableSites", false);
+pref("extensions.firelogger.enableLocalFiles", "");
+pref("extensions.firelogger.enableSystemPages", "");
+pref("extensions.firelogger.enableSites", false);
 
-pref("extensions.firepython.preferredEditor", "");
-pref("extensions.firepython.rewrites", "");
+pref("extensions.firelogger.preferredEditor", "");
+pref("extensions.firelogger.rewrites", "");
 
-pref("extensions.firepython.password", "");
-pref("extensions.firepython.richFormatting", true);
+pref("extensions.firelogger.password", "");
+pref("extensions.firelogger.richFormatting", true);
 
-pref("extensions.firepython.filterDebugLogs", false);
-pref("extensions.firepython.filterInfoLogs", false);
-pref("extensions.firepython.filterWarningLogs", false);
-pref("extensions.firepython.filterErrorLogs", false);
-pref("extensions.firepython.filterCriticalLogs", false);
+pref("extensions.firelogger.filterDebugLogs", false);
+pref("extensions.firelogger.filterInfoLogs", false);
+pref("extensions.firelogger.filterWarningLogs", false);
+pref("extensions.firelogger.filterErrorLogs", false);
+pref("extensions.firelogger.filterCriticalLogs", false);
