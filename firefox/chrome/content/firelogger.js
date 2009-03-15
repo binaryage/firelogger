@@ -909,7 +909,7 @@ FBL.ns(function() {
         Firebug.FireLoggerPanel = function() {}
         Firebug.FireLoggerPanel.prototype = extend(Firebug.AblePanel||Firebug.Panel, { // AblePanel was introduced in 1.3
             name: "FireLogger",
-            title: "FireLogger",
+            title: "Logger",
             searchable: true,
             editable: false,
     
@@ -1083,7 +1083,7 @@ FBL.ns(function() {
         Firebug.WatchesFireLoggerPanel = function () {};
         Firebug.WatchesFireLoggerPanel.prototype = extend(Firebug.DOMPanel.prototype, {
             name: "FireLoggerWatches",
-            title: "Logger Watches",
+            title: "Watches",
             parentPanel: "FireLogger",
         });
 
