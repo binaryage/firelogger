@@ -242,11 +242,9 @@ FBL.ns(function() {
                 Firebug.ActivableModule.observe.apply(this, [subject, topic, data]);
                 if (topic == "http-on-modify-request") {
                     var httpChannel = subject.QueryInterface(Ci.nsIHttpChannel);
-                    // add FireLogger/X.X.X to User-Agent header if not already there
-                    // see https://developer.mozilla.org/En/Setting_HTTP_request_headers
-                    if (httpChannel.getRequestHeader("User-Agent").match(/\sX-FireLogger\/([\.|\d]*)\s?/) == null) {
-                        httpChannel.setRequestHeader("User-Agent", httpChannel.getRequestHeader("User-Agent") + ' ' + "X-FireLogger/" + this.version, false);
-                    }
+                    // from v0.3 do not alter User-Agent, this guy on twitter had problems: http://twitter.com/lawouach/statuses/1222443299
+                    // just add FireLogger version as a separate header, should be safe
+                    httpChannel.setRequestHeader("X-FireLogger", this.version, false);
                     if (this._password) {
                         httpChannel.setRequestHeader("X-FireLoggerAuth", this.prepareAuth(this._password), false);
                     }
