@@ -6,7 +6,7 @@ FireLogger is a sexy logger console integrated into [Firebug][firebug]. You'll n
 
   * **[FirePython][firepython]** (production ready)
   * **[FireRuby][fireruby]** (in planning)
-  * add your own here
+  * _add your own here_ [Protocol description](http://wiki.github.com/darwin/firelogger)
 
 <a href="http://cloud.github.com/downloads/darwin/firelogger/FireLogger-Screenshot-v0.3.png"><img src="http://cloud.github.com/downloads/darwin/firelogger/FireLogger-Screenshot-v0.3.png" width="900"/></a>
 
