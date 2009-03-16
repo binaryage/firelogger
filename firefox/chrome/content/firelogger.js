@@ -32,6 +32,7 @@ FBL.ns(function() {
                 if (/FireLoggerPanel/.test(arguments[0])) return;
                 if (/FireLogger.Record/.test(arguments[0])) return;
                 if (/FireLogger.LoggerTuple/.test(arguments[0])) return;
+                if (/FireLogger.Protocol/.test(arguments[0])) return;
                 FBTrace.sysout.apply(this, arguments);
             }
         }
@@ -125,11 +126,12 @@ FBL.ns(function() {
                 }
                 // we use UTF-8 encoded JSON to exchange messages which are wrapped with base64
                 var packets = [];
-                for (buffer in buffers) {
-                    if (!buffers.hasOwnProperty(buffer)) continue;
-                    buffer = buffers[buffer].join('');
+                for (bufferId in buffers) {
+                    if (!buffers.hasOwnProperty(bufferId)) continue;
+                    buffer = buffers[bufferId].join('');
                     buffer = Base64.decode(buffer);
                     buffer = UTF8.decode(buffer);
+                    dbg(">>>FireLogger.Protocol", "Packet "+bufferId+":\n"+buffer);
                     var packet = JSON.parse(buffer);
                     packets.push(packet);
                 }
