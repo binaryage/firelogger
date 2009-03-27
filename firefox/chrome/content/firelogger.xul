@@ -22,7 +22,7 @@
   </commandset>
   <toolbar id="fbToolbar" align="center">
     <hbox id="fbToolbarInner" insertbefore="fbDetachButton" flex="1" align="center">
-      <hbox id="fbFireLoggerFilters" insertafter="fbNetButtons" collapsed="true">
+      <hbox id="fbFireLoggerFilters" insertafter="fbNetButtons">
           <toolbarbutton label="Clear" class="toolbar-text-button" command="cmd_FireLoggerClear" tooltiptext="Click to clear FireLogger console"/>
           <toolbarbutton id="fbFireLoggerFilterDebugButton" command="cmd_FireLoggerFilterDebug" checked="true" type="checkbox" tooltiptext="Filter DEBUG logs" class="toolbar-image-button"/>
           <toolbarbutton id="fbFireLoggerFilterInfoButton" command="cmd_FireLoggerFilterInfo" checked="true" type="checkbox" tooltiptext="Filter INFO logs" class="toolbar-image-button"/>
@@ -30,15 +30,13 @@
           <toolbarbutton id="fbFireLoggerFilterErrorButton" command="cmd_FireLoggerFilterError" checked="true" type="checkbox" tooltiptext="Filter ERROR logs" class="toolbar-image-button"/>
           <toolbarbutton id="fbFireLoggerFilterCriticalButton" command="cmd_FireLoggerFilterCritical" checked="true" type="checkbox" tooltiptext="Filter CRITICAL logs" class="toolbar-image-button"/>
       </hbox>
-      <hbox id="fbFireLoggerButtons" insertafter="fbNetButtons" collapsed="true">
-        <toolbarbutton id="fbFireLoggerMenu" type="menu" tooltiptext="FireLogger menu">
-          <menupopup onpopupshowing="return Firebug.FireLogger.onOptionsShowing(this);">
-            <menuitem label="Preferences..." disabled="true" command="cmd_FireLoggerPreferences"/>
-            <menuseparator/>
-            <menuitem label="FireLogger Website..." command="cmd_FireLoggerSite"/>
-          </menupopup>
-        </toolbarbutton>
-      </hbox>
+      <toolbarbutton id="fbFireLoggerMenu" insertafter="fbNetButtons" type="menu" tooltiptext="FireLogger menu">
+        <menupopup onpopupshowing="return Firebug.FireLogger.onOptionsShowing(this);">
+          <menuitem label="Preferences..." disabled="true" command="cmd_FireLoggerPreferences"/>
+          <menuseparator/>
+          <menuitem label="FireLogger Website..." command="cmd_FireLoggerSite"/>
+        </menupopup>
+      </toolbarbutton>
     </hbox>
   </toolbar>
   <statusbar id="status-bar">

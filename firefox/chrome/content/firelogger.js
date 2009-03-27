@@ -41,13 +41,6 @@ FBL.ns(function() {
             return s.charAt(0).toUpperCase() + s.substring(1).toLowerCase();
         }
         
-        FBL.$FIRELOGGER_STR = function(name) {
-            return document.getElementById("strings_firelogger").getString(name);
-        };
-        FBL.$FIRELOGGER_STRF = function(name, args) {
-            return document.getElementById("strings_firelogger").getFormattedString(name, args);
-        };
-        
         ////////////////////////////////////////////////////////////////////////
         var FireLoggerEvent = function(type, data, icon) {
             this.type = type;
@@ -98,7 +91,7 @@ FBL.ns(function() {
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             queueFile: function(file) {
-                dbg(">>>FireLoggerContextMixin.queueFile", file);
+                dbg(">>>FireLoggerContextMixin.queueFile: "+file.href);
                 this.pushRecord(file.href, this.parseHeaders(file.responseHeaders));
             },
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -178,7 +171,7 @@ FBL.ns(function() {
         // Firebug.FireLogger
         //
         Firebug.FireLogger = extend(Firebug.ActivableModule, {
-            version: '0.3',
+            version: '0.4',
             currentPanel: null,
 
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -191,13 +184,13 @@ FBL.ns(function() {
                 if (!version) return false;
                 var a = version.split('.');
                 if (a.length<2) return false;
-                // we want Firebug version 1.2+ (including alphas/betas and other weird stuff)
-                return parseInt(a[0], 10)>=1 && parseInt(a[1], 10)>=2;
+                // we want Firebug version 1.4+ (including alphas/betas and other weird stuff)
+                return parseInt(a[0], 10)>=1 && parseInt(a[1], 10)>=4;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             versionCheck: function(context) {
                 if (!this.checkFirebugVersion() && !context.fireLoggerVersionWarningShown) {
-                    this.showMessage(context, "FireLogger Firefox extension works with Firebug 1.2 or higher (you have "+Firebug.getVersion()+"). Please upgrade Firebug to the latest version.", "sys-warning");
+                    this.showMessage(context, "FireLogger Firefox extension works with Firebug 1.4 or higher (you have "+Firebug.getVersion()+"). Please upgrade Firebug to the latest version.", "sys-warning");
                     context.fireLoggerVersionWarningShown = true;
                 }
             },
@@ -221,15 +214,9 @@ FBL.ns(function() {
                 Firebug.NetMonitor.removeListener(this);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
-            // Used for FB1.2 (>= b4) < FB1.4 r2050
-            onLoad: function(context, file) {
-                dbg(">>>FireLogger.onLoad", [context, file]);
-                this.mixinContext(context); // onLoad may be called before initContext, so we may need to mixin here
-                context.queueFile(file);
-            },
-            // Used for FB1.4 >=r2050
+            // FB1.4 >=r2050
             onResponse: function(context, file) {
-                dbg(">>>FireLogger.onResponse", [context, file]);
+                dbg(">>>FireLogger.onResponse:"+file.href, context);
                 this.mixinContext(context); // onResponse may be called before initContext, so we may need to mixin here
                 context.queueFile(file);
             },
@@ -242,7 +229,7 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             observe: function(subject, topic, data) {
                 dbg(">>>FireLogger.observe: "+topic);
-                Firebug.ActivableModule.observe.apply(this, [subject, topic, data]);
+                //Firebug.ActivableModule.observe.apply(this, [subject, topic, data]);
                 if (topic == "http-on-modify-request") {
                     var httpChannel = subject.QueryInterface(Ci.nsIHttpChannel);
                     // from v0.3 do not alter User-Agent, this guy on twitter had problems: http://twitter.com/lawouach/statuses/1222443299
@@ -656,68 +643,6 @@ FBL.ns(function() {
                 } else {
                     openWindow(null, url, features, args);
                 }
-            },
-            /////////////////////////////////////////////////////////////////////////////////////////
-            openPermissions: function(event, context) {
-                cancelEvent(event);
-    
-                var browserURI = FirebugChrome.getBrowserURI(context);
-                var host = this.getHostForURI(browserURI);
-    
-                var params = {
-                    permissionType: this.getPrefDomain(),
-                    windowTitle: $FIRELOGGER_STR(this.panelName + ".Permissions"),
-                    introText: $FIRELOGGER_STR(this.panelName + ".PermissionsIntro"),
-                    blockVisible: true,
-                    sessionVisible: false,
-                    allowVisible: true,
-                    prefilledHost: host
-                };
-    
-                openWindow("Browser:Permissions", "chrome://browser/content/preferences/permissions.xul", "", params);
-            },
-            /////////////////////////////////////////////////////////////////////////////////////////
-            getMenuLabel: function(option, location, shortened) {
-                var label = "";
-                var host = "";
-    
-                switch (option) {
-                case "disable-site":
-                    if (isSystemURL(location.spec))
-                    label = "SystemPagesDisable";
-                    else if (!getURIHost(location))
-                    label = "LocalFilesDisable";
-                    else
-                    label = "HostDisable";
-    
-                    if (shortened)
-                    return $FIRELOGGER_STR("panel.Disabled");
-                    break;
-    
-                case "enable-site":
-                    if (isSystemURL(location.spec))
-                    label = "SystemPagesEnable";
-                    else if (!getURIHost(location))
-                    label = "LocalFilesEnable";
-                    else
-                    label = "HostEnable";
-    
-                    if (shortened)
-                    return $FIRELOGGER_STR("panel.Enabled");
-                    break;
-    
-                case "enable":
-                    return $FIRELOGGER_STR("panel.Enabled");
-    
-                case "disable":
-                    return $FIRELOGGER_STR("panel.Disabled");
-                }
-    
-                if (!label)
-                return null;
-    
-                label = this.panelName + "." + label;
-                return $FIRELOGGER_STRF(label, [getURIHost(location)]);
             }
         });
     
@@ -956,22 +881,15 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             show: function(state) {
                 dbg(">>>FireLoggerPanel.show", state);
-                var enabled = Firebug.FireLogger.isEnabled(this.context);
-                this.showToolbarButtons("fbFireLoggerButtons", true);
-                this.showToolbarButtons("fbFireLoggerFilters", enabled);
-    
-                if (enabled)
-                    Firebug.ModuleManagerPage.hide(this);
-                else
-                    Firebug.ModuleManagerPage.show(this, Firebug.FireLogger);
-    
+                this.showToolbarButtons("fbFireLoggerMenu", true);
+                this.showToolbarButtons("fbFireLoggerFilters", true);
                 if (this.wasScrolledToBottom) scrollToBottom(this.panelNode);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             hide: function() {
                 dbg(">>>FireLoggerPanel.hide");
                 this.wasScrolledToBottom = isScrolledToBottom(this.panelNode);
-                this.showToolbarButtons("fbFireLoggerButtons", false);
+                this.showToolbarButtons("fbFireLoggerMenu", false);
                 this.showToolbarButtons("fbFireLoggerFilters", false);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -1221,6 +1139,6 @@ FBL.ns(function() {
         Firebug.registerRep(Firebug.FireLogger.LoggerTuple);
         Firebug.registerPanel(Firebug.FireLoggerPanel);
         Firebug.registerPanel(Firebug.WatchesFireLoggerPanel);
-        Firebug.setDefaultRep(FirebugReps.Obj);
+        Firebug.setDefaultReps(FirebugReps.Func, FirebugReps.Obj);
     }
 });
