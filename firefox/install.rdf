@@ -10,11 +10,11 @@
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
         <em:minVersion>2.0</em:minVersion>
-        <em:maxVersion>3.2a1pre</em:maxVersion>
+        <em:maxVersion>3.6a1pre</em:maxVersion>
       </Description>
     </em:targetApplication>
     <em:name>FireLogger</em:name>
-    <em:description>Python logging support for web developers</em:description>
+    <em:description>Server-side logging support for web developers</em:description>
     <em:creator>Antonin Hildebrand</em:creator>
     <em:homepageURL>http://github.com/darwin/firelogger</em:homepageURL>
     <em:iconURL>chrome://firelogger/skin/icon.png</em:iconURL>

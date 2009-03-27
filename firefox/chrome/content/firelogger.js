@@ -269,7 +269,7 @@ FBL.ns(function() {
             initialize: function() {
                 dbg(">>>FireLogger.initialize");
                 this.panelName = 'FireLogger';
-                this.description = "Logger logging tools for web developers.";
+                this.description = "Server-side logging tools for web developers.";
                 Firebug.ActivableModule.initialize.apply(this, arguments);
                 this.patchChrome(top.FirebugChrome, FirebugContext);
                 fireloggerPrefs.addObserver(this.getPrefDomain(), this, false);
