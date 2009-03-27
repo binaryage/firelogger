@@ -18,6 +18,7 @@
       <preference id="preference-password" name="extensions.firelogger.password" type="string"/>
       <preference id="preference-formatting" name="extensions.firelogger.richFormatting" type="bool"/>
       <preference id="preference-internal" name="extensions.firelogger.showInternal" type="bool"/>
+      <preference id="preference-profiler" name="extensions.firelogger.enableProfiler" type="bool"/>
     </preferences>
     <groupbox id="firelogger-preferences-main-password-group">
       <caption label="Password Protection"/>
@@ -34,6 +35,12 @@
       </hbox>
       <hbox align="center">
         <checkbox flex="1" preference="preference-internal" label="Show internal representations ('_' properties in Watches)"/>
+      </hbox>
+    </groupbox>
+    <groupbox id="firelogger-preferences-main-profiler-group">
+      <caption label="Profiler Settings"/>
+      <hbox align="center">
+        <checkbox flex="1" preference="preference-profiler" label="Enable server-side profiling and call graph (note: expensive)"/>
       </hbox>
     </groupbox>
   </prefpane>

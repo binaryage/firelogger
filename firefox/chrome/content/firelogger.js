@@ -113,12 +113,18 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             parseHeaders: function(headers) {
                 var buffers = {};
-                var re = /^firelogger-([0-9a-f]+)-(\d+)/i;
+                var profiles = {};
+                var re = /^firelogger-([0-9a-f]+)-(\d+)(-profile)?/i;
                 var parseHeader = function(name, value) {
                     var res = re.exec(name);
-                    if (res) { 
-                        buffers[res[1]] = buffers[res[1]] || [];
-                        buffers[res[1]][res[2]]=value;
+                    if (res) {
+                        if (res[3] == "-profile") {
+                            profiles[res[1]] = profiles[res[1]] || [];
+                            profiles[res[1]][res[2]] = value;
+                        } else {
+                            buffers[res[1]] = buffers[res[1]] || [];
+                            buffers[res[1]][res[2]] = value;
+                        }
                     }
                 };
                 for (var index in headers) {
@@ -128,11 +134,20 @@ FBL.ns(function() {
                 var packets = [];
                 for (bufferId in buffers) {
                     if (!buffers.hasOwnProperty(bufferId)) continue;
-                    buffer = buffers[bufferId].join('');
+                    var buffer = buffers[bufferId].join('');
                     buffer = Base64.decode(buffer);
                     buffer = UTF8.decode(buffer);
                     dbg(">>>FireLogger.Protocol", "Packet "+bufferId+":\n"+buffer);
                     var packet = JSON.parse(buffer);
+                    packets.push(packet);
+                }
+                for (profileId in profiles) {
+                    if (!profiles.hasOwnProperty(profileId)) continue;
+                    var buffer = profiles[profileId].join('');
+                    buffer = Base64.decode(buffer);
+                    //buffer = UTF8.decode(buffer);  // TODO test this
+                    dbg(">>>FireLogger.Protocol", "Profile "+profileId+":\n"+buffer);
+                    var packet = {"profile": buffer};
                     packets.push(packet);
                 }
                 return packets;
@@ -153,6 +168,9 @@ FBL.ns(function() {
                         var log = packet.logs[i];
                         logs.push(log);
                     }
+                }
+                if (packet.profile) {
+                    Firebug.FireLogger.showProfile(this, packet.profile);
                 }
                 return logs;
             },
@@ -206,6 +224,7 @@ FBL.ns(function() {
                 this._password = this.getPref('password');
                 this._richFormatting = this.getPref('richFormatting');
                 this._showInternal = this.getPref('showInternal');
+                this._enableProfiler = this.getPref('enableProfiler');
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             start: function() {
@@ -250,6 +269,9 @@ FBL.ns(function() {
                     httpChannel.setRequestHeader("X-FireLogger", this.version, false);
                     if (this._password) {
                         httpChannel.setRequestHeader("X-FireLoggerAuth", this.prepareAuth(this._password), false);
+                    }
+                    if (this._enableProfiler) {
+                        httpChannel.setRequestHeader("X-FireLoggerProfiler", "1", false);
                     }
                 }
                 if (topic == "nsPref:changed") {
@@ -457,6 +479,17 @@ FBL.ns(function() {
                     time: this.getCurrentTime(),
                     exc_info: exc_info
                 }, icon);
+                return this.publishEvent(context, event);
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            showProfile: function(context, profile_data) {
+                type = "profile";
+                var event = new FireLoggerEvent(type, {
+                    message: "profile is here",
+                    time: this.getCurrentTime(),
+                    exc_info: null,
+                    profile_data: profile_data
+                }, "sys-info");  // TODO: Use a profiler-specific icon here
                 return this.publishEvent(context, event);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -758,6 +791,13 @@ FBL.ns(function() {
                     DIV({ class: "rec-details" })
                 ),
             /////////////////////////////////////////////////////////////////////////////////////////
+            tagProfile:
+                DIV({ class: "rec-head $object|getIcon", _repObject: "$object" },
+                    IMG({ class: "rec-icon", src: "blank.gif" }),
+                    DIV({ class: "rec-date", onclick: "$onProfileNavigate" }, "$object|getDate"),
+                    DIV({ class: "rec-msg", onclick: "$onProfileNavigate" }, "$object|getMessage")
+                ),
+            /////////////////////////////////////////////////////////////////////////////////////////
             getMessage: function(event) {
                 dbg(">>>FireLogger.Record.getMessage", arguments);
                 return event.data.message;
@@ -798,6 +838,14 @@ FBL.ns(function() {
                 var path = event.data.pathname;
                 var line = event.data.lineno;
                 Firebug.FireLogger.openSourceFile(path, line);
+                e.stopPropagation();
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            onProfileNavigate: function(e) {
+                dbg(">>>FireLogger.Record.onProfileNavigate", arguments);
+                if (!isLeftClick(e)) return;
+                var event = this.lookupEventObject(e.currentTarget);
+                //Firebug.FireLogger.openSourceFile(path, line);
                 e.stopPropagation();
             },
             /////////////////////////////////////////////////////////////////////////////////////////
