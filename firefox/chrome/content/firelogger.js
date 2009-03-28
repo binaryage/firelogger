@@ -270,7 +270,6 @@ FBL.ns(function() {
                     if (this._password) {
                         httpChannel.setRequestHeader("X-FireLoggerAuth", this.prepareAuth(this._password), false);
                     }
-                    dump("profiler is now " + this._enableProfiler + "\n");
                     if (this._enableProfiler) {
                         httpChannel.setRequestHeader("X-FireLoggerProfiler", "1", false);
                     }
