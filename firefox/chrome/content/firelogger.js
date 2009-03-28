@@ -145,7 +145,7 @@ FBL.ns(function() {
                     if (!profiles.hasOwnProperty(profileId)) continue;
                     var buffer = profiles[profileId].join('');
                     buffer = Base64.decode(buffer);
-                    //buffer = UTF8.decode(buffer);  // TODO test this
+                    buffer = UTF8.decode(buffer);
                     dbg(">>>FireLogger.Protocol", "Profile "+profileId+":\n"+buffer);
                     var packet = {"profile": buffer};
                     packets.push(packet);
@@ -270,6 +270,7 @@ FBL.ns(function() {
                     if (this._password) {
                         httpChannel.setRequestHeader("X-FireLoggerAuth", this.prepareAuth(this._password), false);
                     }
+                    dump("profiler is now " + this._enableProfiler + "\n");
                     if (this._enableProfiler) {
                         httpChannel.setRequestHeader("X-FireLoggerProfiler", "1", false);
                     }
@@ -485,11 +486,11 @@ FBL.ns(function() {
             showProfile: function(context, profile_data) {
                 type = "profile";
                 var event = new FireLoggerEvent(type, {
-                    message: "profile is here",
+                    message: "Request Profile available as Graphviz",
                     time: this.getCurrentTime(),
                     exc_info: null,
                     profile_data: profile_data
-                }, "sys-info");  // TODO: Use a profiler-specific icon here
+                }, "sys-info");
                 return this.publishEvent(context, event);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -539,14 +540,42 @@ FBL.ns(function() {
                 return externalEditors;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
-            findPreferredEditor: function() {
-                var preferredEditorId = this.getPref('preferredEditor');
+            findEditor: function(editorId, allowDefault) {
                 var editors = this.loadExternalEditors();
                 var editor = null;
                 for (var i=0; i<editors.length; i++) {
-                    if (preferredEditorId == editors[i].id) return editors[i];
+                    if (editorId == editors[i].id) return editors[i];
                 }
-                if (editors.length>0) return editors[0];
+                if (allowDefault && editors.length>0) return editors[0];
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            findPreferredEditor: function() {
+                var preferredEditorId = this.getPref('preferredEditor');
+                return this.findEditor(preferredEditorId, true);
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            findGraphviz: function() {
+                return this.findEditor("Graphviz", false);
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            writeTemporaryFile: function(name_template, data) {
+                var file = Components.classes["@mozilla.org/file/directory_service;1"].
+                                     getService(Components.interfaces.nsIProperties).
+                                     get("TmpD", Components.interfaces.nsIFile);
+                file.append(name_template);
+                file.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0666);
+
+                var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"].
+                                         createInstance(Components.interfaces.nsIFileOutputStream);
+                                // write, create, truncate
+                foStream.init(file, 0x02 | 0x08 | 0x20, 0666, 0);
+
+                var utfStream = Components.classes["@mozilla.org/intl/converter-output-stream;1"].
+                                          createInstance(Components.interfaces.nsIConverterOutputStream);
+                utfStream.init(foStream, "UTF-8", 0, 0x0000);
+                utfStream.writeString(data);
+                utfStream.close();
+                return file.path;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             openSourceFile: function(path, line) {
@@ -845,7 +874,22 @@ FBL.ns(function() {
                 dbg(">>>FireLogger.Record.onProfileNavigate", arguments);
                 if (!isLeftClick(e)) return;
                 var event = this.lookupEventObject(e.currentTarget);
-                //Firebug.FireLogger.openSourceFile(path, line);
+                var path = Firebug.FireLogger.writeTemporaryFile("graph.dot", event.data.profile_data);
+                var editor = Firebug.FireLogger.findGraphviz();
+                args = [path]
+                if (!editor) {
+                    alert('Graphviz not found!\nPlease add it into Firebug via Firebug Menu -> Open With Editor -> Configure Editors ...');
+                    dbg(">>>graphviz was not found!");
+                } else {
+                    dbg(">>>Lauching "+editor.executable, args);
+                    try {
+                        FBL.launchProgram(editor.executable, args);
+                    }
+                    catch (e) { 
+                        alert("Failed to launch:\n"+editor.executable+"\n with parameters "+args+"\n\n"+e.message); 
+                        dbg(">>>Launch exception", e); 
+                    }
+                }
                 e.stopPropagation();
             },
             /////////////////////////////////////////////////////////////////////////////////////////
