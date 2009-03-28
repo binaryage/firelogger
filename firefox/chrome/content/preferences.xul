@@ -19,7 +19,15 @@
       <preference id="preference-formatting" name="extensions.firelogger.richFormatting" type="bool"/>
       <preference id="preference-internal" name="extensions.firelogger.showInternal" type="bool"/>
       <preference id="preference-profiler" name="extensions.firelogger.enableProfiler" type="bool"/>
+      <preference id="preference-editor" name="extensions.firelogger.preferredEditor" type="string"/>
     </preferences>
+    <groupbox id="firelogger-preferences-main-editor-group">
+      <caption label="Preferred Editor"/>
+      <hbox align="center">
+        <label value="Editor name" control="firelogger-preferences-main-editor"/>
+        <textbox id="firelogger-preferences-main-editor" class="padded" flex="1" preference="preference-editor" oninput="mainPane.update()"/>
+      </hbox>
+    </groupbox>
     <groupbox id="firelogger-preferences-main-password-group">
       <caption label="Password Protection"/>
       <hbox align="center">
