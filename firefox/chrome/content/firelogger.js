@@ -472,7 +472,7 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             showMessage: function(context, text, icon, exc_info) {
                 if (!icon) icon = "info";
-                type = "message";
+                var type = "message";
                 if (exc_info) type = "messagewithexception";
                 var event = new FireLoggerEvent(type, {
                     message: text,
@@ -483,7 +483,7 @@ FBL.ns(function() {
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             showProfile: function(context, url, profile_data) {
-                type = "profile";
+                var type = "profile";
                 var event = new FireLoggerEvent(type, {
                     message: "Request Profile available as Graphviz for " + url,
                     time: this.getCurrentTime(),
