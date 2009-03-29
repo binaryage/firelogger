@@ -114,7 +114,7 @@ FBL.ns(function() {
             parseHeaders: function(headers) {
                 var buffers = {};
                 var profiles = {};
-                var re = /^firelogger-([0-9a-f]+)-(\d+)?/i;
+                var re = /^firelogger-([0-9a-f]+)-(\d+)/i;
                 var parseHeader = function(name, value) {
                     var res = re.exec(name);
                     if (!res) return;
