@@ -154,6 +154,10 @@
     background-color: fuchsia;
 }
 
+.type-profile .rec-msg {
+  cursor: pointer;
+}
+
 .rec-date:hover {
     color: black;
 }

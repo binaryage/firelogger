@@ -153,7 +153,7 @@ FBL.ns(function() {
                 return packets;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
-            processDataPacket: function(packet) {
+            processDataPacket: function(url, packet) {
                 dbg(">>>FireLoggerContextMixin.processDataPacket", packet);
                 var logs = [];
                 if (!packet) return logs;
@@ -170,7 +170,7 @@ FBL.ns(function() {
                     }
                 }
                 if (packet.profile) {
-                    Firebug.FireLogger.showProfile(this, packet.profile);
+                    Firebug.FireLogger.showProfile(this, url, packet.profile);
                 }
                 return logs;
             },
@@ -180,7 +180,7 @@ FBL.ns(function() {
                 var logs = [];
                 for (var i=0; i < packets.length; i++) {
                     var packet = packets[i];
-                    logs = logs.concat(this.processDataPacket(packet));
+                    logs = logs.concat(this.processDataPacket(url, packet));
                 }
                 logs.sort(function(a,b) {
                     return b.timestamp<a.timestamp;
@@ -482,10 +482,10 @@ FBL.ns(function() {
                 return this.publishEvent(context, event);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
-            showProfile: function(context, profile_data) {
+            showProfile: function(context, url, profile_data) {
                 type = "profile";
                 var event = new FireLoggerEvent(type, {
-                    message: "Request Profile available as Graphviz",
+                    message: "Request Profile available as Graphviz for " + url,
                     time: this.getCurrentTime(),
                     exc_info: null,
                     profile_data: profile_data
