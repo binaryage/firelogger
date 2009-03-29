@@ -489,7 +489,7 @@ FBL.ns(function() {
                     time: this.getCurrentTime(),
                     exc_info: null,
                     profile_data: profile_data
-                }, "sys-info");
+                }, "sys-time");
                 return this.publishEvent(context, event);
             },
             /////////////////////////////////////////////////////////////////////////////////////////

@@ -189,6 +189,9 @@
 .firelogger-rec > .rec-head.sys-tip > .rec-icon {
     background-image: url(icon-sys-tip.png);
 }
+.firelogger-rec > .rec-head.sys-time > .rec-icon {
+    background-image: url(icon-sys-time.png);
+}
 
 .firelogger-rec > .rec-head > .rec-details {
     display: none;
