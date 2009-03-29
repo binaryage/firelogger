@@ -114,18 +114,12 @@ FBL.ns(function() {
             parseHeaders: function(headers) {
                 var buffers = {};
                 var profiles = {};
-                var re = /^firelogger-([0-9a-f]+)-(\d+)(-profile)?/i;
+                var re = /^firelogger-([0-9a-f]+)-(\d+)?/i;
                 var parseHeader = function(name, value) {
                     var res = re.exec(name);
-                    if (res) {
-                        if (res[3] == "-profile") {
-                            profiles[res[1]] = profiles[res[1]] || [];
-                            profiles[res[1]][res[2]] = value;
-                        } else {
-                            buffers[res[1]] = buffers[res[1]] || [];
-                            buffers[res[1]][res[2]] = value;
-                        }
-                    }
+                    if (!res) return;
+                    buffers[res[1]] = buffers[res[1]] || [];
+                    buffers[res[1]][res[2]] = value;
                 };
                 for (var index in headers) {
                     parseHeader(headers[index].name, headers[index].value);
@@ -139,15 +133,6 @@ FBL.ns(function() {
                     buffer = UTF8.decode(buffer);
                     dbg(">>>FireLogger.Protocol", "Packet "+bufferId+":\n"+buffer);
                     var packet = JSON.parse(buffer);
-                    packets.push(packet);
-                }
-                for (profileId in profiles) {
-                    if (!profiles.hasOwnProperty(profileId)) continue;
-                    var buffer = profiles[profileId].join('');
-                    buffer = Base64.decode(buffer);
-                    buffer = UTF8.decode(buffer);
-                    dbg(">>>FireLogger.Protocol", "Profile "+profileId+":\n"+buffer);
-                    var packet = {"profile": buffer};
                     packets.push(packet);
                 }
                 return packets;
@@ -170,7 +155,7 @@ FBL.ns(function() {
                     }
                 }
                 if (packet.profile) {
-                    Firebug.FireLogger.showProfile(this, url, packet.profile);
+                    Firebug.FireLogger.showProfile(this, url, packet.profile.info, packet.profile.dot);
                 }
                 return logs;
             },
@@ -482,12 +467,11 @@ FBL.ns(function() {
                 return this.publishEvent(context, event);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
-            showProfile: function(context, url, profile_data) {
+            showProfile: function(context, url, profile_info, profile_data) {
                 var type = "profile";
                 var event = new FireLoggerEvent(type, {
-                    message: "Request Profile available as Graphviz for " + url,
+                    message: (profile_info || "Request Profile available as Graphviz") + " [" + url + "]",
                     time: this.getCurrentTime(),
-                    exc_info: null,
                     profile_data: profile_data
                 }, "sys-time");
                 return this.publishEvent(context, event);
