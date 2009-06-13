@@ -407,6 +407,8 @@ FBL.ns(function() {
                     panel.context.processRequestQueueAutoFlushing = false;
                     this.currentPanel = null;
                 }
+                collapse(browser.chrome.$("fbFireLoggerMenu"), !isFireLogger);
+                collapse(browser.chrome.$("fbFireLoggerFilters"), !isFireLogger);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             updateFilterButtons: function(panel, states) {
