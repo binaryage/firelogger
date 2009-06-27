@@ -11,8 +11,6 @@
   <script type="application/x-javascript" src="chrome://firelogger/content/rewriter.js"/>
   <script type="application/x-javascript" src="chrome://firelogger/content/firelogger.js"/>
   <commandset id="mainCommandSet">
-    <command id="cmd_FireLoggerPreferences" oncommand="Firebug.FireLogger.onPreferences()"/>
-    <command id="cmd_FireLoggerSite" oncommand="Firebug.FireLogger.onVisitWebsite('main')"/>
     <command id="cmd_FireLoggerClear" oncommand="Firebug.FireLogger.onClear()"/>
     <command id="cmd_FireLoggerFilterDebug" oncommand="Firebug.FireLogger.onFilterLogs('debug')"/>
     <command id="cmd_FireLoggerFilterInfo" oncommand="Firebug.FireLogger.onFilterLogs('info')"/>
@@ -30,13 +28,6 @@
           <toolbarbutton id="fbFireLoggerFilterErrorButton" command="cmd_FireLoggerFilterError" checked="true" type="checkbox" tooltiptext="Filter ERROR logs" class="toolbar-image-button"/>
           <toolbarbutton id="fbFireLoggerFilterCriticalButton" command="cmd_FireLoggerFilterCritical" checked="true" type="checkbox" tooltiptext="Filter CRITICAL logs" class="toolbar-image-button"/>
       </hbox>
-      <toolbarbutton id="fbFireLoggerMenu" insertafter="fbNetButtons" type="menu" tooltiptext="FireLogger menu">
-        <menupopup onpopupshowing="return Firebug.FireLogger.onOptionsShowing(this);">
-          <menuitem label="Preferences..." disabled="true" command="cmd_FireLoggerPreferences"/>
-          <menuseparator/>
-          <menuitem label="FireLogger Website..." command="cmd_FireLoggerSite"/>
-        </menupopup>
-      </toolbarbutton>
     </hbox>
   </toolbar>
   <statusbar id="status-bar">

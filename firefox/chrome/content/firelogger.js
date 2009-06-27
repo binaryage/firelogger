@@ -2,6 +2,27 @@
 // Some code comes from FirePHP project (http://www.firephp.org)
 FBL.ns(function() {
     with(FBL) {
+        
+        function checkFirebugVersion(minMajor, minMinor) {
+            var version = Firebug.getVersion();
+            if (!version) return false;
+            var a = version.split('.');
+            if (a.length<2) return false;
+            // parse Firebug version (including alphas/betas and other weird stuff)
+            var major = parseInt(a[0], 10);
+            var minor = parseInt(a[1], 10);
+            return major>=minMajor && minor>=minMinor;
+        }
+
+        if (!checkFirebugVersion(1,4)) {
+            alert('FireQuery works with Firebug 1.4 and later.\nPlease upgrade Firebug to the latest version.');
+            try { // to hide UI elements
+                var hide = function(x) {x.setAttribute('style', 'display:none');};
+                hide($("fbFireLoggerFilters"));
+            } catch (ex) {}
+            return;
+        }
+        
         const Cc = Components.classes;
         const Ci = Components.interfaces;
 
@@ -182,22 +203,6 @@ FBL.ns(function() {
                 return fireloggerPrefDomain;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
-            checkFirebugVersion: function() {
-                var version = Firebug.getVersion();
-                if (!version) return false;
-                var a = version.split('.');
-                if (a.length<2) return false;
-                // we want Firebug version 1.4+ (including alphas/betas and other weird stuff)
-                return parseInt(a[0], 10)>=1 && parseInt(a[1], 10)>=4;
-            },
-            /////////////////////////////////////////////////////////////////////////////////////////
-            versionCheck: function(context) {
-                if (!this.checkFirebugVersion() && !context.fireLoggerVersionWarningShown) {
-                    this.showMessage(context, "FireLogger Firefox extension works with Firebug 1.4 or higher (you have "+Firebug.getVersion()+"). Please upgrade Firebug to the latest version.", "sys-warning");
-                    context.fireLoggerVersionWarningShown = true;
-                }
-            },
-            /////////////////////////////////////////////////////////////////////////////////////////
             cachePrefs: function() {
                 this._password = this.getPref('password');
                 this._richFormatting = this.getPref('richFormatting');
@@ -332,7 +337,6 @@ FBL.ns(function() {
             showContext: function(browser, context) {
                 dbg(">>>FireLogger.showContext");
                 Firebug.ActivableModule.showContext.apply(this, arguments);
-                this.versionCheck(context);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             destroyContext: function(context) {

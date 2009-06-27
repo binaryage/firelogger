@@ -1,5 +1,3 @@
-/*****************************************************************************************/
-
 #fbFireLoggerMenu {
     list-style-image: url(chrome://firelogger/skin/icon16.png);
     -moz-opacity: 0.8;
@@ -15,10 +13,6 @@
 #fbFireLoggerMenu > .toolbarbutton-text,
 #fbFireLoggerMenu > .toolbarbutton-menu-dropmarker {
     display: none;
-}
-
-#fbFireLoggerFilters {
-    padding-left: 20px;
 }
 
 #fbFireLoggerFilterDebugButton { list-style-image: url(chrome://firelogger/skin/icon-log-debug.png); }
