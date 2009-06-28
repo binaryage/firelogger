@@ -26,14 +26,14 @@ var mainPane = {
     },
     /////////////////////////////////////////////////////////////////////////////////////////
     disablePasswordProtection: function() {
-        prefs.setCharPref("extensions.firelogger.password", "");
+        prefs.setCharPref("extensions.firebug.firelogger.password", "");
         this.update();
     },
     /////////////////////////////////////////////////////////////////////////////////////////
     update: function() {
         var that = this;
         setTimeout(function(){
-            var enabled = prefs.getCharPref("extensions.firelogger.password").replace(/^\s+|\s+$/g,"")!="";
+            var enabled = prefs.getCharPref("extensions.firebug.firelogger.password").replace(/^\s+|\s+$/g,"")!="";
             that._disablePasswordProtectionButton.disabled = !enabled;
         }, 100);
     }

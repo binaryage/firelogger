@@ -1,6 +1,5 @@
-var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
 const rewritesColumns = ["original", "flags", "replacement"];
-const rewritesPrefName = "extensions.firelogger.rewrites";
+const rewritesPrefName = "extensions.firebug.firelogger.rewrites";
 
 var rewriter = {
     /////////////////////////////////////////////////////////////////////////////////////////

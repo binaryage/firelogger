@@ -15,11 +15,11 @@
     image="chrome://firelogger/skin/preferences-main.png"
     helpTopic="preferences#main">
     <preferences>
-      <preference id="preference-password" name="extensions.firelogger.password" type="string"/>
-      <preference id="preference-formatting" name="extensions.firelogger.richFormatting" type="bool"/>
-      <preference id="preference-internal" name="extensions.firelogger.showInternal" type="bool"/>
-      <preference id="preference-profiler" name="extensions.firelogger.enableProfiler" type="bool"/>
-      <preference id="preference-editor" name="extensions.firelogger.preferredEditor" type="string"/>
+      <preference id="preference-password" name="extensions.firebug.firelogger.password" type="string"/>
+      <preference id="preference-formatting" name="extensions.firebug.firelogger.richFormatting" type="bool"/>
+      <preference id="preference-internal" name="extensions.firebug.firelogger.showInternal" type="bool"/>
+      <preference id="preference-profiler" name="extensions.firebug.firelogger.enableProfiler" type="bool"/>
+      <preference id="preference-editor" name="extensions.firebug.firelogger.preferredEditor" type="string"/>
     </preferences>
     <groupbox id="firelogger-preferences-main-editor-group">
       <caption label="Preferred Editor"/>

@@ -1,17 +1,15 @@
-pref("extensions.firelogger.enableLocalFiles", "");
-pref("extensions.firelogger.enableSystemPages", "");
-pref("extensions.firelogger.enableSites", false);
+pref("extensions.firebug.firelogger.enableSites", false);
 
-pref("extensions.firelogger.preferredEditor", "");
-pref("extensions.firelogger.rewrites", "");
+pref("extensions.firebug.firelogger.preferredEditor", "");
+pref("extensions.firebug.firelogger.rewrites", "");
 
-pref("extensions.firelogger.password", "");
-pref("extensions.firelogger.richFormatting", true);
-pref("extensions.firelogger.showInternal", false);
-pref("extensions.firelogger.enableProfiler", false);
+pref("extensions.firebug.firelogger.password", "");
+pref("extensions.firebug.firelogger.richFormatting", true);
+pref("extensions.firebug.firelogger.showInternal", false);
+pref("extensions.firebug.firelogger.enableProfiler", false);
 
-pref("extensions.firelogger.filterDebugLogs", false);
-pref("extensions.firelogger.filterInfoLogs", false);
-pref("extensions.firelogger.filterWarningLogs", false);
-pref("extensions.firelogger.filterErrorLogs", false);
-pref("extensions.firelogger.filterCriticalLogs", false);
+pref("extensions.firebug.firelogger.filterDebugLogs", false);
+pref("extensions.firebug.firelogger.filterInfoLogs", false);
+pref("extensions.firebug.firelogger.filterWarningLogs", false);
+pref("extensions.firebug.firelogger.filterErrorLogs", false);
+pref("extensions.firebug.firelogger.filterCriticalLogs", false);
