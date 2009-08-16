@@ -554,15 +554,28 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             preprocessObject: function(o) {
                 if (this._showInternal) return o;
+
+				function isArray(o) {
+				   return (o.constructor.toString().indexOf("Array") != -1);
+				}
+				
                 var worker = function(x) {
                     if (typeof x != "object") return x;
-                    var res = {};
-                    for (i in x) {
-                        if (x.hasOwnProperty(i)) {
-                            if (i=="_") continue;
-                            res[i] = worker(x[i]);
-                        }
-                    }
+					var res;
+					if (isArray(x)) {
+						res = [];
+						for (var i=0; i<x.length; i++) {
+							res.push(worker(x[i]));
+						}
+					} else {
+	                    res = {};
+	                    for (var i in x) {
+	                        if (x.hasOwnProperty(i)) {
+	                            if (i=="_") continue;
+	                            res[i] = worker(x[i]);
+	                        }
+	                    }
+					}
                     return res;
                 };
                 return worker(o);
@@ -1027,7 +1040,7 @@ FBL.ns(function() {
                 dest.innerHTML = "";
                 var template = object.data.template;
                 if (typeof template != "string") template = template._; // this is a special case for exceptions
-                if (!template) template = "?";
+                if (!template) template = "";
                 var parts = (template+" ").split(/%[a-zA-Z]{0,1}/);
                 if (parts[parts.length-1]=="") parts.pop();
                 for (var i=0; i<parts.length; i++) {
@@ -1044,6 +1057,7 @@ FBL.ns(function() {
 					var a = object.data.args;
 					if (object.data.args["py/tuple"]) a = object.data.args["py/tuple"];
 					for (var j=i-1; j<a.length; j++) {
+	                    FirebugReps.Text.tag.append({object: " "}, dest);
 						var arg = lookupArg(j);
                         var r = Firebug.getRep(arg);
                         r.tag.append({object: module.preprocessObject(arg)}, dest);
@@ -1064,7 +1078,7 @@ FBL.ns(function() {
                 setClass(row, "type-"+object.type);
                 setClass(row, "icon-"+object.icon);
                 var res = rep[typeName].append({ object: object }, row);
-                if (module._richFormatting && object.data.template)
+                if (module._richFormatting && object.data.template!==null)
                     this.renderFormattedMessage(object, row, rep);
                 else
                     this.renderPlainMessage(object, row, rep);
