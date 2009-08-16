@@ -1017,9 +1017,10 @@ FBL.ns(function() {
                     if (object.data.args && object.data.args["py/tuple"]) {
                         return object.data.args["py/tuple"][index];
                     }
-                    if (index==0 && object.data.args) {
+                    if (index==0 && !object.data.args.length) {
                         return object.data.args;
                     }
+					return object.data.args[index];
                 };
                 var dest = getChildByClass(row.childNodes[0], "rec-msg");
                 dest.innerHTML = "";
