@@ -460,8 +460,7 @@ FBL.ns(function() {
                 if (panel) panel.publish(event);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
-            loadExternalEditors: function()
-            {
+            loadExternalEditors: function() {
                 const prefName = "externalEditors";
                 const editorPrefNames = ["label", "executable", "cmdline", "image"];
 
@@ -477,10 +476,7 @@ FBL.ns(function() {
                             item[editorPrefNames[j]] = Firebug.getPref(Firebug.prefDomain, prefName+"."+editorId+"."+editorPrefNames[j]);
                         } catch(exc) {}
                     }
-                    if (item.label && item.executable) {
-                        if (!item.image) item.image = getIconURLForFile(item.executable);
-                        externalEditors.push(item);
-                    }
+                    externalEditors.push(item);
                 }
                 return externalEditors;
             },
@@ -544,38 +540,40 @@ FBL.ns(function() {
                 }
                 dbg(">>>Lauching "+editor.executable, args);
                 try {
-                    FBL.launchProgram(editor.executable, args);
-                }
-                catch (e) { 
-                    alert("Failed to launch:\n"+editor.executable+"\n with parameters "+args+"\n\n"+e.message); 
+                    var res = FBL.launchProgram(editor.executable, args);
+                } catch (e) { 
+                    alert("Failed to launch:\n"+editor.executable+" "+args.join(" ")+"\n\n"+e.message); 
                     dbg(">>>Launch exception", e); 
+                }
+                if (res===false) { // from FB1.5 FBL.launchProgram is not throwing, but returning false
+                    alert("Failed to launch:\n"+editor.executable+" "+args.join(" "));
                 }
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             preprocessObject: function(o) {
                 if (this._showInternal) return o;
 
-				function isArray(o) {
-				   return (o.constructor.toString().indexOf("Array") != -1);
-				}
-				
+                function isArray(o) {
+                   return (o.constructor.toString().indexOf("Array") != -1);
+                }
+                
                 var worker = function(x) {
                     if (typeof x != "object") return x;
-					var res;
-					if (isArray(x)) {
-						res = [];
-						for (var i=0; i<x.length; i++) {
-							res.push(worker(x[i]));
-						}
-					} else {
-	                    res = {};
-	                    for (var i in x) {
-	                        if (x.hasOwnProperty(i)) {
-	                            if (i=="_") continue;
-	                            res[i] = worker(x[i]);
-	                        }
-	                    }
-					}
+                    var res;
+                    if (isArray(x)) {
+                        res = [];
+                        for (var i=0; i<x.length; i++) {
+                            res.push(worker(x[i]));
+                        }
+                    } else {
+                        res = {};
+                        for (var i in x) {
+                            if (x.hasOwnProperty(i)) {
+                                if (i=="_") continue;
+                                res[i] = worker(x[i]);
+                            }
+                        }
+                    }
                     return res;
                 };
                 return worker(o);
@@ -1027,14 +1025,14 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             renderFormattedMessage: function(object, row, rep) {
                 var lookupArg = function(index) {
-					if (!object.data.args) return;
+                    if (!object.data.args) return;
                     if (object.data.args["py/tuple"]) {
                         return object.data.args["py/tuple"][index];
                     }
                     if (index==0 && !object.data.args.length) {
                         return object.data.args;
                     }
-					return object.data.args[index];
+                    return object.data.args[index];
                 };
                 var dest = getChildByClass(row.childNodes[0], "rec-msg");
                 dest.innerHTML = "";
@@ -1052,17 +1050,17 @@ FBL.ns(function() {
                         r.tag.append({object: module.preprocessObject(arg)}, dest);
                     }
                 }
-				// dump also unreferenced args
-				if (object.data.args && object.data.args.length) {
-					var a = object.data.args;
-					if (object.data.args["py/tuple"]) a = object.data.args["py/tuple"];
-					for (var j=i-1; j<a.length; j++) {
-	                    FirebugReps.Text.tag.append({object: " "}, dest);
-						var arg = lookupArg(j);
+                // dump also unreferenced args
+                if (object.data.args && object.data.args.length) {
+                    var a = object.data.args;
+                    if (object.data.args["py/tuple"]) a = object.data.args["py/tuple"];
+                    for (var j=i-1; j<a.length; j++) {
+                        FirebugReps.Text.tag.append({object: " "}, dest);
+                        var arg = lookupArg(j);
                         var r = Firebug.getRep(arg);
                         r.tag.append({object: module.preprocessObject(arg)}, dest);
-					}
-				}
+                    }
+                }
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             renderPlainMessage: function(object, row, rep) {
