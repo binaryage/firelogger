@@ -1014,7 +1014,8 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             renderFormattedMessage: function(object, row, rep) {
                 var lookupArg = function(index) {
-                    if (object.data.args && object.data.args["py/tuple"]) {
+					if (!object.data.args) return;
+                    if (object.data.args["py/tuple"]) {
                         return object.data.args["py/tuple"][index];
                     }
                     if (index==0 && !object.data.args.length) {
@@ -1038,6 +1039,16 @@ FBL.ns(function() {
                         r.tag.append({object: module.preprocessObject(arg)}, dest);
                     }
                 }
+				// dump also unreferenced args
+				if (object.data.args && object.data.args.length) {
+					var a = object.data.args;
+					if (object.data.args["py/tuple"]) a = object.data.args["py/tuple"];
+					for (var j=i-1; j<a.length; j++) {
+						var arg = lookupArg(j);
+                        var r = Firebug.getRep(arg);
+                        r.tag.append({object: module.preprocessObject(arg)}, dest);
+					}
+				}
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             renderPlainMessage: function(object, row, rep) {
