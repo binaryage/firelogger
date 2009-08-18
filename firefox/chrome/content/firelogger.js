@@ -354,7 +354,9 @@ FBL.ns(function() {
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             checkDependenciesOnOtherPanels: function(context) {
+                dbg(">>>FireLogger.checkDependenciesOnOtherPanels");
                 if ((!Firebug.NetMonitor.isEnabled(context) || !Firebug.Console.isEnabled(context)) && !context.fireLoggerWarningShown) {
+                    dbg("  ... show warning");
                     this.showMessage(context, 'You have to enable the Firebug Console and Net panels for FireLogger to work properly!', "sys-warning");
                     context.fireLoggerWarningShown = true;
                 }
@@ -455,9 +457,16 @@ FBL.ns(function() {
             publishEvent: function(context, event) {
                 if (!context) return;
                 dbg(">>>FireLogger.publishEvent", arguments);
-                if (!this.isEnabled(context)) return;
+                if (!this.isEnabled(context)) {
+                    dbg("   ... context not enabled", arguments);
+                    return;
+                }
                 var panel = context.getPanel(module.panelName);
-                if (panel) panel.publish(event);
+                if (!panel) {
+                    dbg("   ... panel not found", arguments);
+                    return;
+                }
+                panel.publish(event);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             loadExternalEditors: function() {
@@ -1076,7 +1085,7 @@ FBL.ns(function() {
                 setClass(row, "type-"+object.type);
                 setClass(row, "icon-"+object.icon);
                 var res = rep[typeName].append({ object: object }, row);
-                if (module._richFormatting && object.data.template!==null)
+                if (module._richFormatting && object.data.template!==undefined)
                     this.renderFormattedMessage(object, row, rep);
                 else
                     this.renderPlainMessage(object, row, rep);
