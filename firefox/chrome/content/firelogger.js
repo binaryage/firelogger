@@ -1055,7 +1055,7 @@ FBL.ns(function() {
                     var a = object.data.args;
                     if (object.data.args["py/tuple"]) a = object.data.args["py/tuple"];
                     for (var j=i-1; j<a.length; j++) {
-                        FirebugReps.Text.tag.append({object: " "}, dest);
+                        if (j>i-1) FirebugReps.Text.tag.append({object: ", "}, dest);
                         var arg = lookupArg(j);
                         var r = Firebug.getRep(arg);
                         r.tag.append({object: module.preprocessObject(arg)}, dest);
