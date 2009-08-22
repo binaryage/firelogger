@@ -1033,7 +1033,7 @@ FBL.ns(function() {
             renderFormattedMessage: function(object, row, rep) {
                 var lookupArg = function(index) {
                     if (!object.data.args) return;
-                    if (object.data.args["py/tuple"]) {
+                    if (object.data.args["py/tuple"]) { // FirePython hack
                         return object.data.args["py/tuple"][index];
                     }
                     if (index==0 && !object.data.args.length) {
@@ -1044,23 +1044,26 @@ FBL.ns(function() {
                 var dest = getChildByClass(row.childNodes[0], "rec-msg");
                 dest.innerHTML = "";
                 var template = object.data.template;
-                if (typeof template != "string") template = template._; // this is a special case for exceptions
+                if (typeof template != "string") template = template._; // this is a special case for exceptions (FirePython hack)
                 if (!template) template = "";
-                var parts = (template+" ").split(/%[a-zA-Z]{0,1}/);
+                var parts = template.split(/%[a-zA-Z]{0,1}/);
                 if (parts[parts.length-1]=="") parts.pop();
-                for (var i=0; i<parts.length; i++) {
-                    var part = parts[i];
-                    FirebugReps.Text.tag.append({object: part}, dest);
-                    if (i<parts.length-1) {
-                        var arg = lookupArg(i);
-                        var r = Firebug.getRep(arg);
-                        r.tag.append({object: module.preprocessObject(arg)}, dest);
+                var i = 1;
+                if (parts.length>0) {
+                    for (i=0; i<parts.length; i++) {
+                        var part = parts[i];
+                        FirebugReps.Text.tag.append({object: part}, dest);
+                        if (i<parts.length-1) {
+                            var arg = lookupArg(i);
+                            var r = Firebug.getRep(arg);
+                            r.tag.append({object: module.preprocessObject(arg)}, dest);
+                        }
                     }
                 }
                 // dump also unreferenced args
                 if (object.data.args && object.data.args.length) {
                     var a = object.data.args;
-                    if (object.data.args["py/tuple"]) a = object.data.args["py/tuple"];
+                    if (object.data.args["py/tuple"]) a = object.data.args["py/tuple"]; // FirePython hack
                     for (var j=i-1; j<a.length; j++) {
                         if (j>i-1) FirebugReps.Text.tag.append({object: ", "}, dest);
                         var arg = lookupArg(j);
