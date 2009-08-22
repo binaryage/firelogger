@@ -210,12 +210,10 @@ FBL.ns(function() {
             onEnabled: function(context) {
                 dbg(">>>FireLogger.onEnabled", arguments);
                 this.checkDependenciesOnOtherPanels(context);
-                module.start();
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             onDisabled: function(context) {
                 dbg(">>>FireLogger.onDisabled", arguments);
-                module.stop();
                 delete context.fireLoggerWarningShown;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -227,14 +225,16 @@ FBL.ns(function() {
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             start: function() {
+                if (this.running) return;
+                this.running = true;
                 dbg(">>>FireLogger.start");
-                this.cachePrefs();
-                prefService.addObserver(this.getPrefDomain(), this, false);
                 observerService.addObserver(this, "http-on-modify-request", false);
                 Firebug.NetMonitor.addListener(this);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             stop: function() {
+                if (!this.running) return;
+                this.running = false;
                 dbg(">>>FireLogger.stop");
                 observerService.removeObserver(this, "http-on-modify-request");
                 Firebug.NetMonitor.removeListener(this);
@@ -243,12 +243,6 @@ FBL.ns(function() {
             // FB1.4 >=r2050
             onResponse: function(context, file) {
                 dbg(">>>FireLogger.onResponse:"+file.href, context);
-                
-                // HACK: overcome bug in Firebug1.4, first root HTML file can be sent twice!
-                if (!context.flc) context.flc = {};
-                if (context.flc[file.href]) return;
-                context.flc[file.href] = true;
-                
                 this.mixinContext(context); // onResponse may be called before initContext, so we may need to mixin here
                 context.queueFile(file);
             },
@@ -260,7 +254,7 @@ FBL.ns(function() {
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             observe: function(subject, topic, data) {
-                dbg(">>>FireLogger.observe: "+topic);
+                dbg(">>>FireLogger.observe: "+topic, subject);
                 if (topic == "http-on-modify-request") {
                     var httpChannel = subject.QueryInterface(Ci.nsIHttpChannel);
                     // from v0.3 do not alter User-Agent, this guy on twitter had problems: http://twitter.com/lawouach/statuses/1222443299
@@ -288,12 +282,14 @@ FBL.ns(function() {
                 this.description = "Server-side logging tools for web developers.";
                 Firebug.ActivableModule.initialize.apply(this, arguments);
                 this.patchChrome(top.FirebugChrome, FirebugContext);
-                this.start();
+                this.cachePrefs();
+                prefService.addObserver(this.getPrefDomain(), this, false);
+                module.start();
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             shutdown: function() {
                 dbg(">>>FireLogger.shutdown");
-                this.stop();
+                module.stop();
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             initializeUI: function() {
@@ -303,11 +299,12 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             onSuspendFirebug: function(context) {
                 dbg(">>>FireLogger.onSuspendFirebug");
-                this.stop();
+                module.stop();
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             onResumeFirebug: function(context) {
                 dbg(">>>FireLogger.onResumeFirebug");
+                module.start();
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             mixinContext: function(context) {
