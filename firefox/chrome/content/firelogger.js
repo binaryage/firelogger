@@ -568,6 +568,7 @@ FBL.ns(function() {
                 
                 var worker = function(x) {
                     if (typeof x != "object") return x;
+                    if (x===null) return null; // handle special case, because typeof null === "object"
                     var res;
                     if (isArray(x)) {
                         res = [];
