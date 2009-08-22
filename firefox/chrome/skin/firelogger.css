@@ -237,3 +237,35 @@
 .rec-traceback-file:hover {
     color: black;
 }
+
+.firelogger-rec > .rec-request {
+    border-bottom: 2px solid #999;
+    padding-top: 0px;
+    margin-left: 0px;
+    background-position:4px 1px;
+}
+
+.firelogger-rec > .rec-request > .rec-request-url {
+    background-color: #999;
+    color: #fff;
+    font-weight: bold;
+    padding: 2px 10px;
+}
+
+.firelogger-rec.type-request {
+    padding: 0;
+    margin-top:4px;
+    background-color: #fff;
+}
+
+.firelogger-rec > .rec-request > .rec-request-detail {
+    cursor: pointer;
+    font-weight: bold;
+    padding: 2px 10px 2px 0px;
+    color: #fff;
+    background-color: #999;
+}
+
+.firelogger-rec > .rec-request > .rec-request-detail:hover {
+    color: yellow;
+}

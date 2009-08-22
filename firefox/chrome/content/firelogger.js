@@ -97,8 +97,9 @@ FBL.ns(function() {
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             pushRecord: function(url, info) {
+                dbg(">>>FireLoggerContextMixin.pushRecord", [url, info]);
                 this.requestQueue.push([url, info]);
-                if (this.processRequestQueueAutoFlushing) this.processRequestQueue();
+                if (module.currentPanel) this.processRequestQueue(); // flush immediately in case logger panel is visible
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             queueRequest: function(request) {
@@ -153,15 +154,16 @@ FBL.ns(function() {
             processDataPacket: function(url, packet) {
                 dbg(">>>FireLoggerContextMixin.processDataPacket", packet);
                 var logs = [];
+                var i;
                 if (!packet) return logs;
                 if (packet.errors) { // internal errors on logger side
-                    for (var i=0; i<packet.errors.length; i++) {
+                    for (i=0; i<packet.errors.length; i++) {
                         var error = packet.errors[i];
                         module.showMessage(this, error.message, "sys-error", error.exc_info);
                     }
                 }
                 if (packet.logs) {
-                    for (var i=0; i < packet.logs.length; i++) {
+                    for (i=0; i < packet.logs.length; i++) {
                         var log = packet.logs[i];
                         logs.push(log);
                     }
@@ -174,18 +176,18 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             processRequest: function(url, packets) {
                 dbg(">>>FireLoggerContextMixin.processRequest ("+url+")", packets);
+                module.deferRendering(); // prevent flickering
                 var logs = [];
                 for (var i=0; i < packets.length; i++) {
                     var packet = packets[i];
-                    logs = logs.concat(this.processDataPacket(url, packet));
+                    logs = this.processDataPacket(url, packet);
+                    module.showRequest(this, { url: url });
+                    for (var j=0; j<logs.length; j++) {
+                        var log = logs[j];
+                        module.showLog(this, log, "log-"+log.level);
+                    }
                 }
-                logs.sort(function(a,b) {
-                    return b.timestamp<a.timestamp;
-                });
-                for (var i=0; i<logs.length; i++) {
-                    var log = logs[i];
-                    module.showLog(this, log, "log-"+log.level);
-                }
+                module.undeferRendering();
             }
         };
         
@@ -195,6 +197,7 @@ FBL.ns(function() {
         module = Firebug.FireLogger = extend(Firebug.ActivableModule, {
             version: '0.6',
             currentPanel: null,
+            collapsedRequests: {},
 
             /////////////////////////////////////////////////////////////////////////////////////////
             onPanelEnable: function(context, panelName) {
@@ -365,7 +368,6 @@ FBL.ns(function() {
                 if (!module.isEnabled()) return;
                 var isFireLogger = panel && panel.name == this.panelName;
                 if (isFireLogger) {
-                    panel.context.processRequestQueueAutoFlushing = true;
                     panel.context.processRequestQueue();
                     this.checkDependenciesOnOtherPanels(panel.context);
                     this.currentPanel = panel;
@@ -378,7 +380,6 @@ FBL.ns(function() {
                         watchesPanel.select({});
                     }
                 } else {
-                    panel.context.processRequestQueueAutoFlushing = false;
                     this.currentPanel = null;
                 }
             },
@@ -401,6 +402,16 @@ FBL.ns(function() {
                 }
             },
             /////////////////////////////////////////////////////////////////////////////////////////
+            deferRendering: function() {
+                if (!this.currentPanel) return;
+                this.currentPanel.deferRendering();
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            undeferRendering: function() {
+                if (!this.currentPanel) return;
+                this.currentPanel.undeferRendering();
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
             updatePanel: function() {
                 dbg(">>>FireLogger.updatePanel", this.currentPanel);
                 if (!this.currentPanel) return;
@@ -413,6 +424,14 @@ FBL.ns(function() {
                 var type = "simple";
                 if (data.exc_info && this._richFormatting) type = "exception";
                 var event = new FireLoggerEvent(type, data, icon);
+                return this.publishEvent(context, event);
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            showRequest: function(context, data, icon) {
+                var type = "request";
+                var event = new FireLoggerEvent(type, data, icon);
+                event.expanded = !module.collapsedRequests[data.url];
+                event.renderedAsExpanded = true;
                 return this.publishEvent(context, event);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -708,6 +727,12 @@ FBL.ns(function() {
                     DIV({ class: "rec-msg", onclick: "$onProfileNavigate" }, "$object|getMessage")
                 ),
             /////////////////////////////////////////////////////////////////////////////////////////
+            tagRequest:
+                DIV({ class: "rec-head expanded rec-request", onclick: "$onToggleDetails", _repObject: "$object" },
+                    SPAN({ class: "rec-request-url" }, "$object|getUrl"),
+                    SPAN({ class: "rec-request-detail", onclick: "$onRequestDetail" }, "&#x25B6;")
+                ),
+            /////////////////////////////////////////////////////////////////////////////////////////
             getMessage: function(event) {
                 dbg(">>>FireLogger.Record.getMessage", arguments);
                 return event.data.message;
@@ -716,6 +741,11 @@ FBL.ns(function() {
             getIcon: function(event) {
                 dbg(">>>FireLogger.Record.getIcon", arguments);
                 return event.icon;
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            getUrl: function(event) {
+                dbg(">>>FireLogger.Record.getUrl", arguments);
+                return event.data.url;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             getDate: function(event) {
@@ -751,9 +781,21 @@ FBL.ns(function() {
                 e.stopPropagation();
             },
             /////////////////////////////////////////////////////////////////////////////////////////
+            onRequestDetail: function(e) {
+                dbg(">>>FireLogger.Record.onRequestDetail", arguments);
+                if (!isLeftClick(e)) return;
+                e.stopPropagation();
+                var event = this.lookupEventObject(e.currentTarget);
+                Firebug.chrome.selectPanel("net");
+                var netPanel = FirebugContext.getPanel('net');
+                if (!netPanel) return;
+                netPanel.updateSelection({request: {name:"?"}, href: event.data.url});
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
             onProfileNavigate: function(e) {
                 dbg(">>>FireLogger.Record.onProfileNavigate", arguments);
                 if (!isLeftClick(e)) return;
+                e.stopPropagation();
                 var event = this.lookupEventObject(e.currentTarget);
                 var path = module.writeTemporaryFile("graph.dot", event.data.profile_data);
                 var editor = module.findGraphviz();
@@ -771,7 +813,43 @@ FBL.ns(function() {
                         dbg(">>>Launch exception", e); 
                     }
                 }
-                e.stopPropagation();
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            turnSiblingRowsVisibility: function(startElement, stopper, visible) {
+                var el = startElement;
+                while (el = el.nextSibling) {
+                    if (hasClass(el, stopper)) break;
+                    el.style.display = visible?'block':'none';
+                }
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            doToggle: function(target) {
+                dbg(">>>FireLogger.Record.doToggle", arguments);
+                var event = this.lookupEventObject(target);
+                var firelogger = getAncestorByClass(target, "firelogger-rec");
+                var row = getChildByClass(firelogger, "rec-head")
+                var details = getChildByClass(row, "rec-details");
+
+                var isRequest = hasClass(row, "rec-request");
+
+                toggleClass(row, "expanded");
+                toggleClass(row, "closed");
+
+                if (hasClass(row, "expanded")) {
+                    event.expanded = true;
+                    if (isRequest) {
+                        module.collapsedRequests[event.data.url] = false;
+                        this.turnSiblingRowsVisibility(firelogger, 'request-type', true);
+                    } else {
+                        this.showEventDetails(event, details);
+                    }
+                } else {
+                    event.expanded = false;
+                    if (isRequest) {
+                        module.collapsedRequests[event.data.url] = true;
+                        this.turnSiblingRowsVisibility(firelogger, 'request-type', false);
+                    }
+                }
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             onToggleDetails: function(e) {
@@ -780,20 +858,8 @@ FBL.ns(function() {
                 // do not toggle if clicked on locals property
                 var clickedOnObjectLink = getAncestorByClass(e.target, "objectLink");
                 if (clickedOnObjectLink) return;
-                
-                var event = this.lookupEventObject(e.currentTarget);
-                var firelogger = getAncestorByClass(e.currentTarget, "firelogger-rec");
-                var row = getChildByClass(firelogger, "rec-head")
-                var details = getChildByClass(row, "rec-details");
 
-                toggleClass(row, "expanded");
-                toggleClass(row, "closed");
-
-                event.expanded = false;
-                if (hasClass(row, "expanded")) {
-                    event.expanded = true;
-                    this.showEventDetails(event, details);
-                }
+                this.doToggle(e.currentTarget);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             renderTraceback: function(event) {
@@ -903,6 +969,9 @@ FBL.ns(function() {
             searchable: true,
             editable: false,
             wasScrolledToBottom: true,
+            renderDeferredCounter: 0,
+            renderQueue: [],
+
             /////////////////////////////////////////////////////////////////////////////////////////
             initialize: function() {
                 dbg(">>>FireLoggerPanel.initialize");
@@ -910,6 +979,18 @@ FBL.ns(function() {
                 this.panelSplitter = $("fbPanelSplitter");
                 this.sidePanelDeck = $("fbSidePanelDeck");
                 this.applyCSS();
+                this.clear();
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            deferRendering: function() {
+                this.renderDeferredCounter++;
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            undeferRendering: function() {
+                this.renderDeferredCounter--;
+                if (!this.renderDeferredCounter) {
+                    this.render();
+                }
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             enablePanel: function(module) {
@@ -940,10 +1021,14 @@ FBL.ns(function() {
             publish: function(event) {
                 dbg(">>>FireLoggerPanel.publish", event);
                 event.root = this.append(event, "rec", null, null);
+                if (!this.renderDeferredCounter) {
+                    this.render();
+                }
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             clear: function() {
                 dbg(">>>FireLoggerPanel.clear");
+                this.renderQueue = [];
                 if (this.panelNode) clearNode(this.panelNode);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -1021,13 +1106,21 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             append: function(objects, className, rep) {
                 dbg(">>>FireLoggerPanel.append", arguments);
-                var container = this.getTopContainer();
-                var scrolledToBottom = isScrolledToBottom(this.panelNode);
                 var row = this.createRow("firelogger", className);
                 this.appendObject.apply(this, [objects, row, rep]);
-                container.appendChild(row);
-                if (scrolledToBottom) scrollToBottom(this.panelNode);
+                this.renderQueue.push(row);
                 return row;
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            render: function(objects, className, rep) {
+                var scrolledToBottom = isScrolledToBottom(this.panelNode);
+                var container = this.getTopContainer();
+                for (var i=0; i < this.renderQueue.length; i++) {
+                    var row = this.renderQueue[i];
+                    container.appendChild(row);
+                }
+                this.renderQueue = [];
+                if (scrolledToBottom) scrollToBottom(this.panelNode);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             renderFormattedMessage: function(object, row, rep) {
@@ -1081,17 +1174,22 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             appendObject: function(object, row, rep) {
                 dbg(">>>FireLoggerPanel.appendObject", arguments);
-                var rep = rep ? rep: Firebug.getRep(object);
+                var rep = rep?rep:Firebug.getRep(object);
                 var typeName = "tag"+capitalize(object.type);
                 setClass(row, "type-"+object.type);
                 setClass(row, "icon-"+object.icon);
                 var res = rep[typeName].append({ object: object }, row);
-                if (module._richFormatting && object.data.template!==undefined)
-                    this.renderFormattedMessage(object, row, rep);
-                else
-                    this.renderPlainMessage(object, row, rep);
-                if (object.expanded) {
-                    rep.onToggleDetails({ currentTarget: row.childNodes[0].childNodes[0] });
+                if (object.data.message!==undefined) {
+                    if (module._richFormatting && object.data.template!==undefined)
+                        this.renderFormattedMessage(object, row, rep);
+                    else
+                        this.renderPlainMessage(object, row, rep);
+                }
+                if ((object.expanded && !object.renderedAsExpanded) ||
+                    (!object.expanded && object.renderedAsExpanded)) {
+                    setTimeout(function() {
+                        rep.doToggle(row.childNodes[0].childNodes[0]);
+                    }, 0); // HACK: want to be called after all rows are rendered
                 }
                 return res;
             },
@@ -1158,7 +1256,7 @@ FBL.ns(function() {
         });
     
         ////////////////////////////////////////////////////////////////////////
-        // support Logger tuples
+        // support Logger tuples (FirePython specific)
         //
         module.LoggerTuple = domplate(Firebug.Rep, {
             className: "array",
