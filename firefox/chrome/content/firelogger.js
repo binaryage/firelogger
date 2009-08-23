@@ -65,9 +65,9 @@ FBL.ns(function() {
         };
 
         function colorForName(name) {
-            var niceColors = ["red", "blue", "magenta", "brown", "black", 
+            var niceColors = ["blue", "magenta", "brown", "black", 
                               "darkgreen", "blueviolet", "cadetblue", "crimson", "darkgoldenrod",
-                              "darkgrey", "darkslateblue", "firebrick", "midnightblue", "orangered", "navy"];
+                              "darkslateblue", "firebrick", "midnightblue", "orangered", "navy"];
             var code = 0;
             for (var i=0; i<name.length; i++) {
                 code += name.charCodeAt(i);
