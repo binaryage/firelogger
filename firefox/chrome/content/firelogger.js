@@ -334,6 +334,26 @@ FBL.ns(function() {
                             var panel = FirebugContext.getPanel(module.panelName);
                             if (panel) {
                                 panel.select(object, forceUpdate);
+                                // usability: expand root item if there is only one root item
+                                var watchesPanel = FirebugContext.getPanel("fireloggerwatches");
+                                if (watchesPanel) {
+                                    try {
+                                        var props = [];
+                                        for (var prop in watchesPanel.toggles) {
+                                            if (watchesPanel.toggles.hasOwnProperty(prop)) props.push(prop);
+                                        }
+                                        var counter = 0;
+                                        for (prop in object) {
+                                            if (object.hasOwnProperty(prop)) counter++;
+                                        }
+                                        if (props.length==0 && counter==1) {
+                                            for (prop in object) {
+                                                if (object.hasOwnProperty(prop)) watchesPanel.toggles[prop] = {};
+                                            }
+                                            watchesPanel.rebuild(true);
+                                        }
+                                    } catch(ex) {}
+                                }
                                 return;
                             }
                         }
