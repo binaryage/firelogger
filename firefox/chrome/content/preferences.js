@@ -60,7 +60,7 @@ var rewritesPane = {
 
         this._tree = this.getRewritesListNode();
         this._treeView = {
-            data: rewriter.loadItems(),
+            data: Firebug.FireLoggerRewriter.loadItems(),
             selection: null,
 
             get rowCount() { return this.data.length; },
@@ -113,7 +113,7 @@ var rewritesPane = {
         if (selection.count<1) return;
         if (selection.currentIndex==0) return;
         var item = this._treeView.data[selection.currentIndex];
-        rewriter.moveUpItem(item);
+        Firebug.FireLoggerRewriter.moveUpItem(item);
         this._treeView.data[selection.currentIndex] = this._treeView.data[selection.currentIndex-1];
         this._treeView.data[selection.currentIndex-1] = item;
         this._tree.view.selection.select(selection.currentIndex-1);
@@ -125,7 +125,7 @@ var rewritesPane = {
         if (selection.count<1) return;
         if (selection.currentIndex==this._treeView.data.length-1) return;
         var item = this._treeView.data[selection.currentIndex];
-        rewriter.moveDownItem(item);
+        Firebug.FireLoggerRewriter.moveDownItem(item);
         this._treeView.data[selection.currentIndex] = this._treeView.data[selection.currentIndex+1];
         this._treeView.data[selection.currentIndex+1] = item;
         this._tree.view.selection.select(selection.currentIndex+1);
@@ -137,7 +137,7 @@ var rewritesPane = {
         var result = {};
         openDialog("chrome://firelogger/content/rewrite-rule.xul",  "_blank", "modal,centerscreen", item, result);
         if (!result.saveChanges) return
-        rewriter.addItem(item);
+        Firebug.FireLoggerRewriter.addItem(item);
         this._treeView.data.push(item);
         this.refresh();
     },
@@ -146,7 +146,7 @@ var rewritesPane = {
         var selection = this._tree.view.selection;
         if (selection.count<1) return;
         var item = this._treeView.data[selection.currentIndex];
-        rewriter.removeItem(item);
+        Firebug.FireLoggerRewriter.removeItem(item);
         this._treeView.data.splice(selection.currentIndex, 1);
         this.refresh();
     },
@@ -158,14 +158,14 @@ var rewritesPane = {
         var result = {};
         openDialog("chrome://firelogger/content/rewrite-rule.xul",  "_blank", "modal,centerscreen", item, result);
         if (result.saveChanges) {
-            rewriter.saveItem(item);
+            Firebug.FireLoggerRewriter.saveItem(item);
         }
         this.refresh();
     },
     /////////////////////////////////////////////////////////////////////////////////////////
     testRules: function() {
         var question = document.getElementById("firelogger-preferences-rewrites-tester-input").value;
-        var res = rewriter.rewritePath(question, true);
+        var res = Firebug.FireLoggerRewriter.rewritePath(question, true);
         document.getElementById("firelogger-preferences-rewrites-tester-answer").value = res[0];
         document.getElementById("firelogger-preferences-rewrites-tester-reason").value = res[1];
     }

@@ -1,10 +1,10 @@
-var rewriter = (function() {
+FBL.ns(function() {
     with(FBL) {
         const rewritesColumns = ["original", "flags", "replacement"];
         const rewritesPrefName = "extensions.firebug.firelogger.rewrites";
         const prefs = CCSV("@mozilla.org/preferences-service;1", "nsIPrefBranch2");
 
-        return {
+        Firebug.FireLoggerRewriter = {
             /////////////////////////////////////////////////////////////////////////////////////////
             rewritePath: function(path, details) {
                 var rules = this.loadItems();
@@ -112,4 +112,4 @@ var rewriter = (function() {
             }
         };
     }
-})();
+});

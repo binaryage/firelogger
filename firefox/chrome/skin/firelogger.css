@@ -243,6 +243,7 @@
     padding-top: 0px;
     margin-left: 0px;
     background-position:4px 1px;
+    white-space: nowrap;
 }
 
 .firelogger-rec > .rec-request > .rec-request-url {

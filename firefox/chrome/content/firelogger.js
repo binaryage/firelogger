@@ -1,5 +1,3 @@
-// This source contains copy&pasted various bits from Firebug sources.
-// Some code comes from FirePHP project (http://www.firephp.org)
 FBL.ns(function() {
     with(FBL) {
         
@@ -553,7 +551,7 @@ FBL.ns(function() {
             openSourceFile: function(path, line) {
                 dbg(">>>FireLogger.openSourceFile", [path, line]);
                 if (!path) return;
-                path = rewriter.rewritePath(path);
+                path = Firebug.FireLoggerRewriter.rewritePath(path);
                 dbg(">>>FireLogger.rewritePath", path);
                 var editor = this.findPreferredEditor();
                 if (!editor) { 
