@@ -5,7 +5,7 @@
     <stringbundle id="strings_firelogger" src="chrome://firelogger/locale/firelogger.properties"/>
   </stringbundleset>
   <script type="application/x-javascript" src="chrome://firelogger/content/lib/utf8.js"/>
-  <script type="application/x-javascript" src="chrome://firelogger/content/lib/json.js"/>
+  <script type="application/x-javascript" src="chrome://firelogger/content/lib/json2.js"/>
   <script type="application/x-javascript" src="chrome://firelogger/content/lib/base64.js"/>
   <script type="application/x-javascript" src="chrome://firelogger/content/lib/md5.js"/>
   <script type="application/x-javascript" src="chrome://firelogger/content/rewriter.js"/>

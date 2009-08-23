@@ -8,10 +8,12 @@
 <prefwindow xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
   id="firelogger-preferences" title="FireLogger Preferences" type="prefwindow"
   onload="sizeToContent()" windowtype="FireLogger:Preferences" ondialoghelp="openPrefsHelp()">
-  <script type="application/x-javascript" src="chrome://firelogger/content/preferences.js"/>
+
   <script type="application/x-javascript" src="chrome://firelogger/content/rewriter.js"/>
+  <script type="application/x-javascript" src="chrome://firelogger/content/preferences.js"/>
+  
   <prefpane id="firelogger-preferences-main" label="Main" 
-    onpaneload="mainPane.init()" 
+    onpaneload="FireLogger.MainPrefPane.init()" 
     image="chrome://firelogger/skin/preferences-main.png"
     helpTopic="preferences#main">
     <preferences>
@@ -25,15 +27,15 @@
       <caption label="Preferred Editor"/>
       <hbox align="center">
         <label value="Editor name" control="firelogger-preferences-main-editor"/>
-        <textbox id="firelogger-preferences-main-editor" class="padded" flex="1" preference="preference-editor" oninput="mainPane.update()"/>
+        <textbox id="firelogger-preferences-main-editor" class="padded" flex="1" preference="preference-editor" oninput="FireLogger.MainPrefPane.update()"/>
       </hbox>
     </groupbox>
     <groupbox id="firelogger-preferences-main-password-group">
       <caption label="Password Protection"/>
       <hbox align="center">
         <label value="Password" control="firelogger-preferences-main-password"/>
-        <textbox id="firelogger-preferences-main-password" class="padded" flex="1" type="password" preference="preference-password" oninput="mainPane.update()"/>
-        <button id="firelogger-preferences-main-disable-password-protection" label="Disable Password Protection" oncommand="mainPane.disablePasswordProtection()"/>
+        <textbox id="firelogger-preferences-main-password" class="padded" flex="1" type="password" preference="preference-password" oninput="FireLogger.MainPrefPane.update()"/>
+        <button id="firelogger-preferences-main-disable-password-protection" label="Disable Password Protection" oncommand="FireLogger.MainPrefPane.disablePasswordProtection()"/>
       </hbox>
     </groupbox>
     <groupbox id="firelogger-preferences-main-settings-group">
@@ -53,8 +55,8 @@
     </groupbox>
   </prefpane>
   <prefpane id="firelogger-preferences-rewrites" label="Rewrites" 
-    onpaneload="rewritesPane.init()" 
-    onselect="rewritesPane.onSelectionChanged()"
+    onpaneload="FireLogger.RewritesPrefPane.init()" 
+    onselect="FireLogger.RewritesPrefPane.onSelectionChanged()"
     image="chrome://firelogger/skin/preferences-rewrites.png"
     helpTopic="preferences#rewrites">
     <preferences>
@@ -70,23 +72,23 @@
             <splitter class="tree-splitter"/>
             <treecol id="firelogger-preferences-rewrites-list-replacement" flex="1" persist="width" label="Replacement Path"/>
           </treecols>
-          <treechildren ondblclick="rewritesPane.changeRewriteRule()"/>
+          <treechildren ondblclick="FireLogger.RewritesPrefPane.changeRewriteRule()"/>
         </tree>
         <separator class="thin"/>
         <hbox>
-          <button id="firelogger-preferences-rewrites-add-rule" label="Add" oncommand="rewritesPane.addRewriteRule()"/>
-          <button id="firelogger-preferences-rewrites-remove-rule" label="Remove" oncommand="rewritesPane.removeRewriteRule()"/>
-          <button id="firelogger-preferences-rewrites-change-rule" label="Change" oncommand="rewritesPane.changeRewriteRule()"/>
+          <button id="firelogger-preferences-rewrites-add-rule" label="Add" oncommand="FireLogger.RewritesPrefPane.addRewriteRule()"/>
+          <button id="firelogger-preferences-rewrites-remove-rule" label="Remove" oncommand="FireLogger.RewritesPrefPane.removeRewriteRule()"/>
+          <button id="firelogger-preferences-rewrites-change-rule" label="Change" oncommand="FireLogger.RewritesPrefPane.changeRewriteRule()"/>
           <spacer flex="1"/>
-          <button id="firelogger-preferences-rewrites-move-up" label="Move Up" oncommand="rewritesPane.moveUpRewriteRule()"/>
-          <button id="firelogger-preferences-rewrites-move-down" label="Move Down" oncommand="rewritesPane.moveDownRewriteRule()"/>
+          <button id="firelogger-preferences-rewrites-move-up" label="Move Up" oncommand="FireLogger.RewritesPrefPane.moveUpRewriteRule()"/>
+          <button id="firelogger-preferences-rewrites-move-down" label="Move Down" oncommand="FireLogger.RewritesPrefPane.moveDownRewriteRule()"/>
         </hbox>
       </groupbox>
       <groupbox id="firelogger-preferences-rewrites-tester-group">
         <caption label="Path Rewrite Tester"/>
         <hbox flex="1" class="firelogger-preferences-rewrites-test-question">
           <textbox id="firelogger-preferences-rewrites-tester-input" class="padded" flex="1"/>
-          <button id="firelogger-preferences-rewrites-tester-run" label="Test!" oncommand="rewritesPane.testRules()"/>
+          <button id="firelogger-preferences-rewrites-tester-run" label="Test!" oncommand="FireLogger.RewritesPrefPane.testRules()"/>
         </hbox>
         <label id="firelogger-preferences-rewrites-tester-answer" flex="1">result path ...</label>
         <label id="firelogger-preferences-rewrites-tester-reason" flex="1">reasoning ...</label>

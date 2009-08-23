@@ -551,7 +551,7 @@ FBL.ns(function() {
             openSourceFile: function(path, line) {
                 dbg(">>>FireLogger.openSourceFile", [path, line]);
                 if (!path) return;
-                path = Firebug.FireLoggerRewriter.rewritePath(path);
+                path = FireLogger.Rewriter.rewritePath(path);
                 dbg(">>>FireLogger.rewritePath", path);
                 var editor = this.findPreferredEditor();
                 if (!editor) { 
