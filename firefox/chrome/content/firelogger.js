@@ -174,8 +174,7 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             processRequest: function(url, packets) {
                 dbg(">>>FireLoggerContextMixin.processRequest ("+url+")", packets);
-                module.deferRendering(); // prevent flickering
-                module.showRequest(this, { url: url });
+                // process data packets for given url and sort log messages
                 var logs = [];
                 for (var i=0; i < packets.length; i++) {
                     var packet = packets[i];
@@ -188,6 +187,12 @@ FBL.ns(function() {
                     }
                     return b.timestamp<a.timestamp;
                 });
+                // bail out in case of no logs
+                if (!logs.length) return;
+
+                // render logs array
+                module.deferRendering(); // prevent flickering
+                module.showRequest(this, { url: url });
                 for (var i=0; i<logs.length; i++) {
                     var log = logs[i];
                     module.showLog(this, log, "log-"+log.level);
