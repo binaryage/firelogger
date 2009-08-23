@@ -412,6 +412,12 @@ FBL.ns(function() {
                 this.currentPanel.undeferRendering();
             },
             /////////////////////////////////////////////////////////////////////////////////////////
+            togglePersist: function(context) {
+                var panel = context.getPanel(this.panelName);
+                panel.persistContent = panel.persistContent? false : true;
+                Firebug.chrome.setGlobalAttribute("cmd_FireLoggerTogglePersist", "checked", panel.persistContent);
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
             updatePanel: function() {
                 dbg(">>>FireLogger.updatePanel", this.currentPanel);
                 if (!this.currentPanel) return;
@@ -730,7 +736,7 @@ FBL.ns(function() {
             tagRequest:
                 DIV({ class: "rec-head expanded rec-request", onclick: "$onToggleDetails", _repObject: "$object" },
                     SPAN({ class: "rec-request-url" }, "$object|getUrl"),
-                    SPAN({ class: "rec-request-detail", onclick: "$onRequestDetail" }, "&#x25B6;")
+                    SPAN({ class: "rec-request-detail", onclick: "$onRequestDetail" }, "&#x25B6;") // BLACK RIGHT-POINTING TRIANGLE
                 ),
             /////////////////////////////////////////////////////////////////////////////////////////
             getMessage: function(event) {
@@ -839,7 +845,7 @@ FBL.ns(function() {
                     event.expanded = true;
                     if (isRequest) {
                         module.collapsedRequests[event.data.url] = false;
-                        this.turnSiblingRowsVisibility(firelogger, 'request-type', true);
+                        this.turnSiblingRowsVisibility(firelogger, 'type-request', true);
                     } else {
                         this.showEventDetails(event, details);
                     }
@@ -847,7 +853,7 @@ FBL.ns(function() {
                     event.expanded = false;
                     if (isRequest) {
                         module.collapsedRequests[event.data.url] = true;
-                        this.turnSiblingRowsVisibility(firelogger, 'request-type', false);
+                        this.turnSiblingRowsVisibility(firelogger, 'type-request', false);
                     }
                 }
             },
@@ -979,7 +985,7 @@ FBL.ns(function() {
                 this.panelSplitter = $("fbPanelSplitter");
                 this.sidePanelDeck = $("fbSidePanelDeck");
                 this.applyCSS();
-                this.clear();
+                this.renderQueue = [];
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             deferRendering: function() {
@@ -996,7 +1002,6 @@ FBL.ns(function() {
             enablePanel: function(module) {
                 dbg(">>FireLoggerPanel.enablePanel; " + this.context.getName());
                 Firebug.ActivablePanel.enablePanel.apply(this, arguments);
-                this.clear();
                 if (this.wasScrolledToBottom)
                     scrollToBottom(this.panelNode);
                 this.panelSplitter.collapsed = false;
@@ -1037,6 +1042,7 @@ FBL.ns(function() {
                 var enabled = module.isAlwaysEnabled();
                 this.panelSplitter.collapsed = !enabled;
                 this.sidePanelDeck.collapsed = !enabled;
+                Firebug.chrome.setGlobalAttribute("cmd_FireLoggerTogglePersist", "checked", this.persistContent);
                 if (enabled) {
                      module.disabledPanelPage.hide(this);
                      this.showToolbarButtons("fbFireLoggerFilters", true);

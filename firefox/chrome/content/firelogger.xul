@@ -17,11 +17,13 @@
     <command id="cmd_FireLoggerFilterWarning" oncommand="Firebug.FireLogger.onFilterLogs('warning')"/>
     <command id="cmd_FireLoggerFilterError" oncommand="Firebug.FireLogger.onFilterLogs('error')"/>
     <command id="cmd_FireLoggerFilterCritical" oncommand="Firebug.FireLogger.onFilterLogs('critical')"/>
+    <command id="cmd_FireLoggerTogglePersist" oncommand="Firebug.FireLogger.togglePersist(FirebugContext)"/>
   </commandset>
   <toolbar id="fbToolbar" align="center">
     <hbox id="fbToolbarInner" insertbefore="fbDetachButton" flex="1" align="center">
       <hbox id="fbFireLoggerFilters" insertafter="fbNetButtons" collapsed="true">
           <toolbarbutton label="Clear" class="toolbar-text-button" command="cmd_FireLoggerClear" tooltiptext="Click to clear FireLogger console"/>
+          <toolbarbutton label="Persist" class="toolbar-text-button" id="fbFireLoggerPersist" type="checkbox" tooltiptext="Do Not Clear On Reload" command="cmd_FireLoggerTogglePersist"/>
           <toolbarbutton id="fbFireLoggerFilterDebugButton" command="cmd_FireLoggerFilterDebug" checked="true" type="checkbox" tooltiptext="Filter DEBUG logs" class="toolbar-image-button"/>
           <toolbarbutton id="fbFireLoggerFilterInfoButton" command="cmd_FireLoggerFilterInfo" checked="true" type="checkbox" tooltiptext="Filter INFO logs" class="toolbar-image-button"/>
           <toolbarbutton id="fbFireLoggerFilterWarningButton" command="cmd_FireLoggerFilterWarning" checked="true" type="checkbox" tooltiptext="Filter WARNING logs" class="toolbar-image-button"/>
