@@ -474,7 +474,7 @@ FBL.ns(function() {
             showProfile: function(context, url, profile_info, profile_data) {
                 var type = "profile";
                 var event = new FireLoggerEvent(type, {
-                    message: (profile_info || "Request Profile available as Graphviz") + " [" + url + "]",
+                    message: (profile_info || "Request Profile available as Graphviz"),
                     time: this.getCurrentTime(),
                     profile_data: profile_data
                 }, "sys-time");
