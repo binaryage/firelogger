@@ -791,7 +791,8 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             getLoggerStyle: function(event) {
                 dbg(">>>FireLogger.Record.getLoggerStyle", arguments);
-                var color = colorForName(event.data.name || "?");
+                if (event.data.style) return event.data.style; // style supported by PHP backend
+                var color = colorForName(event.data.name || "?"); // come up with some decent style if style not provided
                 return "background-color:"+color;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -1188,6 +1189,7 @@ FBL.ns(function() {
                 }
                 // dump also unreferenced args
                 if (object.data.args && object.data.args.length) {
+                    if (parts.length>0) FirebugReps.Text.tag.append({object: " "}, dest);
                     var a = object.data.args;
                     if (object.data.args["py/tuple"]) a = object.data.args["py/tuple"]; // FirePython hack
                     for (var j=i-1; j<a.length; j++) {
