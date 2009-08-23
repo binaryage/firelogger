@@ -175,15 +175,18 @@ FBL.ns(function() {
             processRequest: function(url, packets) {
                 dbg(">>>FireLoggerContextMixin.processRequest ("+url+")", packets);
                 module.deferRendering(); // prevent flickering
+                module.showRequest(this, { url: url });
                 var logs = [];
                 for (var i=0; i < packets.length; i++) {
                     var packet = packets[i];
-                    logs = this.processDataPacket(url, packet);
-                    module.showRequest(this, { url: url });
-                    for (var j=0; j<logs.length; j++) {
-                        var log = logs[j];
-                        module.showLog(this, log, "log-"+log.level);
-                    }
+                    logs = logs.concat(this.processDataPacket(url, packet));
+                }
+                logs.sort(function(a,b) {
+                    return b.timestamp<a.timestamp;
+                });
+                for (var i=0; i<logs.length; i++) {
+                    var log = logs[i];
+                    module.showLog(this, log, "log-"+log.level);
                 }
                 module.undeferRendering();
             }
