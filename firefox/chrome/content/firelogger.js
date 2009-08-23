@@ -181,7 +181,11 @@ FBL.ns(function() {
                     var packet = packets[i];
                     logs = logs.concat(this.processDataPacket(url, packet));
                 }
-                logs.sort(function(a,b) {
+                logs.sort(function(a, b) {
+                    if (b.timestamp==a.timestamp) { //stable sorting when timestamp has insufficient resolution
+                        if (b.order && a.order) // supported by PHP
+                            return b.order < a.order;
+                    }
                     return b.timestamp<a.timestamp;
                 });
                 for (var i=0; i<logs.length; i++) {
