@@ -889,37 +889,39 @@ FBL.ns(function() {
             renderTraceback: function(event) {
                 dbg(">>>FireLogger.Record.renderTraceback", arguments);
                 if (!event.data.exc_info) return "no exception info available";
-                var exc_info = event.data.exc_info['py/tuple'];
+                var exc_info = event.data.exc_info;
+                if (exc_info['py/tuple']) exc_info = exc_info['py/tuple']; // FirePython specific hack
                 if (!exc_info) return "no exception info available";
                 var items = exc_info[2];
                 if (!items) return "no traceback available";
 
                 var formatFile = function(item) {
-                    var path = item[0];
+                    var path = item[0]||"";
                     var line = item[1];
                     var parts = path.split('/');
                     var res = parts[parts.length-1];
-                    if (res=="") res = "?";
-                    if (line!=undefined) res += ":"+line;
+                    if (!res) res = "?";
+                    if (line!==undefined && line!==null) res += ":"+line;
                     return res;
                 };
                 var formatFunction = function(item) {
-                    return item[2];
+                    return item[2]||"";
                 };
                 var formatLocation = function(item) {
-                    return item[3];
+                    return item[3]||"";
                 };
 
                 var s = ['<table class="rec-traceback-table">'];
                 for (var i=0; i<items.length; i++){
-                    var item = items[i]['py/tuple'];
+                    var item = items[i];
+                    if (item['py/tuple']) item = item['py/tuple']; // FirePython specific hack
                     var extra = "";
                     if (i == items.length-1) extra = " current";
                     s.push('<tr class="rec-traceback-row row-'+i+''+extra+'">');
-                    var path = item[0];
-                    var line = item[1];
+                    var path = item[0]||"";
+                    var line = item[1]||"";
                     s.push('<td class="rec-traceback-icon"></td>')
-                    s.push('<td class="rec-traceback-file" onclick=\'event.stopPropagation();top.module.openSourceFile("'+escapeJS(path).replace('\\', '\\\\', 'g')+'", '+line+');\'>');
+                    s.push('<td class="rec-traceback-file" onclick=\'event.stopPropagation();top.Firebug.FireLogger.openSourceFile("'+escapeJS(path).replace('\\', '\\\\', 'g')+'", '+line+');\'>');
                     s.push(formatFile(item));
                     s.push('</td>');
                     s.push('<td class="rec-traceback-function">');
