@@ -1179,7 +1179,6 @@ FBL.ns(function() {
                 if (typeof template != "string") template = template._; // this is a special case for exceptions (FirePython hack)
                 if (!template) template = "";
                 var parts = template.split(/%[a-zA-Z]{0,1}/);
-                if (parts[parts.length-1]=="") parts.pop();
                 var i = 1;
                 if (parts.length>0) {
                     for (i=0; i<parts.length; i++) {
