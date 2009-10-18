@@ -169,6 +169,24 @@ FBL.ns(function() {
                 if (packet.profile) {
                     module.showProfile(this, url, packet.profile.info, packet.profile.dot);
                 }
+		var extension_data = packet.extension_data;
+		if (extension_data) {
+		    var appstats = extension_data.appengine_appstats;
+		    if (appstats) {
+			var traces = appstats.traces;
+			for (i=0; i < traces.length; i++) {
+			    var trace = traces[i];
+			    module.showMessage(this, "@" + trace.start + ": call=" + trace.call +
+					       " real=" + trace.duration + " api=" + trace.api);
+			    module.showMessage(this, " request=" + trace.request);
+			    module.showMessage(this, " response=" + trace.response);
+			}
+			module.showMessage(this, "*start=" + appstats.start +
+					   " duration=" + appstats.duration +
+					   " cpu=" + appstats.cpu +
+					   " overhead=" + appstats.overhead);
+		    }
+		}
                 return logs;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
