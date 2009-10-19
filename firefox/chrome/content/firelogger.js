@@ -53,6 +53,7 @@ FBL.ns(function() {
         }
     
         function capitalize(s) {
+            if (!s) return '';
             return s.charAt(0).toUpperCase() + s.substring(1).toLowerCase();
         }
         
@@ -152,12 +153,13 @@ FBL.ns(function() {
             processDataPacket: function(url, packet) {
                 dbg(">>>FireLoggerContextMixin.processDataPacket", packet);
                 var logs = [];
+                var events = [];
                 var i;
-                if (!packet) return logs;
+                if (!packet) return [events, logs];
                 if (packet.errors) { // internal errors on logger side
                     for (i=0; i<packet.errors.length; i++) {
                         var error = packet.errors[i];
-                        module.showMessage(this, error.message, "sys-error", error.exc_info);
+                        events.push(module.prepareMessage(this, error.message, "sys-error", error.exc_info));
                     }
                 }
                 if (packet.logs) {
@@ -167,23 +169,28 @@ FBL.ns(function() {
                     }
                 }
                 if (packet.profile) {
-                    module.showProfile(this, url, packet.profile.info, packet.profile.dot);
+                    events.push(module.prepareProfile(this, url, packet.profile.info, packet.profile.dot));
                 }
                 var extension_data = packet.extension_data;
                 if (extension_data) {
                     var appstats = extension_data.appengine_appstats;
-                    module.showMessageWithData(this, "appstats ...", appstats);
+                    events.push(module.prepareMessageWithData(this, "appstats ...", appstats));
                 }
-                return logs;
+                return [events, logs];
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             processRequest: function(url, packets) {
                 dbg(">>>FireLoggerContextMixin.processRequest ("+url+")", packets);
                 // process data packets for given url and sort log messages
                 var logs = [];
+                var events = [];
                 for (var i=0; i < packets.length; i++) {
                     var packet = packets[i];
-                    logs = logs.concat(this.processDataPacket(url, packet));
+                    var items = this.processDataPacket(url, packet);
+                    var newEvents = items[0];
+                    var newLogs = items[1];
+                    events = events.concat(newEvents);
+                    logs = logs.concat(newLogs);
                 }
                 logs.sort(function(a, b) {
                     if (b.timestamp==a.timestamp) { //stable sorting when timestamp has insufficient resolution
@@ -192,13 +199,18 @@ FBL.ns(function() {
                     }
                     return b.timestamp<a.timestamp;
                 });
-                // bail out in case of no logs
-                if (!logs.length) return;
+                // bail out in case of no logs and no events
+                if (!logs.length && !events.length) return;
 
-                // render logs array
+                // render events and logs
                 module.deferRendering(); // prevent flickering
                 module.showRequest(this, { url: url });
-                for (var i=0; i<logs.length; i++) {
+                var i;
+                for (i=0; i<events.length; i++) {
+                    var event = events[i];
+                    module.publishEvent(this, event);
+                }
+                for (i=0; i<logs.length; i++) {
                     var log = logs[i];
                     module.showLog(this, log, "log-"+log.level);
                 }
@@ -462,21 +474,35 @@ FBL.ns(function() {
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             showLog: function(context, data, icon) {
+                var event = this.prepareLog.apply(this, arguments);
+                this.publishEvent(context, event);
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            prepareLog: function(context, data, icon) {
                 var type = "simple";
                 if (data.exc_info && this._richFormatting) type = "exception";
-                var event = new FireLoggerEvent(type, data, icon);
-                return this.publishEvent(context, event);
+                return new FireLoggerEvent(type, data, icon);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             showRequest: function(context, data, icon) {
+                var event = this.prepareRequest.apply(this, arguments);
+                this.publishEvent(context, event);
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            prepareRequest: function(context, data, icon) {
                 var type = "request";
                 var event = new FireLoggerEvent(type, data, icon);
                 event.expanded = !module.collapsedRequests[data.url];
                 event.renderedAsExpanded = true;
-                return this.publishEvent(context, event);
+                return event;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             showMessage: function(context, text, icon, exc_info) {
+                var event = this.prepareMessage.apply(this, arguments);
+                this.publishEvent(context, event);
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            prepareMessage: function(context, text, icon, exc_info) {
                 if (!icon) icon = "sys-info";
                 var type = "message";
                 if (exc_info) type = "messagewithexception";
@@ -485,10 +511,15 @@ FBL.ns(function() {
                     time: this.getCurrentTime(),
                     exc_info: exc_info
                 }, icon);
-                return this.publishEvent(context, event);
+                return event;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             showMessageWithData: function(context, text, data, icon) {
+                var event = this.prepareMessageWithData.apply(this, arguments);
+                this.publishEvent(context, event);
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            prepareMessageWithData: function(context, text, data, icon) {
                 if (!icon) icon = "sys-info";
                 var type = "message";
                 var event = new FireLoggerEvent(type, {
@@ -496,17 +527,22 @@ FBL.ns(function() {
                     time: this.getCurrentTime(),
                     data: data
                 }, icon);
-                return this.publishEvent(context, event);
+                return event;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             showProfile: function(context, url, profile_info, profile_data) {
+                var event = this.prepareProfile.apply(this, arguments);
+                this.publishEvent(context, event);
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            prepareProfile: function(context, url, profile_info, profile_data) {
                 var type = "profile";
                 var event = new FireLoggerEvent(type, {
                     message: (profile_info || "Request Profile available as Graphviz"),
                     time: this.getCurrentTime(),
                     profile_data: profile_data
                 }, "sys-time");
-                return this.publishEvent(context, event);
+                return event;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             getCurrentTime: function() {
