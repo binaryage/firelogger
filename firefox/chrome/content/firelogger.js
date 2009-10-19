@@ -172,20 +172,7 @@ FBL.ns(function() {
                 var extension_data = packet.extension_data;
                 if (extension_data) {
                     var appstats = extension_data.appengine_appstats;
-                    if (appstats) {
-                        var traces = appstats.traces;
-                        for (i=0; i < traces.length; i++) {
-                            var trace = traces[i];
-                            module.showMessage(this, "@" + trace.start + ": call=" + trace.call +
-                                       " real=" + trace.duration + " api=" + trace.api);
-                            module.showMessage(this, " request=" + trace.request);
-                            module.showMessage(this, " response=" + trace.response);
-                        }
-                        module.showMessage(this, "*start=" + appstats.start +
-                                   " duration=" + appstats.duration +
-                                   " cpu=" + appstats.cpu +
-                                   " overhead=" + appstats.overhead);
-                    }
+                    module.showMessageWithData(this, "appstats ...", appstats);
                 }
                 return logs;
             },
@@ -497,6 +484,17 @@ FBL.ns(function() {
                     message: text,
                     time: this.getCurrentTime(),
                     exc_info: exc_info
+                }, icon);
+                return this.publishEvent(context, event);
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            showMessageWithData: function(context, text, data, icon) {
+                if (!icon) icon = "sys-info";
+                var type = "message";
+                var event = new FireLoggerEvent(type, {
+                    message: text,
+                    time: this.getCurrentTime(),
+                    data: data
                 }, icon);
                 return this.publishEvent(context, event);
             },
