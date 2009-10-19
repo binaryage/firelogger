@@ -134,10 +134,10 @@
 }
 
 .type-exception .rec-msg, .type-messagewithexception .rec-msg {
-    background-color: red;
-    color: white;
-    font-weight: bold;
-    font-family: arial;
+    background-color: red !important;
+    color: white !important;
+    font-weight: bold !important;
+    font-family: arial !important;
     -moz-border-radius: 2px;
     margin-left: 104px;
     padding-left: 2px;
