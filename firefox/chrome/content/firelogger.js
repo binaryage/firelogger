@@ -45,7 +45,7 @@ FBL.ns(function() {
         function dbg() {
             if (FBTrace && FBTrace.DBG_FIRELOGGER) { 
                 if (/FireLoggerPanel/.test(arguments[0])) return;
-                if (/FireLogger.Record/.test(arguments[0])) return;
+                //if (/FireLogger.Record/.test(arguments[0])) return;
                 if (/FireLogger.LoggerTuple/.test(arguments[0])) return;
                 if (/FireLogger.Protocol/.test(arguments[0])) return;
                 FBTrace.sysout.apply(this, arguments);
@@ -174,7 +174,7 @@ FBL.ns(function() {
                 var extension_data = packet.extension_data;
                 if (extension_data) {
                     var appstats = extension_data.appengine_appstats;
-                    events.push(module.prepareMessageWithData(this, "appstats ...", appstats));
+                    events.push(module.prepareAppstats(this, appstats));
                 }
                 return [events, logs];
             },
@@ -545,6 +545,21 @@ FBL.ns(function() {
                 return event;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
+            showAppstats: function(context, appstats) {
+                var event = this.prepareProfile.apply(this, arguments);
+                this.publishEvent(context, event);
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            prepareAppstats: function(context, appstats) {
+                var type = "appstats";
+                var event = new FireLoggerEvent(type, {
+                    message: "Appstats",
+                    time: this.getCurrentTime(),
+                    appstats: appstats
+                }, "sys-appengine");
+                return event;
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
             getCurrentTime: function() {
                 var d = new Date();
                 var h = d.getHours() + "";
@@ -630,6 +645,49 @@ FBL.ns(function() {
                 utfStream.writeString(data);
                 utfStream.close();
                 return file.path;
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            showAppstatsTrace: function(el) {
+                dbg(">>>FireLogger.showAppstatsTrace", el);
+                var row = parseInt(el.getAttribute('data-row'), 10);
+                var details = getAncestorByClass(el, 'rec-details');
+                var appstats = details.appstatsData;
+                var data = appstats.traces[row];
+                var rep = Firebug.getRep(data);
+                rep.inspectObject(data, FirebugContext);
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            zoomAppstatsTable: function(td) {
+                dbg(">>>FireLogger.zoomAppstatsTable", table);
+                var table = getAncestorByClass(td, 'rec-appstats-table');
+                var zoom = parseInt(table.getAttribute('zoom'), 10);
+                if (zoom) {
+                    table.setAttribute('zoom', '0');
+                    var bars = getElementsByClass(table, 'bar-wrapper');
+                    Array.forEach(bars, function(e,i,a) {
+                        e.style.MozTransitionProperty = 'width';
+                        e.style.MozTransitionDuration = '0.5s';
+                        e.style.width = '100%';
+                    }, this);
+                    var markerLast = getElementByClass(table, 'axis-marker-last');
+                    var markerLastZoom = getElementByClass(table, 'axis-marker-last-zoom');
+                    markerLast.style.display = 'block';
+                    markerLastZoom.style.display = 'none';
+                } else {
+                    table.setAttribute('zoom', '1');
+                    var zoomCoef = table.getAttribute('data-zoom');
+                    var coef = parseFloat(zoomCoef);
+                    var bars = getElementsByClass(table, 'bar-wrapper');
+                    Array.forEach(bars, function(e,i,a) {
+                        e.style.MozTransitionProperty = 'width';
+                        e.style.MozTransitionDuration = '0.5s';
+                        e.style.width = 100*(100 / zoomCoef)+'%';
+                    }, this);
+                    var markerLast = getElementByClass(table, 'axis-marker-last');
+                    var markerLastZoom = getElementByClass(table, 'axis-marker-last-zoom');
+                    markerLast.style.display = 'none';
+                    markerLastZoom.style.display = 'block';
+                }
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             openSourceFile: function(path, line) {
@@ -721,7 +779,7 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             loadFilterStates: function(states) {
                 dbg(">>>FireLogger.loadFilterStates", arguments);
-                var states = ["debug", "info", "warning", "error", "critical"];
+                var states = ["debug", "info", "warning", "error", "critical", "appengine"];
                 var res = {};
                 for (var i=0; i<states.length; i++) {
                     res[states[i]] = this.getPref("filter"+capitalize(states[i])+"Logs");
@@ -775,6 +833,7 @@ FBL.ns(function() {
         // module.Record
         //
         module.Record = domplate(Firebug.Rep, {
+            maxAppstatsDuration: 5000, // assume 5s is maximum request duration for appengine
             /////////////////////////////////////////////////////////////////////////////////////////
             tagException: 
                 DIV({ class: "rec-head closed $object|getIcon", onclick: "$onToggleDetails", _repObject: "$object"},
@@ -813,6 +872,13 @@ FBL.ns(function() {
                     IMG({ class: "rec-icon", src: "blank.gif" }),
                     DIV({ class: "rec-date", onclick: "$onProfileNavigate" }, "$object|getDate"),
                     DIV({ class: "rec-msg", onclick: "$onProfileNavigate" }, "$object|getMessage")
+                ),
+            /////////////////////////////////////////////////////////////////////////////////////////
+            tagAppstats:
+                DIV({ class: "rec-head closed $object|getIcon", onclick: "$onToggleDetails", _repObject: "$object" },
+                    IMG({ class: "rec-icon", src: "blank.gif" }),
+                    DIV({ class: "rec-appstats-header" }, "$object|renderAppstatsHeader"),
+                    DIV({ class: "rec-details" })
                 ),
             /////////////////////////////////////////////////////////////////////////////////////////
             tagRequest:
@@ -951,7 +1017,86 @@ FBL.ns(function() {
                 this.doToggle(e.currentTarget);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
-            renderTraceback: function(event) {
+            niceDuration: function(n) {
+                n = n/1000; // convert to seconds
+                return Math.round(n*1000)/1000+'s';
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            formatGraph: function(start, width1, width2, hint) {
+                return '<div class="bar-wrapper"><div title="'+hint+'" class="bar-duration" style="margin-left: '+start+'%; width: '+width1+'%;"></div><div title="'+hint+'" class="bar-api" style="margin-left: '+start+'%; width: '+width2+'%;"></div></div>';
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            renderAppstatsHeader: function(event) {
+                dbg(">>>FireLogger.Record.renderAppstatsHeader", arguments);
+                var appstats = event.data.appstats;
+                if (!appstats) return "no appstats data available";
+                var cpu = "cpu="+this.niceDuration(appstats.cpu);
+                var that = this;
+                var percentage = function(n) {
+                    return 100*(n/that.maxAppstatsDuration); 
+                };
+                var width1 = percentage(appstats.duration);
+                var width2 = percentage(appstats.duration+appstats.overhead);
+                var hint = this.niceDuration(appstats.duration) + "/" + this.niceDuration(appstats.duration+appstats.overhead);
+                var graph = this.formatGraph(0, width1, width2, hint);
+                event.data.message = '<div class="appstats-cpu">'+cpu+'</div><div class="appstats-header-graph">'+graph+'</div><div class="clear-float"></div>';
+                return ''; // HACK: see [***]
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            renderAppstats: function(root, event) {
+                dbg(">>>FireLogger.Record.renderAppstats", arguments);
+                var appstats = event.data.appstats;
+                if (!appstats) return "no appstats data available";
+                if (!appstats.traces || appstats.traces.length==0) {
+                    return "no appstats traces available";
+                }
+                var that = this;
+                var percentage = function(n) {
+                    return 100*(n/that.maxAppstatsDuration); 
+                };
+                var max = 0;
+                var s = [''];
+                for (var i=0; i<appstats.traces.length; i++) {
+                    var trace = appstats.traces[i];
+                    s.push('<tr class="rec-appstats-row row-'+i+'">');
+                    s.push('<td class="rec-appstats-call">');
+                    s.push('<div title="'+escapeHTML(trace.request)+'"><a data-row="'+i+'" href="#" onclick="event.stopPropagation(); top.Firebug.FireLogger.showAppstatsTrace(this)">');
+                    s.push(trace.call || "?");
+                    s.push('</a></div>');
+                    s.push('</td>');
+                    s.push('<td class="rec-appstats-graph" onclick="event.stopPropagation();top.Firebug.FireLogger.zoomAppstatsTable(this);">');
+                    var start = percentage(trace.start);
+                    var width1 = percentage(trace.duration);
+                    var width2 = percentage(trace.api);
+                    var hint = this.niceDuration(trace.duration) + "/" + this.niceDuration(trace.api);
+                    s.push(this.formatGraph(start, width1, width2, hint));
+                    if (start+width1>max) max = start+width1;
+                    if (start+width2>max) max = start+width2;
+                    s.push('</td>');
+                    s.push('</tr>');
+                }
+                s[0] = '<table class="rec-appstats-table" cellspacing="0" cellpadding="0" data-zoom="'+max+'">';
+                // render horizontal axis
+                s.push('<tr class="rec-appstats-row row-axis">');
+                s.push('<td class="rec-appstats-call">');
+                s.push('</td>');
+                s.push('<td class="rec-appstats-graph-axis">');
+                s.push('<div class="bar-wrapper">');
+                for (var i=0; i<this.maxAppstatsDuration; i+=1000) {
+                    s.push('<div class="axis-marker" style="margin-left: '+percentage(i)+'%">'+parseInt(i/1000, 10)+'s</div>');
+                }
+                s.push('<div class="axis-marker-last">'+parseInt(i/1000, 10)+'s</div>');
+                s.push('<div class="axis-marker-last-zoom" style="display:none; right:'+(100-max)+'%">'+this.niceDuration((max/100)*this.maxAppstatsDuration)+'</div>');
+                s.push('</div>');
+                s.push('</td>');
+                s.push('</tr>')
+                
+                s.push('</table>');
+                root.innerHTML = s.join('');
+                root.appstatsData = appstats;
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            renderTraceback: function(root, event) {
                 dbg(">>>FireLogger.Record.renderTraceback", arguments);
                 if (!event.data.exc_info) return "no exception info available";
                 var exc_info = event.data.exc_info;
@@ -976,8 +1121,8 @@ FBL.ns(function() {
                     return item[3]||"";
                 };
 
-                var s = ['<table class="rec-traceback-table">'];
-                for (var i=0; i<items.length; i++){
+                var s = ['<table class="rec-traceback-table cellspacing="0" cellpadding="0"">'];
+                for (var i=0; i<items.length; i++) {
                     var item = items[i];
                     if (item['py/tuple']) item = item['py/tuple']; // FirePython specific hack
                     var extra = "";
@@ -999,9 +1144,9 @@ FBL.ns(function() {
                     // placeholder for dynamic items
                     s.push('</td>');
                     s.push('</tr>')
-                };
+                }
                 s.push('</table>');
-                return s.join('');
+                root.innerHTML = s.join('');
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             renderDynamicItems: function(event, node) {
@@ -1021,14 +1166,15 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             showEventDetails: function(event, details) {
                 dbg(">>>FireLogger.Record.showEventDetails", arguments);
-                var html = "";
                 switch (event.type) {
-                    case "exception": 
-                    case "messagewithexception": 
-                        html = this.renderTraceback(event); 
+                    case "exception":
+                    case "messagewithexception":
+                        this.renderTraceback(details, event);
+                        break;
+                    case "appstats":
+                        this.renderAppstats(details, event);
                         break;
                 }
-                details.innerHTML = html;
                 switch (event.type) {
                     case "exception":
                     case "messagewithexception": 
@@ -1259,6 +1405,13 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             renderPlainMessage: function(object, row, rep) {
                 var dest = getChildByClass(row.childNodes[0], "rec-msg");
+                if (!dest) {
+                    // HACK: I was unable to render arbitrary HTML in DOMPlate, see renderAppstatsHeader [***]
+                    dest = getChildByClass(row.childNodes[0], "rec-appstats-header");
+                    dest.innerHTML = object.data.message;
+                    delete object.data.message;
+                    return;
+                }
                 dest.innerHTML = "";
                 FirebugReps.Text.tag.append({object: object.data.message}, dest);
             },

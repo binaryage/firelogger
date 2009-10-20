@@ -40,11 +40,17 @@
 #fbFireLoggerFilterCriticalButton[checkState="0"] { list-style-image: url(chrome://firelogger/skin/disabled-icon-log-critical.png); }
 #fbFireLoggerFilterCriticalButton:hover[checkState="0"] { list-style-image: url(chrome://firelogger/skin/disabled-hover-icon-log-critical.png); }
 
+#fbFireLoggerFilterAppengineButton { list-style-image: url(chrome://firelogger/skin/icon-sys-appengine.png); }
+#fbFireLoggerFilterAppengineButton:hover { list-style-image: url(chrome://firelogger/skin/hover-icon-sys-appengine.png); }
+#fbFireLoggerFilterAppengineButton[checkState="0"] { list-style-image: url(chrome://firelogger/skin/disabled-icon-sys-appengine.png); }
+#fbFireLoggerFilterAppengineButton:hover[checkState="0"] { list-style-image: url(chrome://firelogger/skin/disabled-hover-icon-sys-appengine.png); }
+
 .filter-debug .firelogger-rec.icon-log-debug { display: none !important; }
 .filter-info .firelogger-rec.icon-log-info { display: none !important; }
 .filter-warning .firelogger-rec.icon-log-warning { display: none !important; }
 .filter-error .firelogger-rec.icon-log-error { display: none !important; }
 .filter-critical .firelogger-rec.icon-log-critical { display: none !important; }
+.filter-appengine .firelogger-rec.icon-sys-appengine { display: none !important; }
 
 .firelogger-rec {
     position: relative;
@@ -85,7 +91,7 @@
 
 .firelogger-rec > .rec-head {
     padding-left: 18px;
-    background-position: 3px 3px;
+    background-position: 4px 3px;
 }
 
 .firelogger-rec:hover {
@@ -144,6 +150,10 @@
     padding-right: 2px;
 }
 
+.type-exception .rec-msg .objectBox.objectBox-string, .type-messagewithexception .rec-msg .objectBox.objectBox-string {
+    color: white !important;
+}
+
 .type-messagewithexception .rec-msg {
     background-color: fuchsia;
 }
@@ -186,6 +196,9 @@
 .firelogger-rec > .rec-head.sys-time > .rec-icon {
     background-image: url(icon-sys-time.png);
 }
+.firelogger-rec > .rec-head.sys-appengine > .rec-icon {
+    background-image: url(icon-sys-appengine.png);
+}
 
 .firelogger-rec > .rec-head > .rec-details {
     display: none;
@@ -208,6 +221,7 @@
 }
 
 .rec-traceback-table {
+    width: 100%;
 }
 
 .rec-traceback-file {
@@ -269,4 +283,119 @@
 
 .firelogger-rec > .rec-request > .rec-request-detail:hover {
     color: yellow;
+}
+
+.rec-appstats-icon {
+    padding: 0;
+    margin: 0;
+    width: 20px;
+    min-width: 20px;
+    background-image: url(appstats-arrow.png);
+    background-repeat: no-repeat;
+}
+
+.rec-appstats-table {
+    width: 100%;
+}
+
+.rec-appstats-table .rec-appstats-bars:hover {
+    background-color: #FFFFC4;
+}
+
+.rec-appstats-table td {
+    vertical-align: top;
+}
+
+.rec-appstats-call {
+    color: #400080;
+    min-width: 180px;
+    width: 180px;
+}
+
+.rec-appstats-call a:hover {
+    text-decoration: underline;
+}
+
+.rec-appstats-bars {
+    width: 100%;
+}
+
+.type-appstats {
+    cursor: pointer;
+}
+
+.rec-appstats-graph {
+    border-left:1px solid #DDDDDD;
+    border-right:1px solid #DDDDDD;
+    border-top:1px solid #DDDDDD;    
+    width: 100%;
+}
+
+.bar-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.bar-duration {
+    position: absolute;
+    background-color: #005AA6;
+    height: 5px;
+    margin: 1px 0;
+    min-width:3px;
+    -moz-border-radius: 2px;
+}
+
+.bar-api {
+    position: absolute;
+    background-color: #D12400;
+    height: 5px;
+    margin: 7px 0;
+    min-width: 3px;
+    -moz-border-radius: 2px;
+}
+
+.rec-appstats-graph-axis {
+    border-top:1px solid #DDDDDD;    
+    width: 100%;
+    color:#555555;
+    font-size:8px;
+    height: 12px;
+}
+
+.rec-appstats-graph-axis .axis-marker {
+    height: 4px;
+    border-left: 1px solid #ddd;
+    position: absolute;
+    padding-left: 4px;
+}
+
+.rec-appstats-graph-axis .axis-marker-last, .rec-appstats-graph-axis .axis-marker-last-zoom {
+    height: 4px;
+    border-right: 1px solid #ddd;
+    position: absolute;
+    right: 0;
+    padding-right: 4px;
+}
+
+.rec-appstats-graph:hover {
+    background-color: #EEEE9F;
+}
+
+.appstats-cpu {
+    width: 160px;
+    float:left;
+}
+
+.clear-float {
+    clear:both;
+}
+
+.rec-appstats-header {
+    margin-left: 20px;
+}
+
+.appstats-header-graph {
+    border-left: 1px solid #DDDDDD;
+    border-right: 1px solid #DDDDDD;
+    margin-left: 160px;
 }

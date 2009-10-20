@@ -17,6 +17,7 @@
     <command id="cmd_FireLoggerFilterWarning" oncommand="Firebug.FireLogger.onFilterLogs('warning')"/>
     <command id="cmd_FireLoggerFilterError" oncommand="Firebug.FireLogger.onFilterLogs('error')"/>
     <command id="cmd_FireLoggerFilterCritical" oncommand="Firebug.FireLogger.onFilterLogs('critical')"/>
+    <command id="cmd_FireLoggerFilterAppengine" oncommand="Firebug.FireLogger.onFilterLogs('appengine')"/>
     <command id="cmd_FireLoggerTogglePersist" oncommand="Firebug.FireLogger.togglePersist(FirebugContext)"/>
   </commandset>
   <toolbar id="fbToolbar" align="center">
@@ -29,6 +30,7 @@
           <toolbarbutton id="fbFireLoggerFilterWarningButton" command="cmd_FireLoggerFilterWarning" checked="true" type="checkbox" tooltiptext="Filter WARNING logs" class="toolbar-image-button"/>
           <toolbarbutton id="fbFireLoggerFilterErrorButton" command="cmd_FireLoggerFilterError" checked="true" type="checkbox" tooltiptext="Filter ERROR logs" class="toolbar-image-button"/>
           <toolbarbutton id="fbFireLoggerFilterCriticalButton" command="cmd_FireLoggerFilterCritical" checked="true" type="checkbox" tooltiptext="Filter CRITICAL logs" class="toolbar-image-button"/>
+          <toolbarbutton id="fbFireLoggerFilterAppengineButton" command="cmd_FireLoggerFilterAppengine" checked="true" type="checkbox" tooltiptext="Filter App Engine related logs" class="toolbar-image-button"/>
       </hbox>
     </hbox>
   </toolbar>
