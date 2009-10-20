@@ -56,7 +56,7 @@ FBL.ns(function() {
             if (!s) return '';
             return s.charAt(0).toUpperCase() + s.substring(1).toLowerCase();
         }
-        
+
         ////////////////////////////////////////////////////////////////////////
         var FireLoggerEvent = function(type, data, icon) {
             this.type = type;
@@ -1376,16 +1376,33 @@ FBL.ns(function() {
                 var template = object.data.template;
                 if (typeof template != "string") template = template._; // this is a special case for exceptions (FirePython hack)
                 if (!template) template = "";
-                var parts = template.split(/%[a-zA-Z]{0,1}/);
+                var parts = template.split(/(%%|%[0123456789.-]*?[a-zA-Z])/);
                 var i = 1;
+                var eaten = 0;
                 if (parts.length>0) {
                     for (i=0; i<parts.length; i++) {
                         var part = parts[i];
                         FirebugReps.Text.tag.append({object: part}, dest);
                         if (i<parts.length-1) {
-                            var arg = lookupArg(i);
-                            var r = Firebug.getRep(arg);
-                            r.tag.append({object: module.preprocessObject(arg)}, dest);
+                            if (parts[i+1]=='%%') {
+                                // special case of escaped %
+                                FirebugReps.Text.tag.append({object: "%"}, dest);
+                                i++;
+                            } else {
+                                var arg = lookupArg(eaten);
+                                if (arg!==undefined) {
+                                    var r = Firebug.getRep(arg);
+                                    r.tag.append({object: module.preprocessObject(arg)}, dest);
+                                    i++; // skip matched delimiter
+                                    eaten++;
+                                } else {
+                                    // arg is not available => render original text instead
+                                    // see http://github.com/darwin/firepython/issues#issue/6
+                                    i++;
+                                    part = parts[i];
+                                    FirebugReps.Text.tag.append({object: part}, dest);
+                                }
+                            }
                         }
                     }
                 }
@@ -1394,8 +1411,8 @@ FBL.ns(function() {
                     if (parts.length>0) FirebugReps.Text.tag.append({object: " "}, dest);
                     var a = object.data.args;
                     if (object.data.args["py/tuple"]) a = object.data.args["py/tuple"]; // FirePython hack
-                    for (var j=i-1; j<a.length; j++) {
-                        if (j>i-1) FirebugReps.Text.tag.append({object: ", "}, dest);
+                    for (var j=eaten; j<a.length; j++) {
+                        if (j>eaten) FirebugReps.Text.tag.append({object: ", "}, dest);
                         var arg = lookupArg(j);
                         var r = Firebug.getRep(arg);
                         r.tag.append({object: module.preprocessObject(arg)}, dest);
