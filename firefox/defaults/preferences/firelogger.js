@@ -7,6 +7,7 @@ pref("extensions.firebug.firelogger.password", "");
 pref("extensions.firebug.firelogger.richFormatting", true);
 pref("extensions.firebug.firelogger.showInternal", false);
 pref("extensions.firebug.firelogger.enableProfiler", false);
+pref("extensions.firebug.firelogger.enableAppstats", false);
 
 pref("extensions.firebug.firelogger.filterDebugLogs", false);
 pref("extensions.firebug.firelogger.filterInfoLogs", false);

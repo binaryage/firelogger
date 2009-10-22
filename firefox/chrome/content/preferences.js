@@ -14,6 +14,7 @@
     }
     
     if (!top.FireLogger) top.FireLogger = {};
+
     FireLogger.MainPrefPane = {
         _disablePasswordProtectionButton : null,
 
@@ -172,4 +173,12 @@
             document.getElementById("firelogger-preferences-rewrites-tester-reason").value = res[1];
         }
     };
+    
+    FireLogger.AppEnginePrefPane = {
+
+        /////////////////////////////////////////////////////////////////////////////////////////
+        init: function() {
+        }
+    };
+    
 })();

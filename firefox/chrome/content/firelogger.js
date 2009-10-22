@@ -252,6 +252,7 @@ FBL.ns(function() {
                 this._richFormatting = this.getPref('richFormatting');
                 this._showInternal = this.getPref('showInternal');
                 this._enableProfiler = this.getPref('enableProfiler');
+                this._enableAppstats = this.getPref('enableAppstats');
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             start: function() {
@@ -295,6 +296,9 @@ FBL.ns(function() {
                     }
                     if (this._enableProfiler) {
                         httpChannel.setRequestHeader("X-FireLoggerProfiler", "1", false);
+                    }
+                    if (this._enableAppstats) {
+                        httpChannel.setRequestHeader("X-FireLoggerAppstats", "1", false);
                     }
                 }
                 if (topic == "nsPref:changed") {

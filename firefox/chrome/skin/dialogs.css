@@ -2,3 +2,18 @@
     font-size: 7pt;
     color: gray;
 }
+
+.note-warning {
+    color: #A00;
+    padding-left: 24px;
+}
+
+.note-caption {
+    margin-top: 10px;
+    font-weight: bold;
+    padding-left: 24px;
+}
+
+.appstats-sample {
+    padding-left: 24px;
+}

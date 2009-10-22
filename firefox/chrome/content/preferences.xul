@@ -7,7 +7,7 @@
 <?xml-stylesheet href="chrome://firelogger/skin/dialogs.css"?>
 <prefwindow xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
   id="firelogger-preferences" title="FireLogger Preferences" type="prefwindow"
-  onload="sizeToContent()" windowtype="FireLogger:Preferences" ondialoghelp="openPrefsHelp()">
+  onload="sizeToContent()" windowtype="FireLogger:Preferences" ondialoghelp="openPrefsHelp()" width="700">
 
   <script type="application/x-javascript" src="chrome://firelogger/content/rewriter.js"/>
   <script type="application/x-javascript" src="chrome://firelogger/content/preferences.js"/>
@@ -94,5 +94,28 @@
         <label id="firelogger-preferences-rewrites-tester-reason" flex="1">reasoning ...</label>
       </groupbox>
     </vbox>
+  </prefpane>
+  <prefpane id="firelogger-preferences-appengine" label="App Engine" 
+    onpaneload="FireLogger.AppEnginePrefPane.init()" 
+    image="chrome://firelogger/skin/preferences-appengine.png"
+    helpTopic="preferences#appengine">
+    <preferences>
+      <preference id="preference-appstats" name="extensions.firebug.firelogger.enableAppstats" type="bool"/>
+    </preferences>
+    <groupbox id="firelogger-preferences-main-editor-group">
+      <caption label="Google App Engine Support"/>
+      <div><label class="text-link" href="http://firepython.binaryage.com">FirePython</label> backend provides additional Google App Engine features (optional)</div>
+      <div class="note-caption">Security Note:</div>
+      <div class="note-warning">When using Google App Engine in production mode FirePython sends logging data only</div>
+      <div class="note-warning">in case you are logged in as application admin. If your application does not support users API, </div>
+      <div class="note-warning">please use <label class="text-link" href="http://appengine.google.com">App Engine Console</label> to log in as an application administrator (get the cookie).</div>
+    </groupbox>
+    <groupbox id="firelogger-preferences-appengine-appstats-group">
+      <caption label="AppStats Settings"/>
+      <hbox align="center">
+        <checkbox flex="1" preference="preference-appstats" label="Enable AppStats (request server-side to employ appstats module)"/>
+      </hbox>
+      <image class="appstats-sample" src="chrome://firelogger/skin/appstats-sample.png" alt="appstats sample" maxwidth="561" height="154"/>
+    </groupbox>
   </prefpane>
 </prefwindow>
