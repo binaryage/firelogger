@@ -19,6 +19,7 @@ overlaycx: 25px
 overlaycy: 10px
 ---
 
+
 <div class="advertisement">
     <ul class="header-menu python">
         <li><a class="menu-item-python" href="/">python</a></li>
