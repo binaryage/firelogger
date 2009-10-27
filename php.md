@@ -1,6 +1,6 @@
 ---
 product_title: FireLogger for PHP
-title: FireLogger for PHP - sexy logger console in Firebug
+title: FireLogger for PHP = sexy logger console in Firebug
 subtitle: a sexy logger console integrated into Firebug
 layout: product
 icon: /shared/img/firelogger4php-icon.png

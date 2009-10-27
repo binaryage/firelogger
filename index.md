@@ -1,5 +1,5 @@
 ---
-title: FireLogger for Python - sexy logger console in Firebug
+title: FireLogger for Python = sexy logger console in Firebug
 product_title: FireLogger for Python
 subtitle: a sexy logger console integrated into Firebug
 layout: product
