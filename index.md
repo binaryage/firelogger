@@ -1,5 +1,6 @@
 ---
-title: FireLogger
+title: FireLogger for Python - sexy logger console in Firebug
+product_title: FireLogger for Python
 subtitle: a sexy logger console integrated into Firebug
 layout: product
 icon: /shared/img/firepython-icon.png
@@ -7,8 +8,6 @@ repo: http://github.com/darwin/firelogger
 support: http://github.com/darwin/firelogger/issues
 downloadtitle: Install v0.7
 download: https://addons.mozilla.org/en-US/firefox/addon/11090
-downloadboxwidth: 210px
-donate: https://addons.mozilla.org/en-US/firefox/addons/contribute/11090?source=addon-detail
 subdownload: 
 subdownloadlink:
 mainshot: /shared/img/firepython-mainshot.png
@@ -17,13 +16,16 @@ overlaysx: 1606px
 overlaysy: 738px
 overlaycx: 25px
 overlaycy: 10px
+retweet: 1
+facebook: 1
+digg: 1
 ---
 
-
-<div class="advertisement">
-    <ul class="header-menu python">
-        <li><a class="menu-item-python" href="/">python</a></li>
-        <li><a class="menu-item-php" href="/php">php</a></li>
+<div class="more-box">
+    <span class="languages">Languages:</span>
+    <ul class="alt-menu python">
+        <li><a class="alt-item-python" href="/">python</a></li>
+        <li><a class="alt-item-php" href="/php">php</a></li>
     </ul>
 </div>
 

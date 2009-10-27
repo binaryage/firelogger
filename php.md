@@ -1,14 +1,13 @@
 ---
-title: FireLogger for PHP
-subtitle: a sexy PHP logger console integrated into Firebug
+product_title: FireLogger for PHP
+title: FireLogger for PHP - sexy logger console in Firebug
+subtitle: a sexy logger console integrated into Firebug
 layout: product
 icon: /shared/img/firelogger4php-icon.png
 repo: http://github.com/darwin/firelogger4php
 support: http://github.com/darwin/firelogger4php/issues
 downloadtitle: Install v0.7
 download: https://addons.mozilla.org/en-US/firefox/addon/11090
-downloadboxwidth: 210px
-donate: https://addons.mozilla.org/en-US/firefox/addons/contribute/11090?source=addon-detail
 subdownload: 
 subdownloadlink:
 mainshot: /shared/img/firelogger4php-mainshot.png
@@ -18,12 +17,16 @@ overlaysy: 986px
 overlaycx: 25px
 overlaycy: 10px
 permalink: /php
+retweet: 1
+facebook: 1
+digg: 1
 ---
 
-<div class="advertisement">
-    <ul class="header-menu php">
-        <li><a class="menu-item-python" href="/">python</a></li>
-        <li><a class="menu-item-php" href="/php">php</a></li>
+<div class="more-box">
+    <span class="languages">Languages:</span>
+    <ul class="alt-menu php">
+        <li><a class="alt-item-python" href="/">python</a></li>
+        <li><a class="alt-item-php" href="/php">php</a></li>
     </ul>
 </div>
 
@@ -67,8 +70,6 @@ The best way is to run this on latest Firebug version with latest Firefox (this 
   * Firebug 1.3 + Firefox 3.1 
   * Firebug 1.2.1 + Firefox 3.0.4. 
 * **Version 0.2** is tested to work with alpha Firebug 1.3 and Firefox 3.1.
-
-### Checkout also [FireLogger for Python](http://firepython.binaryage.com)
 
 ## Installation
 
