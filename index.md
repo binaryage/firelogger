@@ -8,8 +8,6 @@ repo: http://github.com/darwin/firelogger
 support: http://github.com/darwin/firelogger/issues
 downloadtitle: Install v0.7
 download: https://addons.mozilla.org/en-US/firefox/addon/11090
-subdownload: 
-subdownloadlink:
 mainshot: /shared/img/firepython-mainshot.png
 mainshotfull: /shared/img/firepython-mainshot-full.png
 overlaysx: 1606px
