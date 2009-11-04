@@ -134,7 +134,7 @@ Look for inspiration in [middleware.py][middleware-source]
 > Default behavior of logging module is to output logs up from level INFO. Run "logging.getLogger().setLevel(logging.DEBUG)" to see all logs.
 
 #### Is there something similar for PHP?
-> Check out [FireLogger for PHP](http://firelogger4php.binaryage.com), you may also want to checkout alternative logging tool [FirePHP](http://firephp.org)
+> Check out [FireLogger for PHP](http://firelogger.binaryage.com/php), you may also want to checkout alternative logging tool [FirePHP](http://firephp.org)
 
 #### Is there something similar for Ruby?
 > Nope. I'd like to have one, but didn't find time to write server-side support. You are welcome to [hack it](http://wiki.github.com/darwin/firelogger)!
@@ -168,7 +168,7 @@ Look for inspiration in [middleware.py][middleware-source]
 ## History
 
 * **v0.6** (28.06.2009)
-  * [[darwin][antonin]] support for PHP (http://firelogger4php.binaryage.com)
+  * [[darwin][antonin]] support for PHP ([firelogger.binaryage.com/php](http://firelogger.binaryage.com/php))
   * [[darwin][antonin]] fixed bug when warning about disabled console and net panel was not displayed
   * [[darwin][antonin]] fixed broken "Open in external editor" functionality (FB1.5)
   * [[darwin][antonin]] compatibility with FB1.4.2

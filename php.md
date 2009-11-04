@@ -4,8 +4,8 @@ title: FireLogger for PHP = sexy logger console in Firebug
 subtitle: a sexy logger console integrated into Firebug
 layout: product
 icon: /shared/img/firelogger4php-icon.png
-repo: http://github.com/darwin/firelogger4php
-support: http://github.com/darwin/firelogger4php/issues
+repo: http://github.com/darwin/firelogger.php
+support: http://github.com/darwin/firelogger.php/issues
 downloadtitle: Install v0.7
 download: https://addons.mozilla.org/en-US/firefox/addon/11090
 subdownload: 
@@ -136,7 +136,7 @@ Requires PHP 5.3 or higher!
 
 [firebug]: https://addons.mozilla.org/en-US/firefox/addon/1843
 [firelogger]: https://addons.mozilla.org/en-US/firefox/addon/11090
-[repo]: http://github.com/darwin/firelogger4php
+[repo]: http://github.com/darwin/firelogger.php
 [workaround]: http://getsatisfaction.com/xrefresh/topics/unable_to_download_rainbow_for_firebug
 [darwin]:http://github.com/darwin
 [firebug-team]:http://getfirebug.com/workingGroup
