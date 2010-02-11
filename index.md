@@ -5,7 +5,7 @@ subtitle: a sexy logger console integrated into Firebug
 layout: product
 icon: /shared/img/firepython-icon.png
 repo: http://github.com/darwin/firelogger
-support: http://github.com/darwin/firelogger/issues
+support: http://getsatisfaction.com/binaryage/products/binaryage_firelogger
 downloadtitle: Install v0.8
 download: https://addons.mozilla.org/en-US/firefox/addon/11090
 mainshot: /shared/img/firepython-mainshot.png
