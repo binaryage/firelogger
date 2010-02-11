@@ -1097,6 +1097,11 @@ FBL.ns(function() {
                 
                 s.push('</table>');
                 root.innerHTML = s.join('');
+                
+                // ok, Guido wanted graphs to be zoomed initially
+                var graph = getElementByClass(root, 'rec-appstats-graph');
+                if (graph) top.Firebug.FireLogger.zoomAppstatsTable(graph); // simulate click on the first graph bar
+                
                 root.appstatsData = appstats;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
