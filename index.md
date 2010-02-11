@@ -6,7 +6,7 @@ layout: product
 icon: /shared/img/firepython-icon.png
 repo: http://github.com/darwin/firelogger
 support: http://github.com/darwin/firelogger/issues
-downloadtitle: Install v0.7
+downloadtitle: Install v0.8
 download: https://addons.mozilla.org/en-US/firefox/addon/11090
 mainshot: /shared/img/firepython-mainshot.png
 mainshotfull: /shared/img/firepython-mainshot-full.png
@@ -36,6 +36,7 @@ digg: 1
 * Ready as WSGI middleware and Django middleware
 * Support for advanced features:
   * open in Text Editor integration
+  * [AppStats](http://blog.binaryage.com/firelogger-with-appstats) for GAE
   * production paths remapping
   * password protection
   * logging proxy support
@@ -43,6 +44,12 @@ digg: 1
 
 ### Compatibility
 
+* **Version 0.8** works with:
+  * alpha Firebug 1.6 + Firefox 3.6
+  * Firebug 1.4 and 1.5 + Firefox 3.5 or 3.6
+* **Version 0.7** works with:
+  * alpha Firebug 1.5 + Firefox 3.5
+  * Firebug 1.4.2 + Firefox 3.5
 * **Version 0.6** works with:
   * alpha Firebug 1.5 + Firefox 3.5
   * Firebug 1.4.2 + Firefox 3.5
@@ -159,6 +166,10 @@ Look for inspiration in [middleware.py][middleware-source]
 <a href="http://cloud.github.com/downloads/darwin/firepython/FirePython-ProfilingGraphLog.png"><img src="http://cloud.github.com/downloads/darwin/firepython/FirePython-ProfilingGraphLog.png"></a><br>
 <a href="http://cloud.github.com/downloads/darwin/firepython/FirePython-ProfilingGraphExample.png"><img src="http://cloud.github.com/downloads/darwin/firepython/FirePython-ProfilingGraphExample.png" width="600"></a>
 
+#### How can I use AppStats support?
+> If you are on production site, make sure you are logged in as project admin. Also don't forget to enable support in FireLogger's preferences.
+<a href="http://cloud.github.com/downloads/darwin/firepython/FirePython-AppStatsExample.png"><img src="http://cloud.github.com/downloads/darwin/firepython/FirePython-AppStatsExample.png"></a>
+
 #### When I start Firefox and page loads I don't see any log records, what is wrong?
 > First page content was probably loaded from cache. Refresh your page and you should be ok.
 
@@ -167,7 +178,23 @@ Look for inspiration in [middleware.py][middleware-source]
 
 ## History
 
-* **v0.6** (28.06.2009)
+* **v0.8** (24.08.2010):
+  * [[meatballhat][dan]] Daniel Buch did pythonification of the whole project, rewrote packaging scripts, added tests and demo site, big kudos!
+  * [[darwin][antonin]] added AppStats support for GAE ([read more](http://blog.binaryage.com/firelogger-with-appstats))
+  * [[darwin][antonin]] fixed bug when logging "something like this %s", param <= the last parameter was not printed into logger
+  * [[darwin][antonin]] better formatting string handling ([closes #6](http://github.com/darwin/firepython/issues#issue/6))
+  * [[darwin][antonin]] marked as compatible with Firebug 1.6
+
+
+* **v0.7** (24.08.2010):
+  * [[darwin][antonin]] fixed subtle bug when some log records with structs containing null values were not displayed
+  * [[darwin][antonin]] removed hack fingting duplicit requests
+  * [[darwin][antonin]] every batch of log records is prepended with ticket displaying request url
+  * [[darwin][antonin]] added toggle button to persist panel content between refreshes
+  * [[darwin][antonin]] rewriter correctly registers under Firebug namespace (fixed some bugs when detaching firebug panel)
+  * [[darwin][antonin]] usability: expand root item in watches in case there is only one root item
+
+* **v0.6** (28.09.2009)
   * [[darwin][antonin]] support for PHP ([firelogger.binaryage.com/php](http://firelogger.binaryage.com/php))
   * [[darwin][antonin]] fixed bug when warning about disabled console and net panel was not displayed
   * [[darwin][antonin]] fixed broken "Open in external editor" functionality (FB1.5)
@@ -219,6 +246,7 @@ Look for inspiration in [middleware.py][middleware-source]
 * **[Alexander Solovyov][alexander]** - python server-side library, Django and WSGI middlewares.
 * **[Ivan Fedorov][ivan]** - helped out with threading issues.
 * **[Brett Slatkin][brett]** - added profiling feature.
+* **[Daniel Buch][dan]** - pythonification of the whole project, rewrote packaging scripts, added tests and demo site, big kudos!
 
 ### Also thanks to
 
@@ -249,3 +277,4 @@ Look for inspiration in [middleware.py][middleware-source]
 [textmate-hint]:http://cloud.github.com/downloads/darwin/firepython/TextMateWithFirePython.png
 [activation]:http://blog.getfirebug.com/?p=124
 [gprof2dot]:http://code.google.com/p/jrfonseca/wiki/Gprof2Dot
+[dan]: http://github.com/meatballhat
