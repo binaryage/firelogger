@@ -837,7 +837,8 @@ FBL.ns(function() {
         // module.Record
         //
         module.Record = domplate(Firebug.Rep, {
-            maxAppstatsDuration: 5000, // assume 5s is maximum request duration for appengine
+            maxAppstatsDuration: 30000, // assume 30s is maximum request duration for appengine
+            timeAxisStep: 3000, // 3s
             /////////////////////////////////////////////////////////////////////////////////////////
             tagException: 
                 DIV({ class: "rec-head closed $object|getIcon", onclick: "$onToggleDetails", _repObject: "$object"},
@@ -1086,7 +1087,7 @@ FBL.ns(function() {
                 s.push('</td>');
                 s.push('<td class="rec-appstats-graph-axis">');
                 s.push('<div class="bar-wrapper">');
-                for (var i=0; i<this.maxAppstatsDuration; i+=1000) {
+                for (var i=0; i<this.maxAppstatsDuration; i+=this.timeAxisStep) {
                     s.push('<div class="axis-marker" style="margin-left: '+percentage(i)+'%">'+parseInt(i/1000, 10)+'s</div>');
                 }
                 s.push('<div class="axis-marker-last">'+parseInt(i/1000, 10)+'s</div>');
