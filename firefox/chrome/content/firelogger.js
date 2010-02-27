@@ -1502,30 +1502,6 @@ FBL.ns(function() {
         var OBJECTBOX = this.OBJECTBOX =
             SPAN({class: "objectBox objectBox-$className"});
 
-        var OBJECTBLOCK = this.OBJECTBLOCK =
-            DIV({class: "objectBox objectBox-$className"});
-
-        var OBJECTLINK = this.OBJECTLINK =
-            A({
-                class: "objectLink objectLink-$className",
-                _repObject: "$object"
-            });
-
-        FirebugReps.Obj = domplate(FirebugReps.Obj, {
-            tag: OBJECTLINK(
-                "{",
-                FOR("prop", "$object|propIterator",
-                    " $prop.name=",
-                    SPAN({class: "objectPropValue"}, "$prop.value|cropString")
-                ), 
-                " }"
-            ),
-            /////////////////////////////////////////////////////////////////////////////////////////
-            getTitle: function(object, context) {
-                return "{...}";
-            }
-        });
-    
         ////////////////////////////////////////////////////////////////////////
         // support Logger tuples (FirePython specific)
         //
