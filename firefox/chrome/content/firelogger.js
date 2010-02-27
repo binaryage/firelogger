@@ -13,7 +13,7 @@ FBL.ns(function() {
             // parse Firebug version (including alphas/betas and other weird stuff)
             var major = parseInt(a[0], 10);
             var minor = parseInt(a[1], 10);
-            return major>=minMajor && minor>=minMinor;
+            return major>minMajor || (major==minMajor && minor>=minMinor);
         }
 
         if (!checkFirebugVersion(1,4)) {
