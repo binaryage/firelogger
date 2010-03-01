@@ -5,8 +5,8 @@ FireLogger is a sexy logger console integrated into [Firebug][firebug]. You'll n
 ## Supported server-side languages
 
   * **[FirePython][firepython]** (production ready)
-  * **[FireLogger for PHP](http://github.com/darwin/firelogger.php)** (production ready)
-  * **[FireRuby][firelogger.rb]** (in planning)
+  * **[FireLogger for PHP][firelogger4php]** (production ready)
+  * **[FireRuby][firelogger4rb]** (in planning)
   * _add your own here_ [Protocol description](http://wiki.github.com/darwin/firelogger)
 
 <a href="http://cloud.github.com/downloads/darwin/firelogger/FireLogger-Screenshot-v0.3.png"><img src="http://cloud.github.com/downloads/darwin/firelogger/FireLogger-Screenshot-v0.3.png" width="900"/></a>
@@ -15,4 +15,5 @@ FireLogger is a sexy logger console integrated into [Firebug][firebug]. You'll n
 
 [firebug]: https://addons.mozilla.org/en-US/firefox/addon/1843
 [firepython]: http://github.com/darwin/firepython
-[fireruby]: http://github.com/darwin/firelogger.rb
+[firelogger4rb]: http://github.com/darwin/firelogger.rb
+[firelogger4php]: http://github.com/darwin/firelogger.php
