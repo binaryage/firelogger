@@ -1,34 +1,21 @@
 ---
-product_title: FireLogger for PHP
-title: FireLogger for PHP = sexy logger console in Firebug
-subtitle: a sexy logger console integrated into Firebug
 layout: product
-icon: /shared/img/firelogger4php-icon.png
-repo: http://github.com/darwin/firelogger.php
-support: http://github.com/darwin/firelogger.php/issues
-downloadtitle: Install v0.7
+title: FireLogger is a sexy server logger console in Firebug
+product_title: FireLogger
+product_subtitle: a sexy server logger console in Firebug
 download: https://addons.mozilla.org/en-US/firefox/addon/11090
-subdownload: 
-subdownloadlink:
-mainshot: /shared/img/firelogger4php-mainshot.png
-mainshotfull: /shared/img/firelogger4php-mainshot-full.png
-overlaysx: 1120px
-overlaysy: 986px
-overlaycx: 25px
-overlaycy: 10px
-permalink: /php
-retweet: 1
+repo: http://github.com/darwin/firelogger.php
+downloadtitle: Install 0.8
+note: This is FireLogger for PHP. We have also <a href="/php"><b>FireLogger for Python</b></a>
 facebook: 1
-digg: 1
+retweet: 1
+nothumbs: 1
+shots: [{
+    title: "FireLogger in action with PHP backend",
+    thumb: "/shared/img/firelogger4php-mainshot.png",
+    full: "/shared/img/firelogger4php-mainshot-full.png"
+}]
 ---
-
-<div class="more-box">
-    <span class="languages">Languages:</span>
-    <ul class="alt-menu php">
-        <li><a class="alt-item-python" href="/">python</a></li>
-        <li><a class="alt-item-php" href="/php">php</a></li>
-    </ul>
-</div>
 
 ## Features
 
@@ -107,7 +94,7 @@ Requires PHP 5.3 or higher!
 #### When I start Firefox and page loads I don't see any log records, what is wrong?
 > This is Firefox optimization. After start Firefox brings up browser state into the point where it was when you closed it (no network activity at all). Refresh your page and you should be ok.
 
-## History
+## Changelog
 
 * **v0.2** (24.08.2009)
   * [[darwin][darwin]] compatibility with FireLogger 0.7

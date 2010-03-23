@@ -1,31 +1,21 @@
 ---
-title: FireLogger for Python = sexy logger console in Firebug
-product_title: FireLogger for Python
-subtitle: a sexy logger console integrated into Firebug
 layout: product
-icon: /shared/img/firepython-icon.png
-repo: http://github.com/darwin/firelogger
-support: http://getsatisfaction.com/binaryage/products/binaryage_firelogger
-downloadtitle: Install v0.8
+title: FireLogger is a sexy server logger console in Firebug
+product_title: FireLogger
+product_subtitle: a sexy server logger console in Firebug
 download: https://addons.mozilla.org/en-US/firefox/addon/11090
-mainshot: /shared/img/firepython-mainshot.png
-mainshotfull: /shared/img/firepython-mainshot-full.png
-overlaysx: 1606px
-overlaysy: 738px
-overlaycx: 25px
-overlaycy: 10px
-retweet: 1
+repo: http://github.com/darwin/firepython
+downloadtitle: Install 0.8
+note: This is FireLogger for Python. We have also <a href="/php"><b>FireLogger for PHP</b></a>
 facebook: 1
-digg: 1
+retweet: 1
+nothumbs: 1
+shots: [{
+    title: "FireLogger in action with Python backend",
+    thumb: "/shared/img/firepython-mainshot.png",
+    full: "/shared/img/firepython-mainshot-full.png"
+}]
 ---
-
-<div class="more-box">
-    <span class="languages">Languages:</span>
-    <ul class="alt-menu python">
-        <li><a class="alt-item-python" href="/">python</a></li>
-        <li><a class="alt-item-php" href="/php">php</a></li>
-    </ul>
-</div>
 
 ## Features
 
@@ -176,7 +166,7 @@ Look for inspiration in [middleware.py][middleware-source]
 #### My page does multiple AJAX requests to the same URL, I see logs for the first response, but not for others. Am I missing something?
 > There is a bug in Firebug 1.4, it calls onResponse multiple times under some circumstances. That was very annoying, so I did a HACK and test for URL uniqueness in FireLogger. This will unfortunately filter out your multiple AJAX requests. Let's hope for fixes on Firebug side.
 
-## History
+## Changelog
 
 * **v0.8** (24.08.2010):
   * [[meatballhat][dan]] Daniel Buch did pythonification of the whole project, rewrote packaging scripts, added tests and demo site, big kudos!
