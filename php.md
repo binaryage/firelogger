@@ -10,6 +10,17 @@ note: This is FireLogger for PHP. We have also <a href="/php"><b>FireLogger for 
 facebook: 1
 retweet: 1
 nothumbs: 1
+buzz: 1
+fbsdk: 1
+ogmeta: {
+    site_name: "BinaryAge website",
+    description: "FireLogger is a sexy server logger console in Firebug",
+    email: "antonin@binaryage.com",
+    type: "product",
+    title: "FireLogger",
+    url: "http://firelogger.binaryage.com",
+    image: "http://www.binaryage.com/shared/img/icons/firelogger-64.png"
+}
 shots: [{
     title: "FireLogger in action with PHP backend",
     thumb: "/shared/img/firelogger4php-mainshot.png",
