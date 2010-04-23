@@ -19,7 +19,7 @@ ogmeta: {
     type: "product",
     title: "FireLogger",
     url: "http://firelogger.binaryage.com",
-    image: "http://www.binaryage.com/shared/img/icons/firelogger-64.png"
+    image: "http://www.binaryage.com/shared/img/icons/firelogger-128.png"
 }
 shots: [{
     title: "FireLogger in action with PHP backend",
