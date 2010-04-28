@@ -7,6 +7,10 @@ download: https://addons.mozilla.org/en-US/firefox/addon/11090
 repo: http://github.com/darwin/firepython
 downloadtitle: Install 0.8
 note: This is FireLogger for Python. We have also <a href="/php"><b>FireLogger for PHP</b></a>
+meta_title: FireLogger is a sexy server logger console in Firebug
+meta_keywords: firebug,firefox,addon,firelogger,logging,python,php,binaryage,productivity,software,web,development
+meta_description: Your logging messages are displayed right under your fingerprints in Firebug
+meta_image: http://www.binaryage.com/shared/img/icons/firelogger-256.png
 facebook: 1
 retweet: 1
 nothumbs: 1
