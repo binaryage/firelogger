@@ -11,9 +11,10 @@ meta_title: FireLogger is a sexy server logger console in Firebug
 meta_keywords: firebug,firefox,addon,firelogger,logging,python,php,binaryage,productivity,software,web,development
 meta_description: Your logging messages are displayed right under your fingerprints in Firebug
 meta_image: http://www.binaryage.com/shared/img/icons/firelogger-256.png
+leftshift: 20px
+likeshift: 12px
 facebook: 1
 retweet: 1
-nothumbs: 1
 buzz: 1
 fbsdk: 1
 ogmeta: {
