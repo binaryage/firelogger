@@ -34,6 +34,7 @@ shots: [{
 }]
 ---
 
+
 ## Features
 
 * Your logging messages are displayed right under your fingerprints in Firebug
