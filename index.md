@@ -17,6 +17,7 @@ facebook: 1
 retweet: 1
 buzz: 1
 fbsdk: 1
+flattr: http://firelogger.binaryage.com
 ogmeta: {
     site_name: "BinaryAge website",
     description: "FireLogger is a sexy server logger console in Firebug",
