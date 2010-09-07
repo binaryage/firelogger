@@ -1,6 +1,5 @@
 ---
 layout: product
-permalink: /php
 title: FireLogger is a sexy server logger console in Firebug
 product_title: FireLogger
 product_subtitle: a sexy server logger console in Firebug
