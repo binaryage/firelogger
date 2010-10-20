@@ -866,7 +866,7 @@ FBL.ns(function() {
             tagException: 
                 DIV({ class: "rec-head closed $object|getIcon", onclick: "$onToggleDetails", _repObject: "$object"},
                     IMG({ class: "rec-icon", src: "blank.gif"}),
-                    DIV({ class: "rec-date", onclick: "$onSourceNavigate" }, "$object|getDate"),
+                    DIV({ class: "rec-date", onclick: "$onSourceNavigate", title: "$object|getDateTitle" }, "$object|getDate"),
                     DIV({ class: "rec-logger", style:"$object|getLoggerStyle", title:"logger name" }, "$object|getLoggerName"),
                     DIV({ class: "rec-msg" }, ""),
                     DIV({ class: "rec-details" })
@@ -875,7 +875,7 @@ FBL.ns(function() {
             tagSimple:
                 DIV({ class: "rec-head $object|getIcon", _repObject: "$object" },
                     IMG({ class: "rec-icon", src: "blank.gif" }),
-                    DIV({ class: "rec-date", onclick: "$onSourceNavigate" }, "$object|getDate"),
+                    DIV({ class: "rec-date", onclick: "$onSourceNavigate", title: "$object|getDateTitle" }, "$object|getDate"),
                     DIV({ class: "rec-logger", style:"$object|getLoggerStyle", title:"logger name" }, "$object|getLoggerName"),
                     DIV({ class: "rec-msg" }, "")
                 ),
@@ -883,14 +883,14 @@ FBL.ns(function() {
             tagMessage:
                 DIV({ class: "rec-head $object|getIcon", _repObject: "$object" },
                     IMG({ class: "rec-icon", src: "blank.gif" }),
-                    DIV({ class: "rec-date" }, "$object|getDate"),
+                    DIV({ class: "rec-date", onclick: "$onSourceNavigate", title: "$object|getDateTitle" }, "$object|getDate"),
                     DIV({ class: "rec-msg" }, "$object|getMessage")
                 ),
             /////////////////////////////////////////////////////////////////////////////////////////
             tagMessagewithexception:
                 DIV({ class: "rec-head closed $object|getIcon", onclick: "$onToggleDetails", _repObject: "$object" },
                     IMG({ class: "rec-icon", src: "blank.gif" }),
-                    DIV({ class: "rec-date" }, "$object|getDate"),
+                    DIV({ class: "rec-date", onclick: "$onSourceNavigate", title: "$object|getDateTitle" }, "$object|getDate"),
                     DIV({ class: "rec-msg" }, "$object|getMessage"),
                     DIV({ class: "rec-details" })
                 ),
@@ -933,6 +933,15 @@ FBL.ns(function() {
             getDate: function(event) {
                 dbg(">>>FireLogger.Record.getDate", arguments);
                 return '[' + event.data.time + ']';
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            getDateTitle: function(event) {
+                dbg(">>>FireLogger.Record.getDateTitle", arguments);
+                var pathname = event.data.pathname||"?";
+                var lineno = event.data.lineno||"?";
+                if (pathname=="?" && lineno=="?") return "";
+                var title = pathname+":"+lineno;
+                return title;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             getLoggerName: function(event) {
