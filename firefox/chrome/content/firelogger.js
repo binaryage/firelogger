@@ -1,13 +1,16 @@
 FBL.ns(function() {
     with(FBL) {
         
-        function hideUI() {
+        var hideUI = function() {
             collapse($("fbFireLoggerFilters"), true);
         }
         
-        function checkFirebugVersion(minMajor, minMinor) {
+        var checkFirebugVersion = function(minMajor, minMinor) {
             var version = Firebug.getVersion();
             if (!version) return false;
+            if (version.indexOf('X')!=-1) { // SVN alpha/beta versions
+                version = version.split('X')[0];
+            }
             var a = version.split('.');
             if (a.length<2) return false;
             // parse Firebug version (including alphas/betas and other weird stuff)
@@ -15,7 +18,7 @@ FBL.ns(function() {
             var minor = parseInt(a[1], 10);
             return major>minMajor || (major==minMajor && minor>=minMinor);
         }
-
+        
         if (!checkFirebugVersion(1,4)) {
             alert('FireQuery works with Firebug 1.4 and later.\nPlease upgrade Firebug to the latest version.');
             hideUI();
@@ -24,16 +27,16 @@ FBL.ns(function() {
         
         const Cc = Components.classes;
         const Ci = Components.interfaces;
-
+        
         const nsIPrefBranch = Ci.nsIPrefBranch;
         const nsIPrefBranch2 = Ci.nsIPrefBranch2;
         const nsIWindowMediator = Ci.nsIWindowMediator;
-
+        
         const observerService = CCSV("@mozilla.org/observer-service;1", "nsIObserverService");
         const prefService = CCSV("@mozilla.org/preferences-service;1", "nsIPrefBranch2");
-
+        
         const fireloggerHomepage = "http://firepython.binaryage.com";
-
+        
         if (Firebug.TraceModule) {
             Firebug.TraceModule.DBG_FIRELOGGER = false;
             var type = prefService.getPrefType('extensions.firebug.DBG_FIRELOGGER');
@@ -41,8 +44,8 @@ FBL.ns(function() {
                 prefService.setBoolPref('extensions.firebug.DBG_FIRELOGGER', false);
             } catch(e) {}
         }
-    
-        function dbg() {
+        
+        var dbg = function() {
             if (FBTrace && FBTrace.DBG_FIRELOGGER) { 
                 if (/FireLoggerPanel/.test(arguments[0])) return;
                 //if (/FireLogger.Record/.test(arguments[0])) return;
@@ -51,12 +54,12 @@ FBL.ns(function() {
                 FBTrace.sysout.apply(this, arguments);
             }
         }
-    
-        function capitalize(s) {
+            
+        var capitalize = function(s) {
             if (!s) return '';
             return s.charAt(0).toUpperCase() + s.substring(1).toLowerCase();
         }
-
+        
         ////////////////////////////////////////////////////////////////////////
         var FireLoggerEvent = function(type, data, icon) {
             this.type = type;
@@ -64,8 +67,8 @@ FBL.ns(function() {
             this.icon = icon;
             this.expanded = false;
         };
-
-        function colorForName(name) {
+        
+        var colorForName = function(name) {
             var niceColors = ["blue", "magenta", "brown", "black", 
                               "darkgreen", "blueviolet", "cadetblue", "crimson", "darkgoldenrod",
                               "darkslateblue", "firebrick", "midnightblue", "orangered", "navy"];
@@ -75,6 +78,14 @@ FBL.ns(function() {
             }
             var color = niceColors[code % niceColors.length];
             return color;
+        }
+        
+        // http://code.google.com/p/fbug/source/detail?r=7625
+        var getCurrentContext = function() {
+            if (typeof FirebugContext != "object") {
+                return Firebug.currentContext;
+            }
+            return FirebugContext;
         }
         
         var module;
@@ -201,7 +212,7 @@ FBL.ns(function() {
                 });
                 // bail out in case of no logs and no events
                 if (!logs.length && !events.length) return;
-
+        
                 // render events and logs
                 module.deferRendering(); // prevent flickering
                 module.showRequest(this, { url: url });
@@ -222,10 +233,10 @@ FBL.ns(function() {
         // Firebug.FireLogger
         //
         module = Firebug.FireLogger = extend(Firebug.ActivableModule, {
-            version: '0.8',
+            version: '0.9',
             currentPanel: null,
             collapsedRequests: {},
-
+        
             /////////////////////////////////////////////////////////////////////////////////////////
             onPanelEnable: function(context, panelName) {
                 if (panelName != this.panelName) return;
@@ -271,10 +282,10 @@ FBL.ns(function() {
                 Firebug.NetMonitor.removeListener(this);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
-            // FB1.4 >=r2050
-            onResponse: function(context, file) {
+            // see http://getsatisfaction.com/binaryage/topics/firelogger_0_8_does_not_show_anything
+            onResponseBody: function(context, file) {
                 dbg(">>>FireLogger.onResponse:"+file.href, context);
-                this.mixinContext(context); // onResponse may be called before initContext, so we may need to mixin here
+                this.mixinContext(context); // onResponseBody may be called before initContext, so we may need to mixin here
                 context.queueFile(file);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -310,25 +321,30 @@ FBL.ns(function() {
                 }
             },
             /////////////////////////////////////////////////////////////////////////////////////////
-            initialize: function() {
+            initialize: function(prefDomain, prefNames) {
                 dbg(">>>FireLogger.initialize");
                 this.panelName = 'firelogger';
                 this.description = "Server-side logging tools for web developers.";
                 Firebug.ActivableModule.initialize.apply(this, arguments);
-                this.patchChrome(top.FirebugChrome, FirebugContext);
+                this.patchChrome(top.FirebugChrome, getCurrentContext());
                 this.cachePrefs();
                 prefService.addObserver(this.getPrefDomain(), this, false);
                 module.start();
             },
             /////////////////////////////////////////////////////////////////////////////////////////
+            onEnabled: function(context) {
+                dbg(">>>FireLogger.onEnabled", context);
+                this.registerObservers(context);
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            onDisabled: function(context) {
+                dbg(">>>FireLogger.onDisabled", context);
+                this.unregisterObservers(context);
+            },            
+            /////////////////////////////////////////////////////////////////////////////////////////
             shutdown: function() {
                 dbg(">>>FireLogger.shutdown");
                 module.stop();
-            },
-            /////////////////////////////////////////////////////////////////////////////////////////
-            initializeUI: function() {
-                dbg(">>>FireLogger.initializeUI");
-                Firebug.ActivableModule.initializeUI.apply(this, arguments);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             onSuspendFirebug: function(context) {
@@ -364,11 +380,11 @@ FBL.ns(function() {
                     // fireloggerwatches panel intercepts all object inspections only when FireLogger panel is visible
                     chrome.select = function(object, panelName, sidePanelName, forceUpdate) {
                         if (module.currentPanel) {
-                            var panel = FirebugContext.getPanel(module.panelName);
+                            var panel = getCurrentContext().getPanel(module.panelName);
                             if (panel) {
                                 panel.select(object, forceUpdate);
                                 // usability: expand root item if there is only one root item
-                                var watchesPanel = FirebugContext.getPanel("fireloggerwatches");
+                                var watchesPanel = getCurrentContext().getPanel("fireloggerwatches");
                                 if (watchesPanel) {
                                     try {
                                         var props = [];
@@ -428,6 +444,9 @@ FBL.ns(function() {
                     // this is a good place to reset it to empty object
                     var watchesPanel = panel.context.getPanel("fireloggerwatches");
                     if (watchesPanel) {
+                        watchesPanel.getDefaultSelection = function() {
+                            return {};
+                        };
                         watchesPanel.select({});
                     }
                 } else {
@@ -595,7 +614,7 @@ FBL.ns(function() {
             loadExternalEditors: function() {
                 const prefName = "externalEditors";
                 const editorPrefNames = ["label", "executable", "cmdline", "image"];
-
+        
                 externalEditors = [];
                 var list = Firebug.getPref(Firebug.prefDomain, prefName).split(",");
                 for (var i = 0; i < list.length; ++i) {
@@ -637,12 +656,12 @@ FBL.ns(function() {
                                      get("TmpD", Components.interfaces.nsIFile);
                 file.append(name_template);
                 file.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0666);
-
+        
                 var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"].
                                          createInstance(Components.interfaces.nsIFileOutputStream);
                                 // write, create, truncate
                 foStream.init(file, 0x02 | 0x08 | 0x20, 0666, 0);
-
+        
                 var utfStream = Components.classes["@mozilla.org/intl/converter-output-stream;1"].
                                           createInstance(Components.interfaces.nsIConverterOutputStream);
                 utfStream.init(foStream, "UTF-8", 0, 0x0000);
@@ -658,7 +677,7 @@ FBL.ns(function() {
                 var appstats = details.appstatsData;
                 var data = appstats.traces[row];
                 var rep = Firebug.getRep(data);
-                rep.inspectObject(data, FirebugContext);
+                rep.inspectObject(data, getCurrentContext());
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             zoomAppstatsTable: function(td) {
@@ -727,7 +746,7 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             preprocessObject: function(o) {
                 if (this._showInternal) return o;
-
+        
                 function isArray(o) {
                    return (o.constructor.toString().indexOf("Array") != -1);
                 }
@@ -753,6 +772,10 @@ FBL.ns(function() {
                     return res;
                 };
                 return worker(o);
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            getPrefDomain: function() {
+                return Firebug.prefDomain + "." + this.panelName;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             getPref: function(name) {
@@ -832,7 +855,7 @@ FBL.ns(function() {
                 }
             }
         });
-    
+            
         ////////////////////////////////////////////////////////////////////////
         // module.Record
         //
@@ -947,7 +970,7 @@ FBL.ns(function() {
                 e.stopPropagation();
                 var event = this.lookupEventObject(e.currentTarget);
                 Firebug.chrome.selectPanel("net");
-                var netPanel = FirebugContext.getPanel('net');
+                var netPanel = getCurrentContext().getPanel('net');
                 if (!netPanel) return;
                 netPanel.updateSelection({request: {name:"?"}, href: event.data.url});
             },
@@ -989,12 +1012,12 @@ FBL.ns(function() {
                 var firelogger = getAncestorByClass(target, "firelogger-rec");
                 var row = getChildByClass(firelogger, "rec-head")
                 var details = getChildByClass(row, "rec-details");
-
+        
                 var isRequest = hasClass(row, "rec-request");
-
+        
                 toggleClass(row, "expanded");
                 toggleClass(row, "closed");
-
+        
                 if (hasClass(row, "expanded")) {
                     event.expanded = true;
                     if (isRequest) {
@@ -1018,7 +1041,7 @@ FBL.ns(function() {
                 // do not toggle if clicked on locals property
                 var clickedOnObjectLink = getAncestorByClass(e.target, "objectLink");
                 if (clickedOnObjectLink) return;
-
+        
                 this.doToggle(e.currentTarget);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -1114,7 +1137,7 @@ FBL.ns(function() {
                 if (!exc_info) return "no exception info available";
                 var items = exc_info[2];
                 if (!items) return "no traceback available";
-
+        
                 var formatFile = function(item) {
                     var path = item[0]||"";
                     var line = item[1];
@@ -1130,7 +1153,7 @@ FBL.ns(function() {
                 var formatLocation = function(item) {
                     return item[3]||"";
                 };
-
+        
                 var s = ['<table class="rec-traceback-table cellspacing="0" cellpadding="0"">'];
                 for (var i=0; i<items.length; i++) {
                     var item = items[i];
@@ -1205,7 +1228,7 @@ FBL.ns(function() {
                 return null;
             }
         });
-    
+            
         ////////////////////////////////////////////////////////////////////////
         // Firebug.FireLoggerPanel
         //
@@ -1219,6 +1242,14 @@ FBL.ns(function() {
             renderDeferredCounter: 0,
             renderQueue: [],
 
+            /////////////////////////////////////////////////////////////////////////////////////////
+            onActivationChanged: function(enable) {
+                dbg(">>>FireLoggerPanel.onActivationChanged enable:"+enable);
+                if (enable)
+                    module.addObserver(this);
+                else
+                    module.removeObserver(this);
+            },
             /////////////////////////////////////////////////////////////////////////////////////////
             initialize: function() {
                 dbg(">>>FireLoggerPanel.initialize");
@@ -1280,18 +1311,31 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             show: function(state) {
                 dbg(">>>FireLoggerPanel.show", state);
-                var enabled = module.isAlwaysEnabled();
-                this.panelSplitter.collapsed = !enabled;
-                this.sidePanelDeck.collapsed = !enabled;
-                Firebug.chrome.setGlobalAttribute("cmd_FireLoggerTogglePersist", "checked", this.persistContent);
-                if (enabled) {
-                     module.disabledPanelPage.hide(this);
-                     this.showToolbarButtons("fbFireLoggerFilters", true);
-                     if (this.wasScrolledToBottom)
-                         scrollToBottom(this.panelNode);
+
+                var that = this;
+                var work = function() {
+                    that.showToolbarButtons("fbFireLoggerFilters", true);
+                    if (that.wasScrolledToBottom) {
+                        scrollToBottom(that.panelNode);
+                    }
+                }
+                
+                // Firebug 1.6 removes Firebug.DisabledPanelPage, simplifies the activation
+                // and the following code is not necessary any more.
+                if (module.disabledPanelPage) {
+                    var enabled = module.isAlwaysEnabled();
+                    this.panelSplitter.collapsed = !enabled;
+                    this.sidePanelDeck.collapsed = !enabled;
+                    Firebug.chrome.setGlobalAttribute("cmd_FireLoggerTogglePersist", "checked", this.persistContent);
+                    if (enabled) {
+                         module.disabledPanelPage.hide(this);
+                         work();
+                    } else {
+                        this.hide();
+                        module.disabledPanelPage.show(this);
+                    }
                 } else {
-                    this.hide();
-                    module.disabledPanelPage.show(this);
+                    work();
                 }
             },
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -1325,12 +1369,12 @@ FBL.ns(function() {
                         removeClass(this.matchSet[i], "matched");
                 }
                 this.matchSet = [];
-
+        
                 if (!text) return;
-
+        
                 function findRow(node) { return getAncestorByClass(node, "firelogger-rec"); }
                 var search = new TextSearch(this.panelNode, findRow);
-
+        
                 var row = search.find(text);
                 if (!row) return false;
                 for (; row; row = search.findNext()) {
@@ -1485,7 +1529,7 @@ FBL.ns(function() {
                 return heads[0];
             }
         });
-    
+            
         ////////////////////////////////////////////////////////////////////////
         // Firebug.FireLoggerWatchesPanel
         //
@@ -1495,13 +1539,13 @@ FBL.ns(function() {
             name: "fireloggerwatches",
             parentPanel: "firelogger"
         });
-
+        
         ////////////////////////////////////////////////////////////////////////
         // JSON-like displaing for objects
         //
         var OBJECTBOX = this.OBJECTBOX =
             SPAN({class: "objectBox objectBox-$className"});
-
+        
         ////////////////////////////////////////////////////////////////////////
         // support Logger tuples (FirePython specific)
         //
@@ -1537,7 +1581,7 @@ FBL.ns(function() {
                     var rep = Firebug.getRep(value);
                     var tag = rep.shortTag ? rep.shortTag : rep.tag;
                     var delim = (i == array.length-1 ? "" : ", ");
-
+        
                     items.push({object: value, tag: tag, delim: delim});
                 }
                 return items;
@@ -1552,13 +1596,13 @@ FBL.ns(function() {
                     var rep = Firebug.getRep(value);
                     var tag = rep.shortTag ? rep.shortTag : rep.tag;
                     var delim = (i == array.length-1 ? "" : ", ");
-
+        
                     items.push({object: value, tag: tag, delim: delim});
                 }
-
+        
                 if (array.length > 3)
                     items.push({object: (array.length-3) + " more...", tag: FirebugReps.Caption.tag, delim: ""});
-
+        
                 return items;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -1583,7 +1627,7 @@ FBL.ns(function() {
                 return "[" + object['py/tuple'].length + "]";
             }
         });
-    
+            
         Firebug.registerActivableModule(module);
         Firebug.registerRep(module.Record);
         Firebug.registerRep(module.LoggerTuple);

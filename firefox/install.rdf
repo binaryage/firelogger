@@ -3,14 +3,14 @@
          xmlns:em="http://www.mozilla.org/2004/em-rdf#">
   <Description about="urn:mozilla:install-manifest">
     <em:id>firelogger@hildebrand.cz</em:id>
-    <em:version>0.8</em:version>
+    <em:version>0.9</em:version>
     <em:type>2</em:type>
     <!-- Firefox -->
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
         <em:minVersion>3.0.9</em:minVersion>
-        <em:maxVersion>3.7a1pre</em:maxVersion>
+        <em:maxVersion>4.0</em:maxVersion>
       </Description>
     </em:targetApplication>
     <!-- Firebug extension -->
@@ -18,13 +18,13 @@
       <Description>
         <em:id>firebug@software.joehewitt.com</em:id>
         <em:minVersion>1.4</em:minVersion>
-        <em:maxVersion>1.6</em:maxVersion>
+        <em:maxVersion>1.7</em:maxVersion>
       </Description>
     </em:requires>
     <em:name>FireLogger</em:name>
     <em:description>Server-side logging support for web developers</em:description>
     <em:creator>Antonin Hildebrand</em:creator>
-    <em:homepageURL>http://github.com/darwin/firelogger</em:homepageURL>
+    <em:homepageURL>http://firelogger.binaryage.com</em:homepageURL>
     <em:iconURL>chrome://firelogger/skin/icon.png</em:iconURL>
   </Description>
 </RDF>

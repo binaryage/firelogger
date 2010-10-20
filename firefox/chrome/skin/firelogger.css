@@ -55,10 +55,10 @@
 .firelogger-rec {
     position: relative;
     border-bottom: 1px solid #D7D7D7;
-    padding: 1px 0px;
     color: #000;
     overflow: hidden;
     padding-right: 2px;
+    line-height: 14px;
 }
 
 .panelNode.searching .firelogger-rec {
