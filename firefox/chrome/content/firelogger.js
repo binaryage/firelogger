@@ -121,7 +121,7 @@ FBL.ns(function() {
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             queueFile: function(file) {
-                dbg(">>>FireLoggerContextMixin.queueFile: "+file.href);
+                dbg(">>>FireLoggerContextMixin.queueFile: "+file.href, file);
                 this.pushRecord(file.href, this.parseHeaders(file.responseHeaders));
             },
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -283,7 +283,7 @@ FBL.ns(function() {
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             // see http://getsatisfaction.com/binaryage/topics/firelogger_0_8_does_not_show_anything
-            onResponseBody: function(context, file) {
+            onResponse: function(context, file) {
                 dbg(">>>FireLogger.onResponse:"+file.href, context);
                 this.mixinContext(context); // onResponseBody may be called before initContext, so we may need to mixin here
                 context.queueFile(file);
