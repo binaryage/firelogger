@@ -122,7 +122,34 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             queueFile: function(file) {
                 dbg(">>>FireLoggerContextMixin.queueFile: "+file.href, file);
-                this.pushRecord(file.href, this.parseHeaders(file.responseHeaders));
+                // normally i would just do this.pushRecord(file.href, that.parseHeaders(file.responseHeaders));
+                // but Firebug may pass file in progress into onResponse which has no responseHeaders defined yet (because of network latency?)
+                // it probably depends on when Firebug UI starts rendering file and 
+                // Utils.getHttpHeaders(request, file) gets called, which happens randomly after onRequest has been called
+                //
+                // workaround: in case I don't see responseHeaders I setup setInterval and wait 10 seconds for responseHeaders to appear
+                // see the discussion here: http://getsatisfaction.com/binaryage/topics/firelogger_0_8_does_not_show_anything
+                //
+                var that = this;
+                var job = function() {
+                    that.pushRecord(file.href, that.parseHeaders(file.responseHeaders));
+                }
+                if (file.responseHeaders) {
+                    job();
+                } else {
+                    // wait for responseHeaders
+                    var counter = 0;
+                    var interval = setInterval(function() {
+                        counter++;
+                        if (file.responseHeaders) {
+                            clearInterval(interval);
+                            job();
+                        }
+                        if (counter>100) {
+                            clearInterval(interval);
+                        }
+                    }, 100);
+                }
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             processRequestQueue: function() {
@@ -282,7 +309,6 @@ FBL.ns(function() {
                 Firebug.NetMonitor.removeListener(this);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
-            // see http://getsatisfaction.com/binaryage/topics/firelogger_0_8_does_not_show_anything
             onResponse: function(context, file) {
                 dbg(">>>FireLogger.onResponse:"+file.href, context);
                 this.mixinContext(context); // onResponseBody may be called before initContext, so we may need to mixin here
