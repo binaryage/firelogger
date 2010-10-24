@@ -121,11 +121,30 @@
     font-weight: normal;
     cursor: pointer;
     position: absolute;
-    margin-left: 20px;
+    margin-left: 18px;
+    font-size: 22px;
+    top: -3px;
+}
+
+.rec-file {
+    color: gray;
+    font-weight: normal;
+    cursor: pointer;
+    position: absolute;
+    margin-left: 32px;
+    width: 78px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.rec-file > div {
+    text-align: right;
+    float: right;
+    white-space: nowrap;
 }
 
 .rec-msg {
-    margin-left: 104px;
+    margin-left: 114px;
     padding-top: 0px;
 }
 
@@ -145,7 +164,6 @@
     font-weight: bold !important;
     font-family: arial !important;
     -moz-border-radius: 2px;
-    margin-left: 104px;
     padding-left: 2px;
     padding-right: 2px;
 }

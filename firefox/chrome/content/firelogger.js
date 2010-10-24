@@ -892,7 +892,10 @@ FBL.ns(function() {
             tagException: 
                 DIV({ class: "rec-head closed $object|getIcon", onclick: "$onToggleDetails", _repObject: "$object"},
                     IMG({ class: "rec-icon", src: "blank.gif"}),
-                    DIV({ class: "rec-date", onclick: "$onSourceNavigate", title: "$object|getDateTitle" }, "$object|getDate"),
+                    DIV({ class: "rec-date", title: "$object|getDateTitle" }, "$object|getDate"),
+                    DIV({ class: "rec-file", onclick: "$onSourceNavigate" }, 
+                        DIV({ title: "$object|getFileTitle" }, "$object|getFile")
+                    ),
                     DIV({ class: "rec-logger", style:"$object|getLoggerStyle", title:"logger name" }, "$object|getLoggerName"),
                     DIV({ class: "rec-msg" }, ""),
                     DIV({ class: "rec-details" })
@@ -901,7 +904,10 @@ FBL.ns(function() {
             tagSimple:
                 DIV({ class: "rec-head $object|getIcon", _repObject: "$object" },
                     IMG({ class: "rec-icon", src: "blank.gif" }),
-                    DIV({ class: "rec-date", onclick: "$onSourceNavigate", title: "$object|getDateTitle" }, "$object|getDate"),
+                    DIV({ class: "rec-date", title: "$object|getDateTitle" }, "$object|getDate"),
+                    DIV({ class: "rec-file", onclick: "$onSourceNavigate" }, 
+                        DIV({ title: "$object|getFileTitle" }, "$object|getFile")
+                    ),
                     DIV({ class: "rec-logger", style:"$object|getLoggerStyle", title:"logger name" }, "$object|getLoggerName"),
                     DIV({ class: "rec-msg" }, "")
                 ),
@@ -909,14 +915,20 @@ FBL.ns(function() {
             tagMessage:
                 DIV({ class: "rec-head $object|getIcon", _repObject: "$object" },
                     IMG({ class: "rec-icon", src: "blank.gif" }),
-                    DIV({ class: "rec-date", onclick: "$onSourceNavigate", title: "$object|getDateTitle" }, "$object|getDate"),
+                    DIV({ class: "rec-date", title: "$object|getDateTitle" }, "$object|getDate"),
+                    DIV({ class: "rec-file", onclick: "$onSourceNavigate" }, 
+                        DIV({ title: "$object|getFileTitle" }, "$object|getFile")
+                    ),
                     DIV({ class: "rec-msg" }, "$object|getMessage")
                 ),
             /////////////////////////////////////////////////////////////////////////////////////////
             tagMessagewithexception:
                 DIV({ class: "rec-head closed $object|getIcon", onclick: "$onToggleDetails", _repObject: "$object" },
                     IMG({ class: "rec-icon", src: "blank.gif" }),
-                    DIV({ class: "rec-date", onclick: "$onSourceNavigate", title: "$object|getDateTitle" }, "$object|getDate"),
+                    DIV({ class: "rec-date", title: "$object|getDateTitle" }, "$object|getDate"),
+                    DIV({ class: "rec-file", onclick: "$onSourceNavigate" }, 
+                        DIV({ title: "$object|getFileTitle" }, "$object|getFile")
+                    ),
                     DIV({ class: "rec-msg" }, "$object|getMessage"),
                     DIV({ class: "rec-details" })
                 ),
@@ -924,7 +936,10 @@ FBL.ns(function() {
             tagProfile:
                 DIV({ class: "rec-head $object|getIcon", _repObject: "$object" },
                     IMG({ class: "rec-icon", src: "blank.gif" }),
-                    DIV({ class: "rec-date", onclick: "$onProfileNavigate" }, "$object|getDate"),
+                    DIV({ class: "rec-date", title: "$object|getDateTitle" }, "$object|getDate"),
+                    DIV({ class: "rec-file", onclick: "$onSourceNavigate" }, 
+                        DIV({ title: "$object|getFileTitle" }, "$object|getFile")
+                    ),
                     DIV({ class: "rec-msg", onclick: "$onProfileNavigate" }, "$object|getMessage")
                 ),
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -958,11 +973,32 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             getDate: function(event) {
                 dbg(">>>FireLogger.Record.getDate", arguments);
-                return '[' + event.data.time + ']';
+                return '\u231A'; // unicode clock sign
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             getDateTitle: function(event) {
                 dbg(">>>FireLogger.Record.getDateTitle", arguments);
+                return event.data.time;
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            getFile: function(event) {
+                dbg(">>>FireLogger.Record.getFile", arguments);
+                var pathname = event.data.pathname||"?";
+                var lineno = event.data.lineno||"?";
+                var formatFile = function(item) {
+                    var path = item[0]||"";
+                    var line = item[1];
+                    var parts = path.split('/');
+                    var res = parts[parts.length-1];
+                    if (!res) res = "?";
+                    if (line!==undefined && line!==null) res += ":"+line;
+                    return res;
+                };
+                return formatFile([pathname, lineno]);
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            getFileTitle: function(event) {
+                dbg(">>>FireLogger.Record.getFileTitle", arguments);
                 var pathname = event.data.pathname||"?";
                 var lineno = event.data.lineno||"?";
                 if (pathname=="?" && lineno=="?") return "";
