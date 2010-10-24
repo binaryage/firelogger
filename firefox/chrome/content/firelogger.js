@@ -1194,8 +1194,14 @@ FBL.ns(function() {
                 var formatLocation = function(item) {
                     return item[3]||"";
                 };
+                var fileAction = function(path, line) {
+                    return function() {
+                        module.openSourceFile(path, line);
+                    };
+                };
         
                 var s = ['<table class="rec-traceback-table cellspacing="0" cellpadding="0"">'];
+                var fileActions = [];
                 for (var i=0; i<items.length; i++) {
                     var item = items[i];
                     if (item['py/tuple']) item = item['py/tuple']; // FirePython specific hack
@@ -1206,7 +1212,8 @@ FBL.ns(function() {
                     var line = item[1]||"";
                     s.push('<td class="rec-traceback-icon"></td>');
                     var htmlAttrEscapedPath = formatFullFile(item).replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/&/g, '&amp;');
-                    s.push('<td class="rec-traceback-file" onclick=\'event.stopPropagation();top.Firebug.FireLogger.openSourceFile("'+escapeJS(path).replace('\\', '\\\\', 'g')+'", '+line+');\' title="'+htmlAttrEscapedPath+'">');
+                    fileActions.push(fileAction(path, line));
+                    s.push('<td class="rec-traceback-file" onclick="event.stopPropagation(); this.parentNode.parentNode.parentNode.fileActions['+i+']();" title="'+htmlAttrEscapedPath+'">');
                     s.push(formatFile(item));
                     s.push('</td>');
                     s.push('<td class="rec-traceback-function">');
@@ -1222,6 +1229,7 @@ FBL.ns(function() {
                 }
                 s.push('</table>');
                 root.innerHTML = s.join('');
+                root.firstChild.fileActions = fileActions; // attach array of functions to the TABLE DOM node (see ^^^)
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             renderDynamicItems: function(event, node) {
