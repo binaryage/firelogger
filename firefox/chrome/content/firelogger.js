@@ -742,6 +742,14 @@ FBL.ns(function() {
             openSourceFile: function(path, line) {
                 dbg(">>>FireLogger.openSourceFile", [path, line]);
                 if (!path) return;
+                // part PHP-style paths from eval
+                // sample path: /Users/darwin/code/firelogger/tests/basic.php(62) : eval()'d code
+                var m = path.match(/(.*)\(([0-9]+)\) : eval\(\)'d code$/);
+                if (m) {
+                    path = m[1]
+                    line = parseInt(m[2], 10);
+                    dbg(">>>  PHP-style eval found", [path, line]);
+                }
                 path = FireLogger.Rewriter.rewritePath(path);
                 dbg(">>>FireLogger.rewritePath", path);
                 var editor = this.findPreferredEditor();
