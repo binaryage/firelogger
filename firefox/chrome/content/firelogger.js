@@ -1182,6 +1182,12 @@ FBL.ns(function() {
                     if (line!==undefined && line!==null) res += ":"+line;
                     return res;
                 };
+                var formatFullFile = function(item) {
+                    var res = item[0]||"?";
+                    var line = item[1];
+                    if (line!==undefined && line!==null) res += ":"+line;
+                    return res;
+                };
                 var formatFunction = function(item) {
                     return item[2]||"";
                 };
@@ -1198,8 +1204,9 @@ FBL.ns(function() {
                     s.push('<tr class="rec-traceback-row row-'+i+''+extra+'">');
                     var path = item[0]||"";
                     var line = item[1]||"";
-                    s.push('<td class="rec-traceback-icon"></td>')
-                    s.push('<td class="rec-traceback-file" onclick=\'event.stopPropagation();top.Firebug.FireLogger.openSourceFile("'+escapeJS(path).replace('\\', '\\\\', 'g')+'", '+line+');\'>');
+                    s.push('<td class="rec-traceback-icon"></td>');
+                    var htmlAttrEscapedPath = formatFullFile(item).replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/&/g, '&amp;');
+                    s.push('<td class="rec-traceback-file" onclick=\'event.stopPropagation();top.Firebug.FireLogger.openSourceFile("'+escapeJS(path).replace('\\', '\\\\', 'g')+'", '+line+');\' title="'+htmlAttrEscapedPath+'">');
                     s.push(formatFile(item));
                     s.push('</td>');
                     s.push('<td class="rec-traceback-function">');
