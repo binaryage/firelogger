@@ -5,8 +5,7 @@ product_title: FireLogger
 product_subtitle: a sexy server logger console in Firebug
 download: https://addons.mozilla.org/en-US/firefox/addon/11090
 repo: http://github.com/darwin/firepython
-downloadtitle: Install 0.8
-note: This is FireLogger for Python. We have also <a href="/php"><b>FireLogger for PHP</b></a>
+downloadtitle: Install 0.9
 meta_title: FireLogger is a sexy server logger console in Firebug
 meta_keywords: firebug,firefox,addon,firelogger,logging,python,php,binaryage,productivity,software,web,development
 meta_description: Your logging messages are displayed right under your fingerprints in Firebug
@@ -35,13 +34,16 @@ shots: [{
 ---
 
 
-## Features
+## Firefox
+
+### Firefox Addon
 
 * Your logging messages are displayed right under your fingerprints in Firebug
 * Support for rich-text logging (logged objects are sent as JSON object, you may drill down their structure)
+* Support for Python and PHP
 * Support for exceptions and backtrace visualization
-* Support for profiling graphs
 * Ready as WSGI middleware and Django middleware
+* Support for profiling graphs
 * Support for advanced features:
   * open in Text Editor integration
   * [AppStats](http://blog.binaryage.com/firelogger-with-appstats) for GAE
@@ -52,104 +54,64 @@ shots: [{
 
 ### Compatibility
 
-* **Version 0.8** works with:
-  * alpha Firebug 1.6 + Firefox 3.6
-  * Firebug 1.4 and 1.5 + Firefox 3.5 or 3.6
-* **Version 0.7** works with:
+Firefox and Firebug are moving targets. Please make sure you use compatible versions. I'm unable to test all possible combinations.
+
+* **Version 0.9**
+  * Firebug 1.4 - 1.6 + Firefox 3.5 - 4.0
+  * early alpha Firebug 1.7 + Firefox 3.5 - 4.0
+* **Version 0.8**
+  * Firebug 1.4 and 1.5.3 + Firefox 3.5 or 3.6
+  * broken with Firebug 1.5.4+
+* **Version 0.7**
   * alpha Firebug 1.5 + Firefox 3.5
   * Firebug 1.4.2 + Firefox 3.5
-* **Version 0.6** works with:
+* **Version 0.6**
   * alpha Firebug 1.5 + Firefox 3.5
   * Firebug 1.4.2 + Firefox 3.5
-* **Version 0.5** works with:
+* **Version 0.5**
   * beta Firebug 1.4 + Firefox 3.0.x or Firefox 3.5
   * does not work with Firebug 1.3 and older!
-* **Version 0.4** works with:
+* **Version 0.4**
   * Firebug 1.3 + Firefox 3.1 
   * Firebug 1.2.1 + Firefox 3.0.4. 
   * does not work with Firebug 1.4 alpha!
-* **Version 0.3** works with:
+* **Version 0.3**
   * Firebug 1.3 + Firefox 3.1 
   * Firebug 1.2.1 + Firefox 3.0.4. 
-* **Version 0.2** is tested to work with alpha Firebug 1.3 and Firefox 3.1.
+* **Version 0.2** is tested to work with 
+  * alpha Firebug 1.3 and Firefox 3.1.
 
-## Installation
+## Python
 
-You definitely need [Firebug 1.4 or higher][firebug]. You also have to install Firefox Addon which is called [FireLogger][firelogger].
+Prior to installing check how to install [FireLogger Addon](#firefox)
+You definitely need [Firebug 1.4 or higher][firebug]. 
+You also have to install Firefox Addon which is called [FireLogger][firelogger].
 
-### Easy Installation
+### Installation
 
-#### Firefox Addon
-Preferred way is to [install this firefox extension][firelogger] via addons.mozilla.com.
+    pip install FirePython
 
-#### Python Library
+### Usage
 
-``sudo easy_install firepython``
+* **Django**: After installation, enable middleware by adding its path in `MIDDLEWARE_CLASSES: firepython.middleware.FirePythonDjango`. 
+* **WSGI**: After installation, enable middleware `firepython.middleware.FirePythonWSGI`.
+* **Custom**: Look for inspiration in [middleware.py][middleware-source]
 
-### Install from sources
-
-#### Firefox Addon
-
-If you want to install latest addon from sources, you need to build it. 
-It should be simple, but make sure you have these tools on your paths:
-
-* git
-* zip
-* ruby and rake
-
-Build steps:
-
-    git clone git://github.com/darwin/firelogger.git
-    cd firelogger
-    rake
-  
-After that your XPI should be available in ``build/firelogger-X.Y.xpi``.
-
-You should be able to install XPI file into Firefox: ``File -> Open File`` ... and browse for ``firelogger-X.Y.xpi``.
-
-Remember, that you should be also using latest FirePython library on server-side (see next section).
-
-#### Python Library
-
-Just note, that it depends on simplejson (or some other json parsing library needed by [jsonpickle][jsonpickle]).
-
-Clone [project from github][homepage] in your project directory.
-
-``git clone git://github.com/darwin/firepython.git``
-
-Or if your web project uses git for versioning, you may want to be cool and use firepython as a submodule of your git repository.
-  
-``git submodule add git://github.com/darwin/firepython.git relative/path/to/firepython``
-
-In case firepython directory is not on your import paths, you need to add ``relative/path/to`` folder into your ``sys.path``.
-
-## Usage
-
-#### Django
-
-After installation, enable middleware by adding its path in ``MIDDLEWARE_CLASSES``: ``firepython.middleware.FirePythonDjango``. 
-
-#### WSGI compatible
-
-After installation, enable middleware ``firepython.middleware.FirePythonWSGI``.
-
-#### Custom usage
-
-Look for inspiration in [middleware.py][middleware-source]
-
-### Real world examples
+#### The real-world examples
 
 * [FirePython added to Bloog][bloog-example] (blog engine for GAE)
 * [FirePython added to DryDrop][drydrop-example] (GAE hosting engine for GitHubbers && !Pythonists)
 * [FirePython added to Pyxer](http://code.google.com/p/pyxer/wiki/FirePython) (Python web framework)
 
-## FAQ
+---
+
+### FAQ
 
 #### logging.debug("hello world!") outputs nothing, what is wrong?
 > Default behavior of logging module is to output logs up from level INFO. Run "logging.getLogger().setLevel(logging.DEBUG)" to see all logs.
 
 #### Is there something similar for PHP?
-> Check out [FireLogger for PHP](http://firelogger.binaryage.com/php), you may also want to checkout alternative logging tool [FirePHP](http://firephp.org)
+> Check out [FireLogger for PHP](http://firelogger.binaryage.com/#php), you may also want to checkout alternative logging tool [FirePHP](http://firephp.org)
 
 #### Is there something similar for Ruby?
 > Nope. I'd like to have one, but didn't find time to write server-side support. You are welcome to [hack it](http://wiki.github.com/darwin/firelogger)!
@@ -164,7 +126,7 @@ Look for inspiration in [middleware.py][middleware-source]
 > Go to Firebug Menu -> Open With Editor -> Configure editors ... like this: ![TextMate hint][textmate-hint]
 
 #### I was unable to download/install FireLogger extension from addons.mozilla.org. Can you package latest version for me?
-> Some people reported this problem too. You may [try workaround][workaround].
+> Some people reported this problem too. You may [try this workaround][workaround].
 
 #### How can I see Python profiling graph?
 > 1. enable this feature in FireLogger preferences
@@ -184,26 +146,70 @@ Look for inspiration in [middleware.py][middleware-source]
 #### My page does multiple AJAX requests to the same URL, I see logs for the first response, but not for others. Am I missing something?
 > There is a bug in Firebug 1.4, it calls onResponse multiple times under some circumstances. That was very annoying, so I did a HACK and test for URL uniqueness in FireLogger. This will unfortunately filter out your multiple AJAX requests. Let's hope for fixes on Firebug side.
 
+## PHP
+
+Requires PHP 5.3 or higher!
+
+#### Download [firelogger.php here][repo]
+
+    require 'firelogger.php';
+    flog("Hello world!");
+
+---
+
+### FAQ
+
+#### What is the difference between FireLogger and [FirePHP](http://www.firephp.org/)?
+> Initially I've written [FireLogger for Python](http://firepython.binaryage.com/#python) because I was doing some Google App Engine development. Recently I was asked to do some PHP development. I've tried FirePHP, it worked for me, but it wasn't "pixel perfect" enough to fit my personal taste :-) I'm a javascript guy quite opinionated about tools. I wanted flexible dirty logging function which is capable of eating whatever I throw into it (like firebug's `console.log`). I also prefer to have server-side logger console separated from javascript console in Firebug. I prefer reusing firebug's internal components for variables' inspection. FireLogger has the same look&feel as javascript console (you can drill down watches firebug-way, same fonts and colors, etc.). FireLogger has also some advanced features which may be handy (password protection, "open in text editor" and production paths remapping).
+
+#### Is there something similar for Python?
+> Check out [FireLogger for Python](http://firepython.binaryage.com/#python)
+
+#### Is there something similar for Ruby?
+> Nope. I'd like to have one, but didn't find time to write server-side support. You are welcome to [hack it](http://wiki.github.com/darwin/firelogger)!
+
+#### Clicking on source-file links in Logger panel does nothing. How can I open trace-back sources in TextMate?
+> Go to Firebug Menu -> Open With Editor -> Configure editors ... like this: ![TextMate hint][textmate-hint]
+
+#### I was unable to download/install FireLogger extension from addons.mozilla.org. Can you package latest version for me?
+> Some people reported this problem too. You may [try this workaround][workaround].
+
+#### When I start Firefox and page loads I don't see any log records, what is wrong?
+> This is Firefox optimization. After start Firefox brings up browser state into the point where it was when you closed it (no network activity at all). Refresh your page and you should be ok.
+
+## Ruby
+
+<div style="min-height:300px">
+I'd like to see this happen... Give me your hand :-)
+</div>
+
 ## Changelog
 
-* **v0.8** (24.08.2010):
-  * [[meatballhat][dan]] Daniel Buch did pythonification of the whole project, rewrote packaging scripts, added tests and demo site, big kudos!
+### FireLogger Firefox Addon
+
+* **v0.9** (25.10.2010):
+  * [[darwin][antonin]] compatibility fixes for Firebug 1.5.4, 1.6 and alpha 1.7
+  * [[darwin][antonin]] timestamp hidden under clock symbol
+  * [[darwin][antonin]] each row shows short version of file path
+  * [[darwin][antonin]] hovering over file paths shows full paths
+  * [[darwin][antonin]] PHP-related improvements
+
+* **v0.8** (11.02.2010):
   * [[darwin][antonin]] added AppStats support for GAE ([read more](http://blog.binaryage.com/firelogger-with-appstats))
   * [[darwin][antonin]] fixed bug when logging "something like this %s", param <= the last parameter was not printed into logger
   * [[darwin][antonin]] better formatting string handling ([closes #6](http://github.com/darwin/firepython/issues#issue/6))
   * [[darwin][antonin]] marked as compatible with Firebug 1.6
 
-
-* **v0.7** (24.08.2010):
+* **v0.7** (24.08.2009):
   * [[darwin][antonin]] fixed subtle bug when some log records with structs containing null values were not displayed
-  * [[darwin][antonin]] removed hack fingting duplicit requests
+  * [[darwin][antonin]] removed hack fighting duplicate requests
   * [[darwin][antonin]] every batch of log records is prepended with ticket displaying request url
   * [[darwin][antonin]] added toggle button to persist panel content between refreshes
   * [[darwin][antonin]] rewriter correctly registers under Firebug namespace (fixed some bugs when detaching firebug panel)
   * [[darwin][antonin]] usability: expand root item in watches in case there is only one root item
 
-* **v0.6** (28.09.2009)
-  * [[darwin][antonin]] support for PHP ([firelogger.binaryage.com/php](http://firelogger.binaryage.com/php))
+* **v0.6** (18.08.2009)
+  * [[darwin][antonin]] support for PHP ([firelogger.binaryage.com](http://firelogger.binaryage.com))
   * [[darwin][antonin]] fixed bug when warning about disabled console and net panel was not displayed
   * [[darwin][antonin]] fixed broken "Open in external editor" functionality (FB1.5)
   * [[darwin][antonin]] compatibility with FB1.4.2
@@ -214,23 +220,82 @@ Look for inspiration in [middleware.py][middleware-source]
 
 * **v0.4** (30.03.2009)
   * [[bslatkin][brett]] profiling graphs for Python (WSGI)
-  * [[piranha][alexander]] enabled profiling support for Django
-  * [[piranha][alexander]] PEP-8 code cleanup
 
 * **v0.3** (16.03.2009)
   * [[darwin][antonin]] compatibility with Firebug 1.2
   * [[darwin][antonin]] password protection for production site
   * [[darwin][antonin]] path rewrite functionality
   * [[darwin][antonin]] console supports rich formatting of python log messages
-  * [[oxyum][ivan]+[piranha][alexander]] thread-safety
-  * [[darwin][antonin]] improved API
   * [[darwin][antonin]] Firefox Addon detached as a separate project FireLogger
   * [[darwin][antonin]] option for hiding internal reprs of exported objects
 
 * **v0.2** (24.11.2008)
+  * [[darwin][antonin]] fixed Logger panel styles when Firebug window was detached from main window
+
+* **v0.1** (15.11.2008) 
+  * [[darwin][antonin]] public alpha release
+  * [[darwin][antonin]] communication via response headers
+  * [[darwin][antonin]] logging module functionality (debug, info, warning, error, critical)
+  * [[darwin][antonin]] log record filtering by type
+  * [[darwin][antonin]] log record searching
+  * [[darwin][antonin]] opening files in TextMate (click to timestamp field)
+
+---
+
+### FireLogger for PHP
+
+* **v0.3** (25.10.2010)
+  * [[darwin][darwin]] compatibility with FireLogger 0.9
+  * [[dg][dg]] robust PHP->JSON serialization
+  * [[dg][dg]] implemented ability to catch fatal and parse errors
+  * [[dg][dg]] code refactoring
+
+* **v0.2** (24.08.2009)
+  * [[darwin][darwin]] compatibility with FireLogger 0.7
+  * [[darwin][darwin]] support for exceptions with callstack
+  * [[darwin][darwin]] password protection
+  * [[darwin][darwin]] checking for FireLogger extension header presence
+  * [[darwin][darwin]] processing uncaught exceptions
+  * [[darwin][darwin]] processing PHP errors
+  * [[darwin][darwin]] reflecting private properties (requires PHP 5.3+)
+
+* **v0.1** (17.08.2009)
+  * [[darwin][darwin]] compatibility with FireLogger 0.6
+  * [[darwin][darwin]] initial implementation, supports basic logging
+
+---
+
+### FireLogger for Python
+
+* **v0.9** (25.10.2010):
+  * [[darwin][antonin]] version bump to match the addon
+
+* **v0.8** (11.02.2010):
+  * [[meatballhat][dan]] Daniel Buch did pythonification of the whole project, rewrote packaging scripts, added tests and demo site, big kudos!
+
+* **v0.7** (24.08.2010):
+  * [[darwin][antonin]] rewriter correctly registers under Firebug namespace (fixed some bugs when detaching firebug panel)
+  * [[darwin][antonin]] usability: expand root item in watches in case there is only one root item
+
+* **v0.6** (18.08.2009)
+  * [[darwin][antonin]] version bump to match the addon
+
+* **v0.5** (28.06.2009)
+  * [[darwin][antonin]] version bump to match the addon
+
+* **v0.4** (30.03.2009)
+  * [[bslatkin][brett]] profiling graphs for Python (WSGI)
+  * [[piranha][alexander]] enabled profiling support for Django
+  * [[piranha][alexander]] PEP-8 code cleanup
+
+* **v0.3** (16.03.2009)
+  * [[oxyum][ivan]+[piranha][alexander]] thread-safety
+  * [[darwin][antonin]] improved API
+  * [[darwin][antonin]] Firefox Addon detached as a separate project FireLogger
+
+* **v0.2** (24.11.2008)
   * [[piranha][alexander]] Django and WSGI middlewares
   * [[piranha][alexander]] added as firepython package to PyPI index
-  * [[darwin][antonin]] fixed Logger panel styles when Firebug window was detached from main window
 
 * **v0.1** (15.11.2008) 
   * [[darwin][antonin]] public alpha release
@@ -239,7 +304,6 @@ Look for inspiration in [middleware.py][middleware-source]
   * [[darwin][antonin]] logging module functionality (debug, info, warning, error, critical)
   * [[darwin][antonin]] log record filtering by type
   * [[darwin][antonin]] log record searching
-  * [[darwin][antonin]] opening files in TextMate (click to timestamp field)
 
 ## Links
 
@@ -255,12 +319,13 @@ Look for inspiration in [middleware.py][middleware-source]
 * **[Ivan Fedorov][ivan]** - helped out with threading issues.
 * **[Brett Slatkin][brett]** - added profiling feature.
 * **[Daniel Buch][dan]** - pythonification of the whole project, rewrote packaging scripts, added tests and demo site, big kudos!
+* **[David Grudl][dg]** - various improvements to the PHP library
 
 ### Also thanks to
 
 * **[Joe Hewitt, John J. Barton, Jan Odvarko and others in Firebug working group][firebug-team]** - without these guys, the web wouldn't look like today.
 * **[Christoph Dorn and FirePHP contributors][firephp-authors]** - a lot of inspiration, good work mates!
-* **[John Paulett for jsonpickle library][jsonpickle]** - I was naively developing poor man's solution for inspecting objects in Python, but hopefully googled this gem early
+* **[John Paulett for jsonpickle library][jsonpickle]** - I was naively developing poor man's solution for inspecting Python objects but hopefully googled this gem early
 * **[Jose Fonseca for gprof2dot library][gprof2dot]** - deep Python profiling possible
 
 [firebug]: https://addons.mozilla.org/en-US/firefox/addon/1843
@@ -286,3 +351,6 @@ Look for inspiration in [middleware.py][middleware-source]
 [activation]:http://blog.getfirebug.com/?p=124
 [gprof2dot]:http://code.google.com/p/jrfonseca/wiki/Gprof2Dot
 [dan]: http://github.com/meatballhat
+[repo]: http://github.com/darwin/firelogger.php
+[darwin]:http://github.com/darwin
+[dg]:http://github.com/dg
