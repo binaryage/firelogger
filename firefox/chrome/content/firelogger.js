@@ -1514,7 +1514,8 @@ FBL.ns(function() {
                     if (object.data.args["py/tuple"]) { // FirePython hack
                         return object.data.args["py/tuple"][index];
                     }
-                    if (index==0 && !object.data.args.length) {
+                    // is this here because of Python? -> http://github.com/darwin/firelogger/commit/33bac4a72a742dc57d5cfd9ff2aaa20751384926
+                    if (index==0 && object.data.args.length===undefined) { 
                         return object.data.args;
                     }
                     return object.data.args[index];
