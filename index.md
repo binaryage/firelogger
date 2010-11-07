@@ -54,7 +54,7 @@ shots: [{
 
 ### Compatibility
 
-Firefox and Firebug are moving targets. Please make sure you use compatible versions. I'm unable to test all possible combinations.
+Both Firefox and Firebug are moving targets. Please make sure you use compatible versions. I'm unable to test all possible combinations.
 
 * **Version 0.9**
   * Firebug 1.4 - 1.6 + Firefox 3.5 - 4.0
@@ -83,9 +83,9 @@ Firefox and Firebug are moving targets. Please make sure you use compatible vers
 
 ## Python
 
-Prior to installing check how to install [FireLogger Addon](#firefox)
+Prior to installing check how to install [FireLogger Addon](#firefox).
 You definitely need [Firebug 1.4 or higher][firebug]. 
-You also have to install Firefox Addon which is called [FireLogger][firelogger].
+You must also install a Firefox Addon called [FireLogger][firelogger].
 
 ### Installation
 
@@ -93,11 +93,11 @@ You also have to install Firefox Addon which is called [FireLogger][firelogger].
 
 ### Usage
 
-* **Django**: After installation, enable middleware by adding its path in `MIDDLEWARE_CLASSES: firepython.middleware.FirePythonDjango`. 
+* **Django**: After installation, enable middleware by adding its path to `MIDDLEWARE_CLASSES: firepython.middleware.FirePythonDjango`. 
 * **WSGI**: After installation, enable middleware `firepython.middleware.FirePythonWSGI`.
-* **Custom**: Look for inspiration in [middleware.py][middleware-source]
+* **Custom**: Look for inspiration at [middleware.py][middleware-source]
 
-#### The real-world examples
+#### Real-world examples
 
 * [FirePython added to Bloog][bloog-example] (blog engine for GAE)
 * [FirePython added to DryDrop][drydrop-example] (GAE hosting engine for GitHubbers && !Pythonists)
@@ -107,44 +107,44 @@ You also have to install Firefox Addon which is called [FireLogger][firelogger].
 
 ### FAQ
 
-#### logging.debug("hello world!") outputs nothing, what is wrong?
-> Default behavior of logging module is to output logs up from level INFO. Run "logging.getLogger().setLevel(logging.DEBUG)" to see all logs.
+#### logging.debug("hello world!") outputs nothing, what's wrong?
+> The default behavior of the logging module is to only output message from level INFO and up. Run "logging.getLogger().setLevel(logging.DEBUG)" to see all messages.
 
 #### Is there something similar for PHP?
-> Check out [FireLogger for PHP](http://firelogger.binaryage.com/#php), you may also want to checkout alternative logging tool [FirePHP](http://firephp.org)
+> Check out [FireLogger for PHP](http://firelogger.binaryage.com/#php), you may also want to checkout an alternative logging tool,  [FirePHP](http://firephp.org)
 
 #### Is there something similar for Ruby?
-> Nope. I'd like to have one, but didn't find time to write server-side support. You are welcome to [hack it](http://wiki.github.com/darwin/firelogger)!
+> Nope. I'd like to have one, but haven't found time to write server-side support. You are welcome to [hack it](http://wiki.github.com/darwin/firelogger)!
 
 #### How can I change the name of the default logger?
 > logging.getLogger().name = "my logger"
 
 #### How can I open preferences?
-> Switch to Logger panel and look to Firebug's toolbar. There is a green bug icon. It is a menu button! <a href="http://cloud.github.com/downloads/darwin/firelogger/FireLoggerMenuButton.png"><img src="http://cloud.github.com/downloads/darwin/firelogger/FireLoggerMenuButton.png"></a><br/><a href="http://cloud.github.com/downloads/darwin/firelogger/FireLoggerPreferences.png"><img src="http://cloud.github.com/downloads/darwin/firelogger/FireLoggerPreferences.png"></a>
+> Switch to the Logger panel and look at Firebug's toolbar. There is a green bug icon. It's a menu button! <a href="http://cloud.github.com/downloads/darwin/firelogger/FireLoggerMenuButton.png"><img src="http://cloud.github.com/downloads/darwin/firelogger/FireLoggerMenuButton.png"></a><br/><a href="http://cloud.github.com/downloads/darwin/firelogger/FireLoggerPreferences.png"><img src="http://cloud.github.com/downloads/darwin/firelogger/FireLoggerPreferences.png"></a>
 
 #### Clicking on source-file links in Logger panel does nothing. How can I open trace-back sources in TextMate?
 > Go to Firebug Menu -> Open With Editor -> Configure editors ... like this: ![TextMate hint][textmate-hint]
 
-#### I was unable to download/install FireLogger extension from addons.mozilla.org. Can you package latest version for me?
-> Some people reported this problem too. You may [try this workaround][workaround].
+#### I was unable to download/install the FireLogger extension from addons.mozilla.org. Can you package latest version for me?
+> Some other people have reported this problem too. You may [try this workaround][workaround].
 
-#### How can I see Python profiling graph?
+#### How can I see the Python profiling graph?
 > 1. enable this feature in FireLogger preferences
-> 2. setup a editor in External Editors in Firebug called "Graphviz" (the name is important!). It should be path to executable of a viewer for .dot graphs.
-> 3. reload page and you should see info log line containing profiling info, clicking on the line launches configured Graphviz viewer (a filename will be passed as the first parameter)
+> 2. set up an editor in External Editors in Firebug called "Graphviz" (the name is important!). It should be the path to the executable of a viewer for .dot graphs.
+> 3. reload the page and you should see an info log line containing profiling info. Clicking on the line launches the configured Graphviz viewer (a filename will be passed as the first parameter)
 <a href="http://cloud.github.com/downloads/darwin/firelogger/ExternalEditorsConfiguration.png"><img src="http://cloud.github.com/downloads/darwin/firelogger/ExternalEditorsConfiguration.png"></a><br>
 <a href="http://cloud.github.com/downloads/darwin/firepython/FirePython-ProfilingGraphLog.png"><img src="http://cloud.github.com/downloads/darwin/firepython/FirePython-ProfilingGraphLog.png"></a><br>
 <a href="http://cloud.github.com/downloads/darwin/firepython/FirePython-ProfilingGraphExample.png"><img src="http://cloud.github.com/downloads/darwin/firepython/FirePython-ProfilingGraphExample.png" width="600"></a>
 
 #### How can I use AppStats support?
-> If you are on production site, make sure you are logged in as project admin. Also don't forget to enable support in FireLogger's preferences.
+> If you are on a production site, make sure you are logged in as a project admin. Also don't forget to enable support in FireLogger's preferences.
 <a href="http://cloud.github.com/downloads/darwin/firepython/FirePython-AppStatsExample.png"><img src="http://cloud.github.com/downloads/darwin/firepython/FirePython-AppStatsExample.png"></a>
 
-#### When I start Firefox and page loads I don't see any log records, what is wrong?
-> First page content was probably loaded from cache. Refresh your page and you should be ok.
+#### When I start Firefox and the page loads I don't see any log records, what is wrong?
+> The initial page content was probably loaded from cache. Refresh your page and you should be ok.
 
-#### My page does multiple AJAX requests to the same URL, I see logs for the first response, but not for others. Am I missing something?
-> There is a bug in Firebug 1.4, it calls onResponse multiple times under some circumstances. That was very annoying, so I did a HACK and test for URL uniqueness in FireLogger. This will unfortunately filter out your multiple AJAX requests. Let's hope for fixes on Firebug side.
+#### My page does multiple AJAX requests to the same URL and I see logs for the first response, but not for others. Am I missing something?
+> There is a bug in Firebug 1.4 which calls onResponse multiple times under some circumstances. That was very annoying, so I did a HACK and now test for URL uniqueness in FireLogger. This will unfortunately filter out your multiple AJAX requests. Let's hope for fixes on Firebug side.
 
 ## PHP
 
@@ -160,7 +160,7 @@ Requires PHP 5.3 or higher!
 ### FAQ
 
 #### What is the difference between FireLogger and [FirePHP](http://www.firephp.org/)?
-> Initially I've written [FireLogger for Python](http://firepython.binaryage.com/#python) because I was doing some Google App Engine development. Recently I was asked to do some PHP development. I've tried FirePHP, it worked for me, but it wasn't "pixel perfect" enough to fit my personal taste :-) I'm a javascript guy quite opinionated about tools. I wanted flexible dirty logging function which is capable of eating whatever I throw into it (like firebug's `console.log`). I also prefer to have server-side logger console separated from javascript console in Firebug. I prefer reusing firebug's internal components for variables' inspection. FireLogger has the same look&feel as javascript console (you can drill down watches firebug-way, same fonts and colors, etc.). FireLogger has also some advanced features which may be handy (password protection, "open in text editor" and production paths remapping).
+> I initially wrote [FireLogger for Python](http://firepython.binaryage.com/#python) because I was doing some Google App Engine development. Recently, I was asked to do some PHP development. I've tried FirePHP, it worked for me, but it wasn't "pixel perfect" enough to fit my personal taste :-) I'm a javascript who's guy quite opinionated about tools. I wanted flexible dirty logging functionality which is capable of eating whatever I throw into it (like firebug's `console.log`). I also prefer to have server-side a logger console separated from javascript console in Firebug. I prefer reusing Firebug's internal components for inspecting variables. FireLogger has the same look & feel as the javascript console (you can drill down into watches as in Firebug, same fonts and colors, etc.). FireLogger also has some advanced features which may be handy (password protection, "open in text editor" and production path remapping).
 
 #### Is there something similar for Python?
 > Check out [FireLogger for Python](http://firepython.binaryage.com/#python)
@@ -172,15 +172,15 @@ Requires PHP 5.3 or higher!
 > Go to Firebug Menu -> Open With Editor -> Configure editors ... like this: ![TextMate hint][textmate-hint]
 
 #### I was unable to download/install FireLogger extension from addons.mozilla.org. Can you package latest version for me?
-> Some people reported this problem too. You may [try this workaround][workaround].
+> Some other people reported this problem too. You may [try this workaround][workaround].
 
-#### When I start Firefox and page loads I don't see any log records, what is wrong?
-> This is Firefox optimization. After start Firefox brings up browser state into the point where it was when you closed it (no network activity at all). Refresh your page and you should be ok.
+#### When I start Firefox and the page loads I don't see any log records. What's wrong?
+> This is Firefox optimization. After starting, Firefox brings the browser state to the same point where it was when you closed it (no network activity at all). Refresh your page and you should be ok.
 
 ## Ruby
 
 <div style="min-height:300px">
-I'd like to see this happen... Give me your hand :-)
+I'd like to see this happen... Give me a hand :-)
 </div>
 
 ## Changelog
