@@ -10,8 +10,6 @@ meta_title: FireLogger is a sexy server logger console in Firebug
 meta_keywords: firebug,firefox,addon,firelogger,logging,python,php,binaryage,productivity,software,web,development
 meta_description: Your logging messages are displayed right under your fingerprints in Firebug
 meta_image: http://www.binaryage.com/shared/img/icons/firelogger-256.png
-leftshift: 20px
-likeshift: 12px
 facebook: 1
 retweet: 1
 buzz: 1
@@ -28,8 +26,8 @@ ogmeta: {
 }
 shots: [{
     title: "FireLogger in action with Python backend",
-    thumb: "/shared/img/firepython-mainshot.png",
-    full: "/shared/img/firepython-mainshot-full.png"
+    thumb: "/shared/img/firelogger4php-mainshot.png",
+    full: "/shared/img/firelogger4php-mainshot-full.png"
 }]
 ---
 
@@ -321,12 +319,12 @@ I'd like to see this happen... Give me a hand :-)
 * **[Daniel Buch][dan]** - pythonification of the whole project, rewrote packaging scripts, added tests and demo site, big kudos!
 * **[David Grudl][dg]** - various improvements to the PHP library
 
-### Also thanks to
+### Also many thanks to
 
-* **[Joe Hewitt, John J. Barton, Jan Odvarko and others in Firebug working group][firebug-team]** - without these guys, the web wouldn't look like today.
-* **[Christoph Dorn and FirePHP contributors][firephp-authors]** - a lot of inspiration, good work mates!
-* **[John Paulett for jsonpickle library][jsonpickle]** - I was naively developing poor man's solution for inspecting Python objects but hopefully googled this gem early
-* **[Jose Fonseca for gprof2dot library][gprof2dot]** - deep Python profiling possible
+* **[Joe Hewitt, John J. Barton, Jan Odvarko and others in Firebug working group][firebug-team]**
+* **[Christoph Dorn and FirePHP contributors][firephp-authors]**
+* **[John Paulett for jsonpickle library][jsonpickle]**
+* **[Jose Fonseca for gprof2dot library][gprof2dot]**
 
 [firebug]: https://addons.mozilla.org/en-US/firefox/addon/1843
 [appengine]: http://code.google.com/appengine
