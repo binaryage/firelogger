@@ -18,7 +18,7 @@ flattr: http://firelogger.binaryage.com
 ogmeta: {
     site_name: "BinaryAge website",
     description: "FireLogger is a sexy server logger console in Firebug",
-    email: "antonin@binaryage.com",
+    email: "support@binaryage.com",
     type: "product",
     title: "FireLogger",
     url: "http://firelogger.binaryage.com",
