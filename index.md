@@ -321,7 +321,7 @@ I'd like to see this happen... Give me a hand :-)
 
 ### Also many thanks to
 
-* **[Joe Hewitt, John J. Barton, Jan Odvarko and others in Firebug working group][firebug-team]**
+* **[Joe Hewitt, John J. Barton, Jan Odvarko and others in the Firebug working group][firebug-team]**
 * **[Christoph Dorn and FirePHP contributors][firephp-authors]**
 * **[John Paulett for jsonpickle library][jsonpickle]**
 * **[Jose Fonseca for gprof2dot library][gprof2dot]**
