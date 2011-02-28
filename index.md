@@ -3,7 +3,8 @@ layout: product
 title: FireLogger is a sexy server logger console in Firebug
 product_title: FireLogger
 product_subtitle: a sexy server logger console in Firebug
-download: https://addons.mozilla.org/en-US/firefox/addon/11090
+download: https://github.com/downloads/darwin/firelogger/firelogger-0.9.xpi
+download_old: https://addons.mozilla.org/en-US/firefox/addon/11090
 repo: http://github.com/darwin/firepython
 downloadtitle: Install 0.9
 meta_title: FireLogger is a sexy server logger console in Firebug
@@ -328,7 +329,8 @@ I'd like to see this happen... Give me a hand :-)
 
 [firebug]: https://addons.mozilla.org/en-US/firefox/addon/1843
 [appengine]: http://code.google.com/appengine
-[firelogger]: https://addons.mozilla.org/en-US/firefox/addon/11090
+[firelogger_old]: https://addons.mozilla.org/en-US/firefox/addon/11090
+[firelogger]: https://github.com/downloads/darwin/firelogger/firelogger-0.9.xpi
 [homepage]: http://github.com/darwin/firepython
 [contact]: mailto:antonin@hildebrand.cz
 [workaround]: http://getsatisfaction.com/xrefresh/topics/unable_to_download_rainbow_for_firebug
