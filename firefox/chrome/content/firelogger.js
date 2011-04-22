@@ -35,7 +35,7 @@ FBL.ns(function() {
         const observerService = CCSV("@mozilla.org/observer-service;1", "nsIObserverService");
         const prefService = CCSV("@mozilla.org/preferences-service;1", "nsIPrefBranch2");
         
-        const fireloggerHomepage = "http://firepython.binaryage.com";
+        const fireloggerHomepage = "http://firelogger.binaryage.com";
         
         if (Firebug.TraceModule) {
             Firebug.TraceModule.DBG_FIRELOGGER = false;
