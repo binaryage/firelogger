@@ -97,12 +97,12 @@
         },
         /////////////////////////////////////////////////////////////////////////////////////////
         update: function() {
+            this.refresh();
             var selection = this._tree.view.selection;
             this._removeButton.disabled = (selection.count != 1);
             this._changeButton.disabled = (selection.count != 1);
             this._moveUpButton.disabled = (selection.count != 1) || (selection.currentIndex == 0);
             this._moveDownButton.disabled = (selection.count != 1) || (selection.currentIndex == this._treeView.data.length-1);
-            this.refresh();
         },
         /////////////////////////////////////////////////////////////////////////////////////////
         onSelectionChanged: function() {
