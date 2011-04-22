@@ -13,8 +13,6 @@
       openHelpLink(helpTopic);
     }
     
-    if (!top.FireLogger) top.FireLogger = {};
-
     FireLogger.MainPrefPane = {
         _disablePasswordProtectionButton : null,
 

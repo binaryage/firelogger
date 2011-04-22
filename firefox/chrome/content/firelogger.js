@@ -3,7 +3,7 @@ FBL.ns(function() {
         
         var hideUI = function() {
             collapse($("fbFireLoggerFilters"), true);
-        }
+        };
         
         var checkFirebugVersion = function(minMajor, minMinor) {
             var version = Firebug.getVersion();
@@ -17,7 +17,7 @@ FBL.ns(function() {
             var major = parseInt(a[0], 10);
             var minor = parseInt(a[1], 10);
             return major>minMajor || (major==minMajor && minor>=minMinor);
-        }
+        };
         
         if (!checkFirebugVersion(1,4)) {
             alert('FireQuery works with Firebug 1.4 and later.\nPlease upgrade Firebug to the latest version.');
@@ -53,12 +53,12 @@ FBL.ns(function() {
                 if (/FireLogger.Protocol/.test(arguments[0])) return;
                 FBTrace.sysout.apply(this, arguments);
             }
-        }
+        };
             
         var capitalize = function(s) {
             if (!s) return '';
             return s.charAt(0).toUpperCase() + s.substring(1).toLowerCase();
-        }
+        };
         
         ////////////////////////////////////////////////////////////////////////
         var FireLoggerEvent = function(type, data, icon) {
@@ -78,7 +78,7 @@ FBL.ns(function() {
             }
             var color = niceColors[code % niceColors.length];
             return color;
-        }
+        };
         
         // http://code.google.com/p/fbug/source/detail?r=7625
         var getCurrentContext = function() {
@@ -86,7 +86,7 @@ FBL.ns(function() {
                 return Firebug.currentContext;
             }
             return FirebugContext;
-        }
+        };
         
         var module;
         
@@ -133,7 +133,7 @@ FBL.ns(function() {
                 var that = this;
                 var job = function() {
                     that.pushRecord(file.href, that.parseHeaders(file.responseHeaders));
-                }
+                };
                 if (file.responseHeaders) {
                     job();
                 } else {
@@ -176,13 +176,13 @@ FBL.ns(function() {
                 }
                 // we use UTF-8 encoded JSON to exchange messages which are wrapped with base64
                 var packets = [];
-                for (bufferId in buffers) {
+                for (var bufferId in buffers) {
                     if (!buffers.hasOwnProperty(bufferId)) continue;
                     var buffer = buffers[bufferId].join('');
-                    buffer = Base64.decode(buffer);
-                    buffer = UTF8.decode(buffer);
+                    buffer = FireLogger.Base64.decode(buffer);
+                    buffer = FireLogger.UTF8.decode(buffer);
                     dbg(">>>FireLogger.Protocol", "Packet "+bufferId+":\n"+buffer);
-                    var packet = JSON.parse(buffer);
+                    var packet = FireLogger.JSON.parse(buffer);
                     packets.push(packet);
                 }
                 return packets;
@@ -222,7 +222,8 @@ FBL.ns(function() {
                 // process data packets for given url and sort log messages
                 var logs = [];
                 var events = [];
-                for (var i=0; i < packets.length; i++) {
+                var i;
+                for (i=0; i < packets.length; i++) {
                     var packet = packets[i];
                     var items = this.processDataPacket(url, packet);
                     var newEvents = items[0];
@@ -243,7 +244,6 @@ FBL.ns(function() {
                 // render events and logs
                 module.deferRendering(); // prevent flickering
                 module.showRequest(this, { url: url });
-                var i;
                 for (i=0; i<events.length; i++) {
                     var event = events[i];
                     module.publishEvent(this, event);
@@ -318,7 +318,7 @@ FBL.ns(function() {
             prepareAuth: function(password) {
                 // this must match with logger library code
                 var auth = "#FireLoggerPassword#"+password+"#";
-                return hex_md5(auth);
+                return FireLogger.md5.hex_md5(auth);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             observe: function(subject, topic, data) {
@@ -708,32 +708,33 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             zoomAppstatsTable: function(td) {
                 dbg(">>>FireLogger.zoomAppstatsTable", table);
+				var bars, markerLast, markerLastZoom;
                 var table = getAncestorByClass(td, 'rec-appstats-table');
                 var zoom = parseInt(table.getAttribute('zoom'), 10);
                 if (zoom) {
                     table.setAttribute('zoom', '0');
-                    var bars = getElementsByClass(table, 'bar-wrapper');
+                    bars = getElementsByClass(table, 'bar-wrapper');
                     Array.forEach(bars, function(e,i,a) {
                         e.style.MozTransitionProperty = 'width';
                         e.style.MozTransitionDuration = '0.5s';
                         e.style.width = '100%';
                     }, this);
-                    var markerLast = getElementByClass(table, 'axis-marker-last');
-                    var markerLastZoom = getElementByClass(table, 'axis-marker-last-zoom');
+                    markerLast = getElementByClass(table, 'axis-marker-last');
+                    markerLastZoom = getElementByClass(table, 'axis-marker-last-zoom');
                     markerLast.style.display = 'block';
                     markerLastZoom.style.display = 'none';
                 } else {
                     table.setAttribute('zoom', '1');
                     var zoomCoef = table.getAttribute('data-zoom');
                     var coef = parseFloat(zoomCoef);
-                    var bars = getElementsByClass(table, 'bar-wrapper');
+                    bars = getElementsByClass(table, 'bar-wrapper');
                     Array.forEach(bars, function(e,i,a) {
                         e.style.MozTransitionProperty = 'width';
                         e.style.MozTransitionDuration = '0.5s';
                         e.style.width = 100*(100 / zoomCoef)+'%';
                     }, this);
-                    var markerLast = getElementByClass(table, 'axis-marker-last');
-                    var markerLastZoom = getElementByClass(table, 'axis-marker-last-zoom');
+                    markerLast = getElementByClass(table, 'axis-marker-last');
+                    markerLastZoom = getElementByClass(table, 'axis-marker-last-zoom');
                     markerLast.style.display = 'none';
                     markerLastZoom.style.display = 'block';
                 }
@@ -746,7 +747,7 @@ FBL.ns(function() {
                 // sample path: /Users/darwin/code/firelogger/tests/basic.php(62) : eval()'d code
                 var m = path.match(/(.*)\(([0-9]+)\) : eval\(\)'d code$/);
                 if (m) {
-                    path = m[1]
+                    path = m[1];
                     line = parseInt(m[2], 10);
                     dbg(">>>  PHP-style eval found", [path, line]);
                 }
@@ -788,15 +789,15 @@ FBL.ns(function() {
                 var worker = function(x) {
                     if (typeof x != "object") return x;
                     if (x===null) return null; // handle special case, because typeof null === "object"
-                    var res;
+                    var res, i;
                     if (isArray(x)) {
                         res = [];
-                        for (var i=0; i<x.length; i++) {
+                        for (i=0; i<x.length; i++) {
                             res.push(worker(x[i]));
                         }
                     } else {
                         res = {};
-                        for (var i in x) {
+                        for (i in x) {
                             if (x.hasOwnProperty(i)) {
                                 if (i=="_") continue;
                                 res[i] = worker(x[i]);
@@ -838,7 +839,7 @@ FBL.ns(function() {
                 openNewTab(fireloggerHomepage);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
-            loadFilterStates: function(states) {
+            loadFilterStates: function() {
                 dbg(">>>FireLogger.loadFilterStates", arguments);
                 var states = ["debug", "info", "warning", "error", "critical", "appengine"];
                 var res = {};

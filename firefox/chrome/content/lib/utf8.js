@@ -5,7 +5,7 @@
  *
  **/
 
-var UTF8 = {
+FireLogger.UTF8 = {
 
   // public method for url encoding
   encode : function (string) {

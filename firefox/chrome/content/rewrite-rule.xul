@@ -5,19 +5,22 @@
 <?xml-stylesheet href="chrome://firelogger/skin/dialogs.css"?>
 <dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" buttons="accept,cancel" 
   id="firelogger-preferences-rewrite-rule" width="600" title="Rewrite Rule"
-  onload="sizeToContent();onLoad();" ondialogaccept="return onAccept()" persist="screenX screenY">
+  onload="sizeToContent();FireLogger.RuleEvents.onLoad();" ondialogaccept="return FireLogger.RuleEvents.onAccept()" persist="screenX screenY">
+  <script type="application/x-javascript">
+      var FireLogger = {}; // play nicely and gather all our globals here
+  </script>
   <script type="application/x-javascript" src="chrome://firelogger/content/rewrite-rule.js"/>
   <vbox flex="1">
     <hbox align="center">
       <label control="original">Original Path /</label>
-      <textbox id="original" flex="1" oninput="onChange()"/>
+      <textbox id="original" flex="1" oninput="FireLogger.RuleEvents.onChange()"/>
       <label control="flags">/</label>
-      <textbox id="flags" width="40px" oninput="onChange()"/>
+      <textbox id="flags" width="40px" oninput="FireLogger.RuleEvents.onChange()"/>
     </hbox>
     <separator class="thin"/>
     <hbox align="center">
       <label control="replacement">Replacement Path</label>
-      <textbox id="replacement" flex="1" oninput="onChange()"/>
+      <textbox id="replacement" flex="1" oninput="FireLogger.RuleEvents.onChange()"/>
     </hbox>
     <separator class="thin"/>
     <label class="note">Original path is a javascript regular expression with flags. Replacement path is a replacement string. See javascript's <a href="https://developer.mozilla.org/En/Core_JavaScript_1.5_Reference/Global_Objects/String/Replace">string.replace() reference</a>.</label>

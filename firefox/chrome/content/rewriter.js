@@ -3,7 +3,6 @@
     const rewritesPrefName = "extensions.firebug.firelogger.rewrites";
     const prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch2);
 
-    if (!top.FireLogger) top.FireLogger = {};
     FireLogger.Rewriter = {
         /////////////////////////////////////////////////////////////////////////////////////////
         rewritePath: function(path, details) {

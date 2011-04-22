@@ -9,6 +9,9 @@
   id="firelogger-preferences" title="FireLogger Preferences" type="prefwindow"
   onload="sizeToContent()" windowtype="FireLogger:Preferences" ondialoghelp="openPrefsHelp()" width="700">
 
+  <script type="application/x-javascript">
+      var FireLogger = {}; // play nicely and gather all our globals here
+  </script>
   <script type="application/x-javascript" src="chrome://firelogger/content/rewriter.js"/>
   <script type="application/x-javascript" src="chrome://firelogger/content/preferences.js"/>
   
