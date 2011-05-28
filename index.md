@@ -1,6 +1,7 @@
 ---
-layout: product
+layout: product2
 title: FireLogger is a sexy server logger console in Firebug
+product: firelogger
 product_title: FireLogger
 product_subtitle: a sexy server logger console in Firebug
 download: https://github.com/downloads/darwin/firelogger/firelogger-0.9.xpi
@@ -175,12 +176,6 @@ Requires PHP 5.3 or higher!
 
 #### When I start Firefox and the page loads I don't see any log records. What's wrong?
 > This is Firefox optimization. After starting, Firefox brings the browser state to the same point where it was when you closed it (no network activity at all). Refresh your page and you should be ok.
-
-## Ruby
-
-<div style="min-height:300px">
-I'd like to see this happen... Give me a hand :-)
-</div>
 
 ## Changelog
 
