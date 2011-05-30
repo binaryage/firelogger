@@ -4,10 +4,10 @@ title: FireLogger is a sexy server logger console in Firebug
 product: firelogger
 product_title: FireLogger
 product_subtitle: a sexy server logger console in Firebug
-download: https://github.com/downloads/darwin/firelogger/firelogger-0.9.xpi
+download: https://github.com/downloads/darwin/firelogger/firelogger-1.0.xpi
 download_old: https://addons.mozilla.org/en-US/firefox/addon/11090
 repo: http://github.com/darwin/firepython
-downloadtitle: Install 0.9
+downloadtitle: Install 1.0
 meta_title: FireLogger is a sexy server logger console in Firebug
 meta_keywords: firebug,firefox,addon,firelogger,logging,python,php,binaryage,productivity,software,web,development
 meta_description: Your logging messages are displayed right under your fingerprints in Firebug
@@ -27,7 +27,7 @@ ogmeta: {
     image: "http://www.binaryage.com/shared/img/icons/firelogger-256.png"
 }
 shots: [{
-    title: "FireLogger in action with Python backend",
+    title: "FireLogger in action with PHP backend",
     thumb: "/shared/img/firelogger4php-mainshot.png",
     full: "/shared/img/firelogger4php-mainshot-full.png"
 }]
@@ -56,6 +56,9 @@ shots: [{
 
 Both Firefox and Firebug are moving targets. Please make sure you use compatible versions. I'm unable to test all possible combinations.
 
+* **Version 1.0**
+  * Firebug 1.4 - 1.7 + Firefox 3.5 - 4.0
+  * early alpha Firebug 1.7 + Firefox 3.5 - 4.0
 * **Version 0.9**
   * Firebug 1.4 - 1.6 + Firefox 3.5 - 4.0
   * early alpha Firebug 1.7 + Firefox 3.5 - 4.0
@@ -180,6 +183,10 @@ Requires PHP 5.3 or higher!
 ## Changelog
 
 ### FireLogger Firefox Addon
+
+* **v1.0** (30.05.2011):
+  * [[darwin][antonin]] compatibility fixes for Firebug 1.7 (major refactoring to satisfy new AMO rules)
+  * [[darwin][antonin]] fix bug when list of rewrite rules was not populated after opening preferences window
 
 * **v0.9** (25.10.2010):
   * [[darwin][antonin]] compatibility fixes for Firebug 1.5.4, 1.6 and alpha 1.7
@@ -325,7 +332,7 @@ Requires PHP 5.3 or higher!
 [firebug]: https://addons.mozilla.org/en-US/firefox/addon/1843
 [appengine]: http://code.google.com/appengine
 [firelogger_old]: https://addons.mozilla.org/en-US/firefox/addon/11090
-[firelogger]: https://github.com/downloads/darwin/firelogger/firelogger-0.9.xpi
+[firelogger]: https://github.com/downloads/darwin/firelogger/firelogger-1.0.xpi
 [homepage]: http://github.com/darwin/firepython
 [contact]: mailto:antonin@hildebrand.cz
 [workaround]: http://getsatisfaction.com/xrefresh/topics/unable_to_download_rainbow_for_firebug
