@@ -4,8 +4,7 @@ title: FireLogger is a sexy server logger console in Firebug
 product: firelogger
 product_title: FireLogger
 product_subtitle: a sexy server logger console in Firebug
-download: https://github.com/downloads/darwin/firelogger/firelogger-1.0.xpi
-download_old: https://addons.mozilla.org/en-US/firefox/addon/11090
+download: https://addons.mozilla.org/en-US/firefox/addon/11090
 repo: http://github.com/darwin/firepython
 downloadtitle: Install 1.0
 meta_title: FireLogger is a sexy server logger console in Firebug
@@ -114,7 +113,7 @@ You must also install a Firefox Addon called [FireLogger][firelogger].
 > The default behavior of the logging module is to only output message from level INFO and up. Run "logging.getLogger().setLevel(logging.DEBUG)" to see all messages.
 
 #### Is there something similar for PHP?
-> Check out [FireLogger for PHP](http://firelogger.binaryage.com/#php), you may also want to checkout an alternative logging tool,  [FirePHP](http://firephp.org)
+> Check out [FireLogger for PHP](http://firelogger.binaryage.com/#php), you may also want to checkout an alternative logging tool, [FirePHP](http://firephp.org)
 
 #### Is there something similar for Ruby?
 > Nope. I'd like to have one, but haven't found time to write server-side support. You are welcome to [hack it](http://wiki.github.com/darwin/firelogger)!
@@ -313,6 +312,7 @@ Requires PHP 5.3 or higher!
 * **[Realtime logging to Firebug using FirePython](http://code.google.com/appengine/articles/firepython.html)** by Antonin Hildebrand
 * **[FirePython — no prints?][firepython-no-prints]** by Alexander Solovyov
 * **[Integrating FirePython with Pyxer](http://code.google.com/p/pyxer/wiki/FirePython)** by Dirk Holtwick
+* **[FireLogger – a sexy server logger console in Firebug](http://inchoo.net/ecommerce/firelogger-a-sexy-server-logger-console-in-firebug)** by [Ivan Weiler](http://inchoo.net/author/weiler)
 
 ### Contributors
 
