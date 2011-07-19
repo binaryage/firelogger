@@ -6,7 +6,8 @@ product_title: FireLogger
 product_subtitle: a sexy server logger console in Firebug
 download: https://addons.mozilla.org/en-US/firefox/addon/11090
 repo: http://github.com/darwin/firepython
-downloadtitle: Install 1.0
+downloadtitle: Install v1.0
+downloadsubtitle: and listen to your server
 meta_title: FireLogger is a sexy server logger console in Firebug
 meta_keywords: firebug,firefox,addon,firelogger,logging,python,php,binaryage,productivity,software,web,development
 meta_description: Your logging messages are displayed right under your fingerprints in Firebug
