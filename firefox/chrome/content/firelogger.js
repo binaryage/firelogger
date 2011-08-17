@@ -37,14 +37,12 @@ FBL.ns(function() {
         
         const fireloggerHomepage = "http://firelogger.binaryage.com";
         
-        if (Firebug.TraceModule) {
-            Firebug.TraceModule.DBG_FIRELOGGER = false;
-            var type = prefService.getPrefType('extensions.firebug.DBG_FIRELOGGER');
-            if (type != nsIPrefBranch.PREF_BOOL) try {
-                prefService.setBoolPref('extensions.firebug.DBG_FIRELOGGER', false);
-            } catch(e) {}
+        if (typeof FBTrace == "undefined") {
+            FBTrace = { sysout: function() {} };
         }
-        
+
+        FBTrace.DBG_FIRELOGGER = prefService.getBoolPref("extensions.firebug.DBG_FIRELOGGER");
+                    
         var dbg = function() {
             if (FBTrace && FBTrace.DBG_FIRELOGGER) { 
                 if (/FireLoggerPanel/.test(arguments[0])) return;
@@ -86,6 +84,16 @@ FBL.ns(function() {
                 return Firebug.currentContext;
             }
             return FirebugContext;
+        };
+        
+        var getCurrentChrome = function(context) {
+            if (context && context.chrome) {
+                return context.chrome;
+            }
+            if (top.FirebugChrome) {
+                return top.FirebugChrome;
+            }
+            return Firebug.chrome;
         };
         
         var module;
@@ -352,7 +360,7 @@ FBL.ns(function() {
                 this.panelName = 'firelogger';
                 this.description = "Server-side logging tools for web developers.";
                 Firebug.ActivableModule.initialize.apply(this, arguments);
-                this.patchChrome(top.FirebugChrome, getCurrentContext());
+                this.patchChrome(getCurrentChrome(), getCurrentContext());
                 this.cachePrefs();
                 prefService.addObserver(this.getPrefDomain(), this, false);
                 module.start();

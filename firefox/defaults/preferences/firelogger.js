@@ -15,3 +15,5 @@ pref("extensions.firebug.firelogger.filterWarningLogs", false);
 pref("extensions.firebug.firelogger.filterErrorLogs", false);
 pref("extensions.firebug.firelogger.filterCriticalLogs", false);
 pref("extensions.firebug.firelogger.filterAppengineLogs", false);
+
+pref("extensions.firebug.DBG_FIRELOGGER", false);
