@@ -294,7 +294,6 @@ FBL.ns(function() {
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             cachePrefs: function() {
-                this._password = this.getPref('password');
                 this._richFormatting = this.getPref('richFormatting');
                 this._showInternal = this.getPref('showInternal');
                 this._enableProfiler = this.getPref('enableProfiler');
@@ -336,8 +335,9 @@ FBL.ns(function() {
                     // from v0.3 do not alter User-Agent, this guy on twitter had problems: http://twitter.com/lawouach/statuses/1222443299
                     // just add FireLogger version as a separate header, should be safe
                     httpChannel.setRequestHeader("X-FireLogger", this.version, false);
-                    if (this._password) {
-                        httpChannel.setRequestHeader("X-FireLoggerAuth", this.prepareAuth(this._password), false);
+                    var password = FireLogger.PasswordVault.get();
+                    if (password) {
+                        httpChannel.setRequestHeader("X-FireLoggerAuth", this.prepareAuth(password), false);
                     }
                     if (this._enableProfiler) {
                         httpChannel.setRequestHeader("X-FireLoggerProfiler", "1", false);

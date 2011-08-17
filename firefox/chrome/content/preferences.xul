@@ -13,6 +13,7 @@
       var FireLogger = {}; // play nicely and gather all our globals here
   </script>
   <script type="application/x-javascript" src="chrome://firelogger/content/rewriter.js"/>
+  <script type="application/x-javascript" src="chrome://firelogger/content/password-vault.js"/>
   <script type="application/x-javascript" src="chrome://firelogger/content/preferences.js"/>
   
   <prefpane id="firelogger-preferences-main" label="Main" 
@@ -20,7 +21,6 @@
     image="chrome://firelogger/skin/preferences-main.png"
     helpTopic="preferences#main">
     <preferences>
-      <preference id="preference-password" name="extensions.firebug.firelogger.password" type="string"/>
       <preference id="preference-formatting" name="extensions.firebug.firelogger.richFormatting" type="bool"/>
       <preference id="preference-internal" name="extensions.firebug.firelogger.showInternal" type="bool"/>
       <preference id="preference-profiler" name="extensions.firebug.firelogger.enableProfiler" type="bool"/>
@@ -34,10 +34,10 @@
       </hbox>
     </groupbox>
     <groupbox id="firelogger-preferences-main-password-group">
-      <caption label="Password Protection"/>
+      <caption label="Password Protection - password required by FireLogger server"/>
       <hbox align="center">
         <label value="Password" control="firelogger-preferences-main-password"/>
-        <textbox id="firelogger-preferences-main-password" class="padded" flex="1" type="password" preference="preference-password" oninput="FireLogger.MainPrefPane.update()"/>
+        <textbox id="firelogger-preferences-main-password" class="padded" flex="1" type="password" oninput="FireLogger.MainPrefPane.update()"/>
         <button id="firelogger-preferences-main-disable-password-protection" label="Disable Password Protection" oncommand="FireLogger.MainPrefPane.disablePasswordProtection()"/>
       </hbox>
     </groupbox>

@@ -21,20 +21,27 @@
             var args = window.arguments[0];
             this._FBL = args.FBL;
 
+            this._passwordEdit = document.getElementById("firelogger-preferences-main-password"); 
             this._disablePasswordProtectionButton = document.getElementById("firelogger-preferences-main-disable-password-protection");
 
-            this.update();
+            this.update(true);
         },
         /////////////////////////////////////////////////////////////////////////////////////////
         disablePasswordProtection: function() {
-            prefs.setCharPref("extensions.firebug.firelogger.password", "");
-            this.update();
+            FireLogger.PasswordVault.set("");
+            this.update(true);
         },
         /////////////////////////////////////////////////////////////////////////////////////////
-        update: function() {
+        update: function(noFetch) {
             var that = this;
+            
+            if (!noFetch) { 
+                FireLogger.PasswordVault.set(this._passwordEdit.value);
+            }
+            this._passwordEdit.value = FireLogger.PasswordVault.get();
+            
             setTimeout(function(){
-                var enabled = prefs.getCharPref("extensions.firebug.firelogger.password").replace(/^\s+|\s+$/g,"")!="";
+                var enabled = FireLogger.PasswordVault.get().replace(/^\s+|\s+$/g,"")!="";
                 that._disablePasswordProtectionButton.disabled = !enabled;
             }, 100);
         }
@@ -89,7 +96,7 @@
                 getColumnProperties: function(colid,column,props) {}
             };
 
-            this.update();
+            this.update(true);
         },
         /////////////////////////////////////////////////////////////////////////////////////////
         refresh: function() {
@@ -98,6 +105,7 @@
         /////////////////////////////////////////////////////////////////////////////////////////
         update: function() {
             this.refresh();
+            
             var selection = this._tree.view.selection;
             this._removeButton.disabled = (selection.count != 1);
             this._changeButton.disabled = (selection.count != 1);

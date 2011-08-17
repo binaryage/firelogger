@@ -11,6 +11,7 @@
   <script type="application/x-javascript" src="chrome://firelogger/content/lib/base64.js"/>
   <script type="application/x-javascript" src="chrome://firelogger/content/lib/md5.js"/>
   <script type="application/x-javascript" src="chrome://firelogger/content/rewriter.js"/>
+  <script type="application/x-javascript" src="chrome://firelogger/content/password-vault.js"/>
   <script type="application/x-javascript" src="chrome://firelogger/content/firelogger.js"/>
   <commandset id="mainCommandSet">
     <command id="cmd_FireLoggerClear" oncommand="Firebug.FireLogger.onClear()"/>
