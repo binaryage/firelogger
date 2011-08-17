@@ -187,7 +187,7 @@ Requires PHP 5.3 or higher!
 
 ### FireLogger Firefox Addon
 
-* **v1.1** (30.05.2011):
+* **v1.1** (17.08.2011):
   * compatibility fixes for Firebug 1.8.1 and Firefox 6.*
   * using native Firefox's JSON parser (faster)
   * using [nsILoginManager](https://developer.mozilla.org/en/XPCOM_Interface_Reference/Using_nsILoginManager) for storing site-protection password (safer)
