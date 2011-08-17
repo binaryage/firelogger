@@ -8,7 +8,6 @@
       var FireLogger = {}; // play nicely and gather all our globals here
   </script>
   <script type="application/x-javascript" src="chrome://firelogger/content/lib/utf8.js"/>
-  <script type="application/x-javascript" src="chrome://firelogger/content/lib/json2.js"/>
   <script type="application/x-javascript" src="chrome://firelogger/content/lib/base64.js"/>
   <script type="application/x-javascript" src="chrome://firelogger/content/lib/md5.js"/>
   <script type="application/x-javascript" src="chrome://firelogger/content/rewriter.js"/>

@@ -190,7 +190,7 @@ FBL.ns(function() {
                     buffer = FireLogger.Base64.decode(buffer);
                     buffer = FireLogger.UTF8.decode(buffer);
                     dbg(">>>FireLogger.Protocol", "Packet "+bufferId+":\n"+buffer);
-                    var packet = FireLogger.JSON.parse(buffer);
+                    var packet = JSON.parse(buffer);
                     packets.push(packet);
                 }
                 return packets;
