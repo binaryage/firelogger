@@ -4,9 +4,10 @@ title: FireLogger is a sexy server logger console in Firebug
 product: firelogger
 product_title: FireLogger
 product_subtitle: a sexy server logger console in Firebug
-download: https://addons.mozilla.org/en-US/firefox/addon/11090
-repo: http://github.com/darwin/firepython
-downloadtitle: Install v1.0
+download: https://addons.mozilla.org/en-US/firefox/addons/versions/11090
+download_alt: https://addons.mozilla.org/en-US/firefox/addon/11090
+repo: http://github.com/darwin/firelogger
+downloadtitle: Install v1.1
 downloadsubtitle: and listen to your server
 meta_title: FireLogger is a sexy server logger console in Firebug
 meta_keywords: firebug,firefox,addon,firelogger,logging,python,php,binaryage,productivity,software,web,development
@@ -56,6 +57,8 @@ shots: [{
 
 Both Firefox and Firebug are moving targets. Please make sure you use compatible versions. I'm unable to test all possible combinations.
 
+* **Version 1.1**
+  * Firebug 1.4 - 1.8.1 + Firefox 3.5 - 4.0
 * **Version 1.0**
   * Firebug 1.4 - 1.7 + Firefox 3.5 - 4.0
   * early alpha Firebug 1.7 + Firefox 3.5 - 4.0
@@ -184,127 +187,132 @@ Requires PHP 5.3 or higher!
 
 ### FireLogger Firefox Addon
 
+* **v1.1** (30.05.2011):
+  * compatibility fixes for Firebug 1.8.1 and Firefox 6.*
+  * using native Firefox's JSON parser (faster)
+  * using [nsILoginManager](https://developer.mozilla.org/en/XPCOM_Interface_Reference/Using_nsILoginManager) for storing site-protection password (safer)
+
 * **v1.0** (30.05.2011):
-  * [[darwin][antonin]] compatibility fixes for Firebug 1.7 (major refactoring to satisfy new AMO rules)
-  * [[darwin][antonin]] fix bug when list of rewrite rules was not populated after opening preferences window
+  * compatibility fixes for Firebug 1.7 (major refactoring to satisfy new AMO rules)
+  * fix bug when list of rewrite rules was not populated after opening preferences window
 
 * **v0.9** (25.10.2010):
-  * [[darwin][antonin]] compatibility fixes for Firebug 1.5.4, 1.6 and alpha 1.7
-  * [[darwin][antonin]] timestamp hidden under clock symbol
-  * [[darwin][antonin]] each row shows short version of file path
-  * [[darwin][antonin]] hovering over file paths shows full paths
-  * [[darwin][antonin]] PHP-related improvements
+  * compatibility fixes for Firebug 1.5.4, 1.6 and alpha 1.7
+  * timestamp hidden under clock symbol
+  * each row shows short version of file path
+  * hovering over file paths shows full paths
+  * PHP-related improvements
 
 * **v0.8** (11.02.2010):
-  * [[darwin][antonin]] added AppStats support for GAE ([read more](http://blog.binaryage.com/firelogger-with-appstats))
-  * [[darwin][antonin]] fixed bug when logging "something like this %s", param <= the last parameter was not printed into logger
-  * [[darwin][antonin]] better formatting string handling ([closes #6](http://github.com/darwin/firepython/issues#issue/6))
-  * [[darwin][antonin]] marked as compatible with Firebug 1.6
+  * added AppStats support for GAE ([read more](http://blog.binaryage.com/firelogger-with-appstats))
+  * fixed bug when logging "something like this %s", param <= the last parameter was not printed into logger
+  * better formatting string handling ([closes #6](http://github.com/darwin/firepython/issues#issue/6))
+  * marked as compatible with Firebug 1.6
 
 * **v0.7** (24.08.2009):
-  * [[darwin][antonin]] fixed subtle bug when some log records with structs containing null values were not displayed
-  * [[darwin][antonin]] removed hack fighting duplicate requests
-  * [[darwin][antonin]] every batch of log records is prepended with ticket displaying request url
-  * [[darwin][antonin]] added toggle button to persist panel content between refreshes
-  * [[darwin][antonin]] rewriter correctly registers under Firebug namespace (fixed some bugs when detaching firebug panel)
-  * [[darwin][antonin]] usability: expand root item in watches in case there is only one root item
+  * fixed subtle bug when some log records with structs containing null values were not displayed
+  * removed hack fighting duplicate requests
+  * every batch of log records is prepended with ticket displaying request url
+  * added toggle button to persist panel content between refreshes
+  * rewriter correctly registers under Firebug namespace (fixed some bugs when detaching firebug panel)
+  * usability: expand root item in watches in case there is only one root item
 
 * **v0.6** (18.08.2009)
-  * [[darwin][antonin]] support for PHP ([firelogger.binaryage.com](http://firelogger.binaryage.com))
-  * [[darwin][antonin]] fixed bug when warning about disabled console and net panel was not displayed
-  * [[darwin][antonin]] fixed broken "Open in external editor" functionality (FB1.5)
-  * [[darwin][antonin]] compatibility with FB1.4.2
-  * [[darwin][antonin]] compatibility with alpha FB1.5
+  * support for PHP ([firelogger.binaryage.com](http://firelogger.binaryage.com))
+  * fixed bug when warning about disabled console and net panel was not displayed
+  * fixed broken "Open in external editor" functionality (FB1.5)
+  * compatibility with FB1.4.2
+  * compatibility with alpha FB1.5
 
 * **v0.5** (28.06.2009)
-  * [[darwin][antonin]] compatibility with Firebug 1.4
+  * compatibility with Firebug 1.4
 
 * **v0.4** (30.03.2009)
-  * [[bslatkin][brett]] profiling graphs for Python (WSGI)
+  * profiling graphs for Python (WSGI) [[bslatkin][brett]]
 
 * **v0.3** (16.03.2009)
-  * [[darwin][antonin]] compatibility with Firebug 1.2
-  * [[darwin][antonin]] password protection for production site
-  * [[darwin][antonin]] path rewrite functionality
-  * [[darwin][antonin]] console supports rich formatting of python log messages
-  * [[darwin][antonin]] Firefox Addon detached as a separate project FireLogger
-  * [[darwin][antonin]] option for hiding internal reprs of exported objects
+  * compatibility with Firebug 1.2
+  * password protection for production site
+  * path rewrite functionality
+  * console supports rich formatting of python log messages
+  * Firefox Addon detached as a separate project FireLogger
+  * option for hiding internal reprs of exported objects
 
 * **v0.2** (24.11.2008)
-  * [[darwin][antonin]] fixed Logger panel styles when Firebug window was detached from main window
+  * fixed Logger panel styles when Firebug window was detached from main window
 
 * **v0.1** (15.11.2008) 
-  * [[darwin][antonin]] public alpha release
-  * [[darwin][antonin]] communication via response headers
-  * [[darwin][antonin]] logging module functionality (debug, info, warning, error, critical)
-  * [[darwin][antonin]] log record filtering by type
-  * [[darwin][antonin]] log record searching
-  * [[darwin][antonin]] opening files in TextMate (click to timestamp field)
+  * public alpha release
+  * communication via response headers
+  * logging module functionality (debug, info, warning, error, critical)
+  * log record filtering by type
+  * log record searching
+  * opening files in TextMate (click to timestamp field)
 
 ---
 
 ### FireLogger for PHP
 
 * **v0.3** (25.10.2010)
-  * [[darwin][darwin]] compatibility with FireLogger 0.9
-  * [[dg][dg]] robust PHP->JSON serialization
-  * [[dg][dg]] implemented ability to catch fatal and parse errors
-  * [[dg][dg]] code refactoring
+  * compatibility with FireLogger 0.9
+  * robust PHP->JSON serialization [[dg][dg]]
+  * implemented ability to catch fatal and parse errors [[dg][dg]]
+  * code refactoring [[dg][dg]]
 
 * **v0.2** (24.08.2009)
-  * [[darwin][darwin]] compatibility with FireLogger 0.7
-  * [[darwin][darwin]] support for exceptions with callstack
-  * [[darwin][darwin]] password protection
-  * [[darwin][darwin]] checking for FireLogger extension header presence
-  * [[darwin][darwin]] processing uncaught exceptions
-  * [[darwin][darwin]] processing PHP errors
-  * [[darwin][darwin]] reflecting private properties (requires PHP 5.3+)
+  * compatibility with FireLogger 0.7
+  * support for exceptions with callstack
+  * password protection
+  * checking for FireLogger extension header presence
+  * processing uncaught exceptions
+  * processing PHP errors
+  * reflecting private properties (requires PHP 5.3+)
 
 * **v0.1** (17.08.2009)
-  * [[darwin][darwin]] compatibility with FireLogger 0.6
-  * [[darwin][darwin]] initial implementation, supports basic logging
+  * compatibility with FireLogger 0.6
+  * initial implementation, supports basic logging
 
 ---
 
 ### FireLogger for Python
 
 * **v0.9** (25.10.2010):
-  * [[darwin][antonin]] version bump to match the addon
+  * version bump to match the addon
 
 * **v0.8** (11.02.2010):
-  * [[meatballhat][dan]] Daniel Buch did pythonification of the whole project, rewrote packaging scripts, added tests and demo site, big kudos!
+  * Daniel Buch did pythonification of the whole project, rewrote packaging scripts, added tests and demo site, big kudos! [[meatballhat][dan]]
 
 * **v0.7** (24.08.2010):
-  * [[darwin][antonin]] rewriter correctly registers under Firebug namespace (fixed some bugs when detaching firebug panel)
-  * [[darwin][antonin]] usability: expand root item in watches in case there is only one root item
+  * rewriter correctly registers under Firebug namespace (fixed some bugs when detaching firebug panel)
+  * usability: expand root item in watches in case there is only one root item
 
 * **v0.6** (18.08.2009)
-  * [[darwin][antonin]] version bump to match the addon
+  * version bump to match the addon
 
 * **v0.5** (28.06.2009)
-  * [[darwin][antonin]] version bump to match the addon
+  * version bump to match the addon
 
 * **v0.4** (30.03.2009)
-  * [[bslatkin][brett]] profiling graphs for Python (WSGI)
-  * [[piranha][alexander]] enabled profiling support for Django
-  * [[piranha][alexander]] PEP-8 code cleanup
+  * profiling graphs for Python (WSGI) [[bslatkin][brett]]
+  * enabled profiling support for Django [[piranha][alexander]]
+  * PEP-8 code cleanup [[piranha][alexander]]
 
 * **v0.3** (16.03.2009)
-  * [[oxyum][ivan]+[piranha][alexander]] thread-safety
-  * [[darwin][antonin]] improved API
-  * [[darwin][antonin]] Firefox Addon detached as a separate project FireLogger
+  * thread-safety [[oxyum][ivan]+[piranha][alexander]]
+  * improved API
+  * Firefox Addon detached as a separate project FireLogger
 
 * **v0.2** (24.11.2008)
-  * [[piranha][alexander]] Django and WSGI middlewares
-  * [[piranha][alexander]] added as firepython package to PyPI index
+  * Django and WSGI middlewares [[piranha][alexander]]
+  * added as firepython package to PyPI index [[piranha][alexander]]
 
 * **v0.1** (15.11.2008) 
-  * [[darwin][antonin]] public alpha release
-  * [[darwin][antonin]] initial server-side support for Python and Google App Engine
-  * [[darwin][antonin]] communication via response headers
-  * [[darwin][antonin]] logging module functionality (debug, info, warning, error, critical)
-  * [[darwin][antonin]] log record filtering by type
-  * [[darwin][antonin]] log record searching
+  * public alpha release
+  * initial server-side support for Python and Google App Engine
+  * communication via response headers
+  * logging module functionality (debug, info, warning, error, critical)
+  * log record filtering by type
+  * log record searching
 
 ## Links
 
