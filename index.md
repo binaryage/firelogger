@@ -4,10 +4,10 @@ title: FireLogger is a sexy server logger console in Firebug
 product: firelogger
 product_title: FireLogger
 product_subtitle: a sexy server logger console in Firebug
-download: https://addons.mozilla.org/en-US/firefox/addons/versions/11090
-download_alt: https://addons.mozilla.org/en-US/firefox/addon/11090
+download: https://addons.mozilla.org/firefox/addon/firelogger/versions
+download_alt: https://addons.mozilla.org/firefox/addon/firelogger
 repo: http://github.com/darwin/firelogger
-downloadtitle: Install v1.1
+downloadtitle: Install v1.2
 downloadsubtitle: and listen to your server
 meta_title: FireLogger is a sexy server logger console in Firebug
 meta_keywords: firebug,firefox,addon,firelogger,logging,python,php,binaryage,productivity,software,web,development
@@ -57,6 +57,8 @@ shots: [{
 
 Both Firefox and Firebug are moving targets. Please make sure you use compatible versions. I'm unable to test all possible combinations.
 
+* **Version 1.2**
+  * Firebug 1.4 - 1.9 + Firefox 3.5 - 11.0
 * **Version 1.1**
   * Firebug 1.4 - 1.8.1 + Firefox 3.5 - 4.0
 * **Version 1.0**
@@ -186,6 +188,11 @@ Requires PHP 5.3 or higher!
 ## Changelog
 
 ### FireLogger Firefox Addon
+
+* **v1.2** (14.01.2012):
+  * do not send X-FireLogger header when Firebug's Logger panel is disabled
+  * updated compatibility with Firebug 1.9
+  * marked as compatible with Firefox 11.*
 
 * **v1.1** (17.08.2011):
   * compatibility fixes for Firebug 1.8.1 and Firefox 6.*
