@@ -57,37 +57,22 @@ shots: [{
 
 Both Firefox and Firebug are moving targets. Please make sure you use compatible versions. I'm unable to test all possible combinations.
 
-* **Version 1.2**
-  * Firebug 1.4 - 1.9 + Firefox 3.5 - 11.0
-* **Version 1.1**
-  * Firebug 1.4 - 1.8.1 + Firefox 3.5 - 4.0
-* **Version 1.0**
-  * Firebug 1.4 - 1.7 + Firefox 3.5 - 4.0
-  * early alpha Firebug 1.7 + Firefox 3.5 - 4.0
-* **Version 0.9**
-  * Firebug 1.4 - 1.6 + Firefox 3.5 - 4.0
-  * early alpha Firebug 1.7 + Firefox 3.5 - 4.0
-* **Version 0.8**
-  * Firebug 1.4 and 1.5.3 + Firefox 3.5 or 3.6
-  * broken with Firebug 1.5.4+
-* **Version 0.7**
-  * alpha Firebug 1.5 + Firefox 3.5
-  * Firebug 1.4.2 + Firefox 3.5
-* **Version 0.6**
-  * alpha Firebug 1.5 + Firefox 3.5
-  * Firebug 1.4.2 + Firefox 3.5
-* **Version 0.5**
-  * beta Firebug 1.4 + Firefox 3.0.x or Firefox 3.5
-  * does not work with Firebug 1.3 and older!
-* **Version 0.4**
-  * Firebug 1.3 + Firefox 3.1 
-  * Firebug 1.2.1 + Firefox 3.0.4. 
-  * does not work with Firebug 1.4 alpha!
-* **Version 0.3**
-  * Firebug 1.3 + Firefox 3.1 
-  * Firebug 1.2.1 + Firefox 3.0.4. 
-* **Version 0.2** is tested to work with 
-  * alpha Firebug 1.3 and Firefox 3.1.
+<ul style="margin-bottom: 0px !important">
+<li><b>Version 1.2</b> works with Firebug 1.4 - 1.9 + Firefox 3.5 - 11.0</li>
+</ul>
+<a style="margin-top: 0px !important" href="javascript:$('.older-compatibility').toggle(); $(this).hide()">show compatibility of older versions &darr;</a>
+<ul class="older-compatibility" style="display:none">
+<li><b>Version 1.1</b> works with Firebug 1.4 - 1.8.1 + Firefox 3.5 - 4.0</li>
+<li><b>Version 1.0</b> works with Firebug 1.4 - 1.7 + Firefox 3.5 - 4.0 and early alpha Firebug 1.7 + Firefox 3.5 - 4.0</li>
+<li><b>Version 0.9</b> works with Firebug 1.4 - 1.6 + Firefox 3.5 - 4.0 and early alpha Firebug 1.7 + Firefox 3.5 - 4.0</li>
+<li><b>Version 0.8</b> works with Firebug 1.4 and 1.5.3 + Firefox 3.5 or 3.6 and is broken with Firebug 1.5.4+</li>
+<li><b>Version 0.7</b> works with alpha Firebug 1.5 + Firefox 3.5 and Firebug 1.4.2 + Firefox 3.5</li>
+<li><b>Version 0.6</b> works with alpha Firebug 1.5 + Firefox 3.5 and Firebug 1.4.2 + Firefox 3.5</li>
+<li><b>Version 0.5</b> works with beta Firebug 1.4 + Firefox 3.0.x or Firefox 3.5 and does not work with Firebug 1.3 and older!</li>
+<li><b>Version 0.4</b> works with Firebug 1.3 + Firefox 3.1, Firebug 1.2.1 + Firefox 3.0.4 and does not work with Firebug 1.4 alpha!</li>
+<li><b>Version 0.3</b> works with Firebug 1.3 + Firefox 3.1 and Firebug 1.2.1 + Firefox 3.0.4. </li>
+<li><b>Version 0.2</b> is tested to work with alpha Firebug 1.3 and Firefox 3.1.</li>
+</ul>
 
 ## Python
 
