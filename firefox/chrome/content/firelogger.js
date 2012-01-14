@@ -329,28 +329,27 @@ FBL.ns(function() {
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             observe: function(subject, topic, data) {
-                dbg(">>>FireLogger.observe: "+topic, subject);
-                if (topic == "http-on-modify-request") {
-                    var httpChannel = subject.QueryInterface(Ci.nsIHttpChannel);
-                    // from v0.3 do not alter User-Agent, this guy on twitter had problems: http://twitter.com/lawouach/statuses/1222443299
-                    // just add FireLogger version as a separate header, should be safe
-                    httpChannel.setRequestHeader("X-FireLogger", this.version, false);
-                    var password = FireLogger.PasswordVault.get();
-                    if (password) {
-                        httpChannel.setRequestHeader("X-FireLoggerAuth", this.prepareAuth(password), false);
-                    }
-                    if (this._enableProfiler) {
-                        httpChannel.setRequestHeader("X-FireLoggerProfiler", "1", false);
-                    }
-                    if (this._enableAppstats) {
-                        httpChannel.setRequestHeader("X-FireLoggerAppstats", "1", false);
+                dbg(">>>FireLogger.observe: "+topic, data);
+                if (module.isEnabled()) {
+                    if (topic == "http-on-modify-request") {
+                        var httpChannel = subject.QueryInterface(Ci.nsIHttpChannel);
+                        // from v0.3 do not alter User-Agent, this guy on twitter had problems: http://twitter.com/lawouach/statuses/1222443299
+                        // just add FireLogger version as a separate header, should be safe
+                        httpChannel.setRequestHeader("X-FireLogger", this.version, false);
+                        var password = FireLogger.PasswordVault.get();
+                        if (password) {
+                            httpChannel.setRequestHeader("X-FireLoggerAuth", this.prepareAuth(password), false);
+                        }
+                        if (this._enableProfiler) {
+                            httpChannel.setRequestHeader("X-FireLoggerProfiler", "1", false);
+                        }
+                        if (this._enableAppstats) {
+                            httpChannel.setRequestHeader("X-FireLoggerAppstats", "1", false);
+                        }
                     }
                 }
                 if (topic == "nsPref:changed") {
                     this.cachePrefs();
-                    var parts = data.split(".");
-                    var name = parts[parts.length-1];
-                    var value = this.getPref(name);
                     this.updatePanel();
                 }
             },
@@ -716,7 +715,7 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             zoomAppstatsTable: function(td) {
                 dbg(">>>FireLogger.zoomAppstatsTable", table);
-				var bars, markerLast, markerLastZoom;
+                var bars, markerLast, markerLastZoom;
                 var table = getAncestorByClass(td, 'rec-appstats-table');
                 var zoom = parseInt(table.getAttribute('zoom'), 10);
                 if (zoom) {
