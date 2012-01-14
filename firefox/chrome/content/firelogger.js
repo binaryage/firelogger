@@ -268,7 +268,7 @@ FBL.ns(function() {
         // Firebug.FireLogger
         //
         module = Firebug.FireLogger = extend(Firebug.ActivableModule, {
-            version: '1.1',
+            version: '1.2',
             currentPanel: null,
             collapsedRequests: {},
         
