@@ -4,8 +4,8 @@ title: FireLogger is a sexy server logger console in Firebug
 product: firelogger
 product_title: FireLogger
 product_subtitle: a sexy server logger console in Firebug
-download: https://addons.mozilla.org/firefox/addon/firelogger/versions
-download_alt: https://addons.mozilla.org/firefox/addon/firelogger
+download_alt: https://addons.mozilla.org/firefox/addon/firelogger/versions
+download: https://addons.mozilla.org/firefox/addon/firelogger
 repo: http://github.com/darwin/firelogger
 downloadtitle: Install v1.2
 downloadsubtitle: and listen to your server
