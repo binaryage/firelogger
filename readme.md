@@ -1,6 +1,6 @@
 # FireLogger Addon
 
-FireLogger is a sexy logger console integrated into [Firebug][firebug]. You'll need Firebug 1.4 or higher.
+FireLogger is a sexy logger console integrated into [Firebug][firebug]. You'll need Firebug 1.4 or higher and iconv php module activated.
 
 ## Supported server-side languages
 
