@@ -170,6 +170,12 @@ Requires PHP 5.3 or higher!
 #### When I start Firefox and the page loads I don't see any log records. What's wrong?
 > This is Firefox optimization. After starting, Firefox brings the browser state to the same point where it was when you closed it (no network activity at all). Refresh your page and you should be ok.
 
+## ColdFusion
+
+Please follow documentation on a [separate homepage](http://www.wdg.us/cf-firelogger).
+
+[GitHub repository here](https://github.com/mpaperno/CF-FireLogger)
+
 ## Changelog
 
 ### FireLogger Firefox Addon
@@ -307,6 +313,10 @@ Requires PHP 5.3 or higher!
   * log record searching
 
 ## Links
+
+### Additional documentation
+
+* **[FireLogger for ColdFusion](http://www.wdg.us/cf-firelogger)** by Maxim Paperno
 
 ### Articles
 
