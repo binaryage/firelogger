@@ -332,6 +332,7 @@ Please follow documentation on a [separate homepage](http://www.wdg.us/cf-firelo
 * **[Brett Slatkin][brett]** - added profiling feature.
 * **[Daniel Buch][dan]** - pythonification of the whole project, rewrote packaging scripts, added tests and demo site, big kudos!
 * **[David Grudl][dg]** - various improvements to the PHP library
+* **[Maxim Paperno][paperno]** - ColdFusion server-side library
 
 ### Also many thanks to
 
@@ -367,3 +368,4 @@ Please follow documentation on a [separate homepage](http://www.wdg.us/cf-firelo
 [repo]: http://github.com/darwin/firelogger.php
 [darwin]:http://github.com/darwin
 [dg]:http://github.com/dg
+[paperno]: http://www.worlddesign.com/
