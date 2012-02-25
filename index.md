@@ -32,8 +32,8 @@ shots: [{
     thumb: "/shared/img/firelogger4php-mainshot.png",
     full: "/shared/img/firelogger4php-mainshot-full.png"
 }]
+buttons: <a href="http://firelogger-php-tests.binaryage.com/basic.php" class="button product-button-thumbup"><div><div><div class="trial-note">after restart</div>Visit a Test Page<div class="product-specs">to check that your addon works correctly</div></div></div></a>
 ---
-
 
 ## Firefox
 
