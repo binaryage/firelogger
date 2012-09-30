@@ -107,13 +107,13 @@ You must also install a Firefox Addon called [FireLogger][firelogger].
 > Check out [FireLogger for PHP](http://firelogger.binaryage.com/#php), you may also want to checkout an alternative logging tool, [FirePHP](http://firephp.org)
 
 #### Is there something similar for Ruby?
-> Nope. I'd like to have one, but haven't found time to write server-side support. You are welcome to [hack it](http://wiki.github.com/darwin/firelogger)!
+> Nope. I'd like to have one, but haven't found time to write server-side support. You are welcome to [hack it](http://wiki.github.com/binaryage/firelogger)!
 
 #### How can I change the name of the default logger?
 > logging.getLogger().name = "my logger"
 
 #### How can I open preferences?
-> Switch to the Logger panel and look at Firebug's toolbar. There is a green bug icon. It's a menu button! <a href="http://cloud.github.com/downloads/darwin/firelogger/FireLoggerMenuButton.png"><img src="http://cloud.github.com/downloads/darwin/firelogger/FireLoggerMenuButton.png"></a><br/><a href="http://cloud.github.com/downloads/darwin/firelogger/FireLoggerPreferences.png"><img src="http://cloud.github.com/downloads/darwin/firelogger/FireLoggerPreferences.png"></a>
+> Switch to the Logger panel and look at Firebug's toolbar. There is a green bug icon. It's a menu button! <a href="images/FireLoggerMenuButton.png"><img src="images/FireLoggerMenuButton.png"></a><br/><a href="images/FireLoggerPreferences.png"><img src="images/FireLoggerPreferences.png"></a>
 
 #### Clicking on source-file links in Logger panel does nothing. How can I open trace-back sources in TextMate?
 > Go to Firebug Menu -> Open With Editor -> Configure editors ... like this: ![TextMate hint][textmate-hint]
@@ -125,13 +125,12 @@ You must also install a Firefox Addon called [FireLogger][firelogger].
 > 1. enable this feature in FireLogger preferences
 > 2. set up an editor in External Editors in Firebug called "Graphviz" (the name is important!). It should be the path to the executable of a viewer for .dot graphs.
 > 3. reload the page and you should see an info log line containing profiling info. Clicking on the line launches the configured Graphviz viewer (a filename will be passed as the first parameter)
-<a href="http://cloud.github.com/downloads/darwin/firelogger/ExternalEditorsConfiguration.png"><img src="http://cloud.github.com/downloads/darwin/firelogger/ExternalEditorsConfiguration.png"></a><br>
-<a href="http://cloud.github.com/downloads/darwin/firepython/FirePython-ProfilingGraphLog.png"><img src="http://cloud.github.com/downloads/darwin/firepython/FirePython-ProfilingGraphLog.png"></a><br>
-<a href="http://cloud.github.com/downloads/darwin/firepython/FirePython-ProfilingGraphExample.png"><img src="http://cloud.github.com/downloads/darwin/firepython/FirePython-ProfilingGraphExample.png" width="600"></a>
+<a href="images/ExternalEditorsConfiguration.png"><img src="images/ExternalEditorsConfiguration.png"></a><br>
+<a href="images/FirePython-ProfilingGraphLog.png"><img src="images/FirePython-ProfilingGraphLog.png"></a><br>
+<a href="images/FirePython-ProfilingGraphExample.png"><img src="images/FirePython-ProfilingGraphExample.png" width="600"></a>
 
 #### How can I use AppStats support?
 > If you are on a production site, make sure you are logged in as a project admin. Also don't forget to enable support in FireLogger's preferences.
-<a href="http://cloud.github.com/downloads/darwin/firepython/FirePython-AppStatsExample.png"><img src="http://cloud.github.com/downloads/darwin/firepython/FirePython-AppStatsExample.png"></a>
 
 #### When I start Firefox and the page loads I don't see any log records, what is wrong?
 > The initial page content was probably loaded from cache. Refresh your page and you should be ok.
@@ -159,7 +158,7 @@ Requires PHP 5.3 or higher!
 > Check out [FireLogger for Python](http://firepython.binaryage.com/#python)
 
 #### Is there something similar for Ruby?
-> Nope. I'd like to have one, but didn't find time to write server-side support. You are welcome to [hack it](http://wiki.github.com/darwin/firelogger)!
+> Nope. I'd like to have one, but didn't find time to write server-side support. You are welcome to [hack it](http://wiki.github.com/binaryage/firelogger)!
 
 #### Clicking on source-file links in Logger panel does nothing. How can I open trace-back sources in TextMate?
 > Go to Firebug Menu -> Open With Editor -> Configure editors ... like this: ![TextMate hint][textmate-hint]
@@ -204,7 +203,7 @@ Please follow documentation on a [separate homepage](http://www.wdg.us/cf-firelo
 * **v0.8** (11.02.2010):
   * added AppStats support for GAE ([read more](http://blog.binaryage.com/firelogger-with-appstats))
   * fixed bug when logging "something like this %s", param <= the last parameter was not printed into logger
-  * better formatting string handling ([closes #6](http://github.com/darwin/firepython/issues#issue/6))
+  * better formatting string handling ([closes #6](http://github.com/binaryage/firelogger.py/issues#issue/6))
   * marked as compatible with Firebug 1.6
 
 * **v0.7** (24.08.2009):
@@ -344,8 +343,8 @@ Please follow documentation on a [separate homepage](http://www.wdg.us/cf-firelo
 [firebug]: https://addons.mozilla.org/en-US/firefox/addon/1843
 [appengine]: http://code.google.com/appengine
 [firelogger_old]: https://addons.mozilla.org/en-US/firefox/addon/11090
-[firelogger]: https://github.com/downloads/darwin/firelogger/firelogger-1.0.xpi
-[homepage]: http://github.com/darwin/firepython
+[firelogger]: https://github.com/downloads/win/firelogger/firelogger-1.0.xpi
+[homepage]: http://github.com/binaryage/firelogger.py
 [contact]: mailto:antonin@hildebrand.cz
 [workaround]: http://getsatisfaction.com/xrefresh/topics/unable_to_download_rainbow_for_firebug
 [firepython-no-prints]:http://blogg.ingspree.net/blog/2008/11/24/firepython-no-prints/
@@ -356,16 +355,15 @@ Please follow documentation on a [separate homepage](http://www.wdg.us/cf-firelo
 [firebug-team]:http://getfirebug.com/workingGroup
 [firephp-authors]:http://www.christophdorn.com/
 [irc]:irc://irc.freenode.net/#binaryage
-[addon-homepage]: http://github.com/darwin/firepython-addon
-[middleware-source]:http://github.com/darwin/firepython/tree/master/middleware.py
+[middleware-source]:http://github.com/binaryage/firelogger.py/tree/master/middleware.py
 [jsonpickle]:http://code.google.com/p/jsonpickle/
 [bloog-example]:http://github.com/DocSavage/bloog/commit/346e5fb7c1fd87259dc79f2c4ae852badb6f2b79
-[drydrop-example]:http://github.com/darwin/drydrop/tree/22aadc0a463ae76e10aaefdf7aee002c7e605793/dryapp/drydrop_handler.py#L326
-[textmate-hint]:http://cloud.github.com/downloads/darwin/firepython/TextMateWithFirePython.png
+[drydrop-example]:http://github.com/binaryage/drydrop/tree/22aadc0a463ae76e10aaefdf7aee002c7e605793/dryapp/drydrop_handler.py#L326
+[textmate-hint]:images/TextMateWithFirePython.png
 [activation]:http://blog.getfirebug.com/?p=124
 [gprof2dot]:http://code.google.com/p/jrfonseca/wiki/Gprof2Dot
 [dan]: http://github.com/meatballhat
-[repo]: http://github.com/darwin/firelogger.php
+[repo]: http://github.com/binaryage/firelogger.php
 [darwin]:http://github.com/darwin
 [dg]:http://github.com/dg
 [paperno]: http://www.worlddesign.com/
