@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html xmlns:og="http://opengraphprotocol.org/schema/"
+      xmlns:fb="http://developers.facebook.com/schema/"
+      
+>
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+        <title>FireLogger is a sexy server logger console in Firebug</title>
+        
+        <link rel="canonical" href="http://firelogger.binaryage.com">
+        
+        
+        <meta name="title" content="FireLogger is a sexy server logger console in Firebug" />
+        
+        
+        <meta name="description" content="Your logging messages are displayed right under your fingerprints in Firebug" />
+        
+        
+        <meta name="keywords" content="firebug,firefox,addon,firelogger,logging,python,php,binaryage,productivity,software,web,development" />
+        
+        
+        <link rel="image_src" href="http://www.binaryage.com/base/img/icons/firelogger-256.png" />
+        
+        <meta name="google-site-verification" content="N_xzdr6ymSUQFhAEvQg7f-sp1JAeJCdW2JuaRg-da0w" />
+        <meta property="fb:admins" content="antonin.hildebrand" />
+        
+            
+                <meta property="og:email" content="support@binaryage.com" />
+            
+            
+                <meta property="og:description" content="FireLogger is a sexy server logger console in Firebug" />
+            
+            
+                <meta property="og:site_name" content="BinaryAge website" />
+            
+            
+                <meta property="og:type" content="product" />
+            
+            
+                <meta property="og:title" content="FireLogger" />
+            
+            
+                <meta property="og:url" content="http://firelogger.binaryage.com" />
+            
+            
+                <meta property="og:image" content="http://www.binaryage.com/base/img/icons/firelogger-256.png" />
+            
+        
+        
+        <!-- test comment - hello world! -->
+
+        <link href="http://www.google.com/profiles/antonin.hildebrand" rel="me" type="text/html" />
+        <link href="http://feeds.feedburner.com/binaryage-blog" type="application/atom+xml" rel="alternate" title="Ideas from BinaryAge" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+        
+        <script type="text/javascript" charset="utf-8">
+            // give the custom font 5s to load, otherwise enable simple font visibility
+            setTimeout(function() {
+                $('html').addClass('wf-fake-active');
+            }, 2000);
+        </script>
+        
+        <style type="text/css">
+            /* prevent visible font switching - this is also repeated in global.styl for fastspring compatibility!  */
+            .js .wf {
+                opacity: 0 !important;
+                filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0) !important;
+                -webkit-transition: opacity 0.5s ease 0s;
+                -moz-transition: opacity 0.5s ease 0s;
+                -o-transition: opacity 0.5s ease 0s;
+                transition: opacity 0.5s ease 0s;
+            }
+            .wf-active .wf,
+            .wf-fake-active .wf {
+                opacity: 1 !important;
+                filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100) !important;
+            }
+        </style>
+        
+        
+
+        <link rel="stylesheet" href="/base/css/site.css" type="text/css">
+    
+        
+        
+        
+        
+        <!-- SCRIPTS START -->
+        <script type="text/javascript" charset="utf-8">
+            /*
+            CSS Browser Selector v0.4.0 (Nov 02, 2010)
+            Rafael Lima (http://rafael.adm.br)
+            http://rafael.adm.br/css_browser_selector
+            License: http://creativecommons.org/licenses/by/2.5/
+            Contributors: http://rafael.adm.br/css_browser_selector#contributors
+            */
+            function css_browser_selector(u){var ua=u.toLowerCase(),is=function(t){return ua.indexOf(t)>-1},g='gecko',w='webkit',s='safari',o='opera',m='mobile',h=document.documentElement,b=[(!(/opera|webtv/i.test(ua))&&/msie\s(\d)/.test(ua))?('ie ie'+RegExp.$1):is('firefox/2')?g+' ff2':is('firefox/3.5')?g+' ff3 ff3_5':is('firefox/3.6')?g+' ff3 ff3_6':is('firefox/3')?g+' ff3':is('gecko/')?g:is('opera')?o+(/version\/(\d+)/.test(ua)?' '+o+RegExp.$1:(/opera(\s|\/)(\d+)/.test(ua)?' '+o+RegExp.$2:'')):is('konqueror')?'konqueror':is('blackberry')?m+' blackberry':is('android')?m+' android':is('chrome')?w+' chrome':is('iron')?w+' iron':is('applewebkit/')?w+' '+s+(/version\/(\d+)/.test(ua)?' '+s+RegExp.$1:''):is('mozilla/')?g:'',is('j2me')?m+' j2me':is('iphone')?m+' iphone':is('ipod')?m+' ipod':is('ipad')?m+' ipad':is('mac')?'mac':is('darwin')?'mac':is('webtv')?'webtv':is('win')?'win'+(is('windows nt 6.0')?' vista':''):is('freebsd')?'freebsd':(is('x11')||is('linux'))?'linux':'','js']; c = b.join(' '); h.className += ' '+c; return c;}; css_browser_selector(navigator.userAgent);
+        </script>
+        <script type="text/javascript" charset="utf-8">
+            // define dummy replacements for firebug functionality (needed for Opera)
+            if (!window.console) {
+                window.console = {};
+                function fn() {
+                    opera.postError(arguments);
+                };
+                ['log', 'debug', 'info', 'warn', 'error', 'assert', 'dir', 'dirxml', 'group', 'groupEnd', 
+                'time', 'timeEnd', 'count', 'trace', 'profile', 'profileEnd'].forEach(function(name) {
+                    window.console[name] = fn;
+                });
+            }            
+            (function() {
+                    var names = ["log", "debug", "info", "warn", "error", "assert", "dir", "dirxml", "group", "groupEnd", "time", "timeEnd", "count", "trace", "profile", "profileEnd"];
+                    if(!window.console){
+                        window.console = {};
+                    }
+                    for (var i in names) {
+                        window.console[names[i]] = window.console[names[i]] || function(){
+                            return;
+                        };
+                    }
+            })();
+        </script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+        <script type="text/javascript" charset="utf-8">
+            // https://github.com/carhartl/jquery-cookie
+            function bacookie(key, value, options) {
+                // key and at least value given, set cookie...
+                if (arguments.length > 1 && String(value) !== "[object Object]") {
+                    options = options || {};
+
+                    if (value === null || value === undefined) {
+                        options.expires = -1;
+                    }
+
+                    if (typeof options.expires === 'number') {
+                        var days = options.expires, t = options.expires = new Date();
+                        t.setDate(t.getDate() + days);
+                    }
+
+                    value = String(value);
+
+                    return (document.cookie = [
+                        encodeURIComponent(key), '=',
+                        options.raw ? value : encodeURIComponent(value),
+                        options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+                        options.path ? '; path=' + options.path : '',
+                        options.domain ? '; domain=' + options.domain : '',
+                        options.secure ? '; secure' : ''
+                    ].join(''));
+                }
+
+                // key and possibly options given, get cookie...
+                options = value || {};
+                var result, decode = options.raw ? function (s) { return s; } : decodeURIComponent;
+                return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? decode(result[1]) : null;
+            };
+            // parseUri 1.2.2
+            // (c) Steven Levithan <stevenlevithan.com>
+            // MIT License
+
+            function parseUri (str) {
+                var o   = parseUri.options,
+                    m   = o.parser[o.strictMode ? "strict" : "loose"].exec(str),
+                    uri = {},
+                    i   = 14;
+
+                while (i--) uri[o.key[i]] = m[i] || "";
+
+                uri[o.q.name] = {};
+                uri[o.key[12]].replace(o.q.parser, function ($0, $1, $2) {
+                    if ($1) uri[o.q.name][$1] = $2;
+                });
+
+                return uri;
+            };
+
+            parseUri.options = {
+                strictMode: false,
+                key: ["source","protocol","authority","userInfo","user","password","host","port","relative","path","directory","file","query","anchor"],
+                q:   {
+                    name:   "queryKey",
+                    parser: /(?:^|&)([^&=]*)=?([^&]*)/g
+                },
+                parser: {
+                    strict: /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,
+                    loose:  /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/
+                }
+            };            
+        </script>
+
+        <script>
+            function utmx_section(){}function utmx(){};
+        </script>
+        
+
+        <script type="text/javascript">
+            WebFontConfig = { 
+                google: { families: [ 'Play:regular,bold' ] }
+            };
+            (function() {
+                var wf = document.createElement('script');
+                wf.src = ('https:' == document.location.protocol ? 'https' : 'http') + '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+                wf.type = 'text/javascript';
+                wf.async = 'true';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(wf, s);
+            })();
+        </script>
+        
+        
+        <script src="/base/js/code2.js"></script>
+        
+    
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+        </script>
+        
+        <script type="text/javascript">
+            _gaq.push(['_setAccount', 'UA-8404259-1']);
+            _gaq.push(['_addIgnoredRef', '.binaryage.com']); // do not count subdomains as referrer trafic
+            _gaq.push(['_setDomainName', '.binaryage.com']); // track all subdomains with shared cookie
+            _gaq.push(['_setAllowLinker', true]); // important for cross domain user tracking (the session may be passed in URL params)
+            _gaq.push(['_setAllowHash', false]); // do not use url-hash check
+            _gaq.push(['_trackPageview']);
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+        
+    
+        
+        
+        
+        <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+        
+        
+        <!-- SCRIPTS END -->
+    </head>
+    <body id="page-firelogger-index">
+        <div id="topbar">
+            <div class="container topbar">
+                <div class="topbar-buttons">
+                    <div class="topbar-labs wf">
+                        labs
+                    </div>
+                    <div class="topbar-testimonials wf">
+                        testimonials
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="header" class="menu-products">
+            <div class="container header">
+                <a href="http://www.binaryage.com" title="BinaryAge Software">
+                    <div class="header-logo">
+                        <div class="header-logo-hover"></div>
+                    </div>
+                </a>
+                
+                <div class="header-motto arrow"></div>
+                <div class="header-selector"></div>
+                <ul class="header-menu">
+                    <li class="menu-item-store wf"><a href="http://www.binaryage.com/store"><span>store</span></a></li>
+                    <li class="menu-item-products wf"><a href="http://www.binaryage.com"><span>products</span></a></li>
+                    <li class="menu-item-blog wf"><a href="http://blog.binaryage.com"><span>blog</span></a></li>  
+                    <li class="menu-item-hints wf"><a href="http://hints.binaryage.com"><span>hints</span></a></li>
+                    <li class="menu-item-support wf"><a href="http://support.binaryage.com"><span>support</span></a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="main">
+            
+            <div class="wf">
+            <div class="main-product" id="product-firelogger">
+    <div class="container">
+        <div class="main-product-left span-12">
+            <div class="product-logo-box">
+                <img class="product-icon" src="/base/img/icons/firelogger-64.png">
+                <div class="product-tagline">
+                    <h1 class="product-title">FireLogger</h1><div class="plusone-wrapper"><g:plusone size="medium"></g:plusone></div>
+                    <h2 class="product-subtitle">a sexy server logger console in Firebug</h2>
+                </div>
+            </div>
+            <div class="product-buttons-box">
+                <div class="product-buttons">
+                    
+                    <a id="o-download" href="https://addons.mozilla.org/firefox/addon/firelogger" class="button product-button-download">
+                        <div><div>Install v1.2<div class="product-specs">and listen to your server</div></div></div>
+                    </a>
+                    
+                    
+                       <a href="http://firelogger-php-tests.binaryage.com/basic.php" class="button product-button-thumbup"><div><div><div class="trial-note">after restart</div>Visit a Test Page<div class="product-specs">to check that your addon works correctly</div></div></div></a>
+                    
+                    <div class="clear"></div>
+                </div>
+                <div class="product-note-box">
+                    
+                </div>
+            </div>
+            <div class="social-box">
+                <div class="social-box-inner">
+                    
+                    <div class="retweet">
+                    </div>
+                    <script>
+                        $(".retweet").html(writeCapture.sanitize('<a href="http://twitter.com/share" class="twitter-share-button retweet" data-count="vertical" data-via="binaryage">Tweet</a><scr'+'ipt type="text/javascript" src="http://platform.twitter.com/widgets.js"></scr'+'ipt>'));
+                    </script>
+                    
+                    
+                    
+                    
+                    
+                    <div class="flattr">
+                    </div>
+                    <script>
+                        $('.flattr').html(writeCapture.sanitize('<scr'+'ipt>document.write(\'<iframe width="55" scrolling="no" height="62" frameborder="0" src="http://api.flattr.com/button/view/?uid=0&amp;url=\'+encodeURIComponent(\'http://firelogger.binaryage.com\')+\'&amp;language=&amp;hidden=0&amp;title=&amp;category=&amp;tags=&amp;description=" border="0" marginheight="0" marginwidth="0" allowtransparency="true"></iframe>\')</scr'+'ipt>'));
+                    </script>
+                    
+                </div>
+                <div class="clear"></div>
+            </div>    
+        </div>
+        <div class="main-product-right span-12 last">
+            <div class="main-screenshot">
+                
+                <div id="screenshot-box-1" class="screenshot-box no-shadow" >
+                    
+                    <a id="o-shot1" href="http://firelogger.binaryage.com/base/img/firelogger4php-mainshot-full.png" class="overlayable" title="FireLogger in action with PHP backend">
+                    
+                        <img src="http://firelogger.binaryage.com/base/img/firelogger4php-mainshot.png"/>
+                        
+                        <div class="zoom-icon"></div>
+                        
+                    
+                    </a>
+                    
+                </div>
+                
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-tabs" id="tabs-firelogger">
+    <div class="container">
+        <div class="tab-bar">
+            <ul class="tabs"></ul> 
+        </div>
+        <div class="panes"></div>
+    </div>
+</div>
+
+<div class="main-content-here" style="display:none">
+    <h2>Firefox</h2>
+
+<h3>Firefox Addon</h3>
+
+<ul>
+<li>Your logging messages are displayed right under your fingerprints in Firebug</li>
+<li>Support for rich-text logging (logged objects are sent as JSON object, you may drill down their structure)</li>
+<li>Support for Python and PHP</li>
+<li>Support for exceptions and backtrace visualization</li>
+<li>Ready as WSGI middleware and Django middleware</li>
+<li>Support for profiling graphs</li>
+<li>Support for advanced features:
+
+<ul>
+<li>open in Text Editor integration</li>
+<li><a href="http://blog.binaryage.com/firelogger-with-appstats">AppStats</a> for GAE</li>
+<li>production paths remapping</li>
+<li>password protection</li>
+<li>logging proxy support</li>
+<li>and more ...</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Compatibility</h3>
+
+<p>Both Firefox and Firebug are moving targets. Please make sure you use compatible versions. I'm unable to test all possible combinations.</p>
+
+<ul style="margin-bottom: 0px !important">
+<li><b>Version 1.2</b> works with Firebug 1.4 - 1.9 + Firefox 3.5 - 11.0</li>
+</ul>
+
+
+<p><a style="margin-top: 0px !important" href="javascript:$('.older-compatibility').toggle(); $(this).hide()">show compatibility of older versions &darr;</a></p>
+
+<ul class="older-compatibility" style="display:none">
+<li><b>Version 1.1</b> works with Firebug 1.4 - 1.8.1 + Firefox 3.5 - 4.0</li>
+<li><b>Version 1.0</b> works with Firebug 1.4 - 1.7 + Firefox 3.5 - 4.0 and early alpha Firebug 1.7 + Firefox 3.5 - 4.0</li>
+<li><b>Version 0.9</b> works with Firebug 1.4 - 1.6 + Firefox 3.5 - 4.0 and early alpha Firebug 1.7 + Firefox 3.5 - 4.0</li>
+<li><b>Version 0.8</b> works with Firebug 1.4 and 1.5.3 + Firefox 3.5 or 3.6 and is broken with Firebug 1.5.4+</li>
+<li><b>Version 0.7</b> works with alpha Firebug 1.5 + Firefox 3.5 and Firebug 1.4.2 + Firefox 3.5</li>
+<li><b>Version 0.6</b> works with alpha Firebug 1.5 + Firefox 3.5 and Firebug 1.4.2 + Firefox 3.5</li>
+<li><b>Version 0.5</b> works with beta Firebug 1.4 + Firefox 3.0.x or Firefox 3.5 and does not work with Firebug 1.3 and older!</li>
+<li><b>Version 0.4</b> works with Firebug 1.3 + Firefox 3.1, Firebug 1.2.1 + Firefox 3.0.4 and does not work with Firebug 1.4 alpha!</li>
+<li><b>Version 0.3</b> works with Firebug 1.3 + Firefox 3.1 and Firebug 1.2.1 + Firefox 3.0.4. </li>
+<li><b>Version 0.2</b> is tested to work with alpha Firebug 1.3 and Firefox 3.1.</li>
+</ul>
+
+
+<h2>Python</h2>
+
+<p>Prior to installing check how to install <a href="#firefox">FireLogger Addon</a>.
+You definitely need <a href="https://addons.mozilla.org/en-US/firefox/addon/1843">Firebug 1.4 or higher</a>.
+You must also install a Firefox Addon called <a href="https://github.com/downloads/win/firelogger/firelogger-1.0.xpi">FireLogger</a>.</p>
+
+<h3>Installation</h3>
+
+<pre><code>pip install FirePython
+</code></pre>
+
+<h3>Usage</h3>
+
+<ul>
+<li><strong>Django</strong>: After installation, enable middleware by adding its path to <code>MIDDLEWARE_CLASSES: firepython.middleware.FirePythonDjango</code>.</li>
+<li><strong>WSGI</strong>: After installation, enable middleware <code>firepython.middleware.FirePythonWSGI</code>.</li>
+<li><strong>Custom</strong>: Look for inspiration at <a href="http://github.com/binaryage/firelogger.py/tree/master/middleware.py">middleware.py</a></li>
+</ul>
+
+
+<h4>Real-world examples</h4>
+
+<ul>
+<li><a href="http://github.com/DocSavage/bloog/commit/346e5fb7c1fd87259dc79f2c4ae852badb6f2b79">FirePython added to Bloog</a> (blog engine for GAE)</li>
+<li><a href="http://github.com/binaryage/drydrop/tree/22aadc0a463ae76e10aaefdf7aee002c7e605793/dryapp/drydrop_handler.py#L326">FirePython added to DryDrop</a> (GAE hosting engine for GitHubbers &amp;&amp; !Pythonists)</li>
+<li><a href="http://code.google.com/p/pyxer/wiki/FirePython">FirePython added to Pyxer</a> (Python web framework)</li>
+</ul>
+
+
+<hr />
+
+<h3>FAQ</h3>
+
+<h4>logging.debug("hello world!") outputs nothing, what's wrong?</h4>
+
+<blockquote><p>The default behavior of the logging module is to only output message from level INFO and up. Run "logging.getLogger().setLevel(logging.DEBUG)" to see all messages.</p></blockquote>
+
+<h4>Is there something similar for PHP?</h4>
+
+<blockquote><p>Check out <a href="http://firelogger.binaryage.com/#php">FireLogger for PHP</a>, you may also want to checkout an alternative logging tool, <a href="http://firephp.org">FirePHP</a></p></blockquote>
+
+<h4>Is there something similar for Ruby?</h4>
+
+<blockquote><p>Nope. I'd like to have one, but haven't found time to write server-side support. You are welcome to <a href="http://wiki.github.com/binaryage/firelogger">hack it</a>!</p></blockquote>
+
+<h4>How can I change the name of the default logger?</h4>
+
+<blockquote><p>logging.getLogger().name = "my logger"</p></blockquote>
+
+<h4>How can I open preferences?</h4>
+
+<blockquote><p>Switch to the Logger panel and look at Firebug's toolbar. There is a green bug icon. It's a menu button! <a href="images/FireLoggerMenuButton.png"><img src="images/FireLoggerMenuButton.png"></a><br/><a href="images/FireLoggerPreferences.png"><img src="images/FireLoggerPreferences.png"></a></p></blockquote>
+
+<h4>Clicking on source-file links in Logger panel does nothing. How can I open trace-back sources in TextMate?</h4>
+
+<blockquote><p>Go to Firebug Menu -> Open With Editor -> Configure editors ... like this: <img src="images/TextMateWithFirePython.png" alt="TextMate hint" /></p></blockquote>
+
+<h4>I was unable to download/install the FireLogger extension from addons.mozilla.org. Can you package latest version for me?</h4>
+
+<blockquote><p>Some other people have reported this problem too. You may <a href="http://getsatisfaction.com/xrefresh/topics/unable_to_download_rainbow_for_firebug">try this workaround</a>.</p></blockquote>
+
+<h4>How can I see the Python profiling graph?</h4>
+
+<blockquote><ol>
+<li>enable this feature in FireLogger preferences</li>
+<li>set up an editor in External Editors in Firebug called "Graphviz" (the name is important!). It should be the path to the executable of a viewer for .dot graphs.</li>
+<li>reload the page and you should see an info log line containing profiling info. Clicking on the line launches the configured Graphviz viewer (a filename will be passed as the first parameter)
+<a href="images/ExternalEditorsConfiguration.png"><img src="images/ExternalEditorsConfiguration.png"></a><br>
+<a href="images/FirePython-ProfilingGraphLog.png"><img src="images/FirePython-ProfilingGraphLog.png"></a><br>
+<a href="images/FirePython-ProfilingGraphExample.png"><img src="images/FirePython-ProfilingGraphExample.png" width="600"></a></li>
+</ol>
+</blockquote>
+
+<h4>How can I use AppStats support?</h4>
+
+<blockquote><p>If you are on a production site, make sure you are logged in as a project admin. Also don't forget to enable support in FireLogger's preferences.</p></blockquote>
+
+<h4>When I start Firefox and the page loads I don't see any log records, what is wrong?</h4>
+
+<blockquote><p>The initial page content was probably loaded from cache. Refresh your page and you should be ok.</p></blockquote>
+
+<h4>My page does multiple AJAX requests to the same URL and I see logs for the first response, but not for others. Am I missing something?</h4>
+
+<blockquote><p>There is a bug in Firebug 1.4 which calls onResponse multiple times under some circumstances. That was very annoying, so I did a HACK and now test for URL uniqueness in FireLogger. This will unfortunately filter out your multiple AJAX requests. Let's hope for fixes on Firebug side.</p></blockquote>
+
+<h2>PHP</h2>
+
+<p>Requires PHP 5.3 or higher!</p>
+
+<h4>Download <a href="http://github.com/binaryage/firelogger.php">firelogger.php here</a></h4>
+
+<pre><code>require 'firelogger.php';
+flog("Hello world!");
+</code></pre>
+
+<hr />
+
+<h3>FAQ</h3>
+
+<h4>What is the difference between FireLogger and <a href="http://www.firephp.org/">FirePHP</a>?</h4>
+
+<blockquote><p>I initially wrote <a href="http://firepython.binaryage.com/#python">FireLogger for Python</a> because I was doing some Google App Engine development. Recently, I was asked to do some PHP development. I've tried FirePHP, it worked for me, but it wasn't "pixel perfect" enough to fit my personal taste :-) I'm a javascript who's guy quite opinionated about tools. I wanted flexible dirty logging functionality which is capable of eating whatever I throw into it (like firebug's <code>console.log</code>). I also prefer to have server-side a logger console separated from javascript console in Firebug. I prefer reusing Firebug's internal components for inspecting variables. FireLogger has the same look &amp; feel as the javascript console (you can drill down into watches as in Firebug, same fonts and colors, etc.). FireLogger also has some advanced features which may be handy (password protection, "open in text editor" and production path remapping).</p></blockquote>
+
+<h4>Is there something similar for Python?</h4>
+
+<blockquote><p>Check out <a href="http://firepython.binaryage.com/#python">FireLogger for Python</a></p></blockquote>
+
+<h4>Is there something similar for Ruby?</h4>
+
+<blockquote><p>Nope. I'd like to have one, but didn't find time to write server-side support. You are welcome to <a href="http://wiki.github.com/binaryage/firelogger">hack it</a>!</p></blockquote>
+
+<h4>Clicking on source-file links in Logger panel does nothing. How can I open trace-back sources in TextMate?</h4>
+
+<blockquote><p>Go to Firebug Menu -> Open With Editor -> Configure editors ... like this: <img src="images/TextMateWithFirePython.png" alt="TextMate hint" /></p></blockquote>
+
+<h4>I was unable to download/install FireLogger extension from addons.mozilla.org. Can you package latest version for me?</h4>
+
+<blockquote><p>Some other people reported this problem too. You may <a href="http://getsatisfaction.com/xrefresh/topics/unable_to_download_rainbow_for_firebug">try this workaround</a>.</p></blockquote>
+
+<h4>When I start Firefox and the page loads I don't see any log records. What's wrong?</h4>
+
+<blockquote><p>This is Firefox optimization. After starting, Firefox brings the browser state to the same point where it was when you closed it (no network activity at all). Refresh your page and you should be ok.</p></blockquote>
+
+<h2>ColdFusion</h2>
+
+<p>Please follow documentation on a <a href="http://www.wdg.us/cf-firelogger">separate homepage</a>.</p>
+
+<p><a href="https://github.com/mpaperno/CF-FireLogger">GitHub repository here</a></p>
+
+<h2>Changelog</h2>
+
+<h3>FireLogger Firefox Addon</h3>
+
+<ul>
+<li><p><strong>v1.2</strong> (14.01.2012):</p>
+
+<ul>
+<li>do not send X-FireLogger header when Firebug's Logger panel is disabled</li>
+<li>updated compatibility with Firebug 1.9</li>
+<li>marked as compatible with Firefox 11.*</li>
+</ul>
+</li>
+<li><p><strong>v1.1</strong> (17.08.2011):</p>
+
+<ul>
+<li>compatibility fixes for Firebug 1.8.1 and Firefox 6.*</li>
+<li>using native Firefox's JSON parser (faster)</li>
+<li>using <a href="https://developer.mozilla.org/en/XPCOM_Interface_Reference/Using_nsILoginManager">nsILoginManager</a> for storing site-protection password (safer)</li>
+</ul>
+</li>
+<li><p><strong>v1.0</strong> (30.05.2011):</p>
+
+<ul>
+<li>compatibility fixes for Firebug 1.7 (major refactoring to satisfy new AMO rules)</li>
+<li>fix bug when list of rewrite rules was not populated after opening preferences window</li>
+</ul>
+</li>
+<li><p><strong>v0.9</strong> (25.10.2010):</p>
+
+<ul>
+<li>compatibility fixes for Firebug 1.5.4, 1.6 and alpha 1.7</li>
+<li>timestamp hidden under clock symbol</li>
+<li>each row shows short version of file path</li>
+<li>hovering over file paths shows full paths</li>
+<li>PHP-related improvements</li>
+</ul>
+</li>
+<li><p><strong>v0.8</strong> (11.02.2010):</p>
+
+<ul>
+<li>added AppStats support for GAE (<a href="http://blog.binaryage.com/firelogger-with-appstats">read more</a>)</li>
+<li>fixed bug when logging "something like this %s", param &lt;= the last parameter was not printed into logger</li>
+<li>better formatting string handling (<a href="http://github.com/binaryage/firelogger.py/issues#issue/6">closes #6</a>)</li>
+<li>marked as compatible with Firebug 1.6</li>
+</ul>
+</li>
+<li><p><strong>v0.7</strong> (24.08.2009):</p>
+
+<ul>
+<li>fixed subtle bug when some log records with structs containing null values were not displayed</li>
+<li>removed hack fighting duplicate requests</li>
+<li>every batch of log records is prepended with ticket displaying request url</li>
+<li>added toggle button to persist panel content between refreshes</li>
+<li>rewriter correctly registers under Firebug namespace (fixed some bugs when detaching firebug panel)</li>
+<li>usability: expand root item in watches in case there is only one root item</li>
+</ul>
+</li>
+<li><p><strong>v0.6</strong> (18.08.2009)</p>
+
+<ul>
+<li>support for PHP (<a href="http://firelogger.binaryage.com">firelogger.binaryage.com</a>)</li>
+<li>fixed bug when warning about disabled console and net panel was not displayed</li>
+<li>fixed broken "Open in external editor" functionality (FB1.5)</li>
+<li>compatibility with FB1.4.2</li>
+<li>compatibility with alpha FB1.5</li>
+</ul>
+</li>
+<li><p><strong>v0.5</strong> (28.06.2009)</p>
+
+<ul>
+<li>compatibility with Firebug 1.4</li>
+</ul>
+</li>
+<li><p><strong>v0.4</strong> (30.03.2009)</p>
+
+<ul>
+<li>profiling graphs for Python (WSGI) [<a href="http://github.com/bslatkin">bslatkin</a>]</li>
+</ul>
+</li>
+<li><p><strong>v0.3</strong> (16.03.2009)</p>
+
+<ul>
+<li>compatibility with Firebug 1.2</li>
+<li>password protection for production site</li>
+<li>path rewrite functionality</li>
+<li>console supports rich formatting of python log messages</li>
+<li>Firefox Addon detached as a separate project FireLogger</li>
+<li>option for hiding internal reprs of exported objects</li>
+</ul>
+</li>
+<li><p><strong>v0.2</strong> (24.11.2008)</p>
+
+<ul>
+<li>fixed Logger panel styles when Firebug window was detached from main window</li>
+</ul>
+</li>
+<li><p><strong>v0.1</strong> (15.11.2008)</p>
+
+<ul>
+<li>public alpha release</li>
+<li>communication via response headers</li>
+<li>logging module functionality (debug, info, warning, error, critical)</li>
+<li>log record filtering by type</li>
+<li>log record searching</li>
+<li>opening files in TextMate (click to timestamp field)</li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+
+<h3>FireLogger for PHP</h3>
+
+<ul>
+<li><p><strong>v0.3</strong> (25.10.2010)</p>
+
+<ul>
+<li>compatibility with FireLogger 0.9</li>
+<li>robust PHP->JSON serialization [<a href="http://github.com/dg">dg</a>]</li>
+<li>implemented ability to catch fatal and parse errors [<a href="http://github.com/dg">dg</a>]</li>
+<li>code refactoring [<a href="http://github.com/dg">dg</a>]</li>
+</ul>
+</li>
+<li><p><strong>v0.2</strong> (24.08.2009)</p>
+
+<ul>
+<li>compatibility with FireLogger 0.7</li>
+<li>support for exceptions with callstack</li>
+<li>password protection</li>
+<li>checking for FireLogger extension header presence</li>
+<li>processing uncaught exceptions</li>
+<li>processing PHP errors</li>
+<li>reflecting private properties (requires PHP 5.3+)</li>
+</ul>
+</li>
+<li><p><strong>v0.1</strong> (17.08.2009)</p>
+
+<ul>
+<li>compatibility with FireLogger 0.6</li>
+<li>initial implementation, supports basic logging</li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+
+<h3>FireLogger for Python</h3>
+
+<ul>
+<li><p><strong>v0.9</strong> (25.10.2010):</p>
+
+<ul>
+<li>version bump to match the addon</li>
+</ul>
+</li>
+<li><p><strong>v0.8</strong> (11.02.2010):</p>
+
+<ul>
+<li>Daniel Buch did pythonification of the whole project, rewrote packaging scripts, added tests and demo site, big kudos! [<a href="http://github.com/meatballhat">meatballhat</a>]</li>
+</ul>
+</li>
+<li><p><strong>v0.7</strong> (24.08.2010):</p>
+
+<ul>
+<li>rewriter correctly registers under Firebug namespace (fixed some bugs when detaching firebug panel)</li>
+<li>usability: expand root item in watches in case there is only one root item</li>
+</ul>
+</li>
+<li><p><strong>v0.6</strong> (18.08.2009)</p>
+
+<ul>
+<li>version bump to match the addon</li>
+</ul>
+</li>
+<li><p><strong>v0.5</strong> (28.06.2009)</p>
+
+<ul>
+<li>version bump to match the addon</li>
+</ul>
+</li>
+<li><p><strong>v0.4</strong> (30.03.2009)</p>
+
+<ul>
+<li>profiling graphs for Python (WSGI) [<a href="http://github.com/bslatkin">bslatkin</a>]</li>
+<li>enabled profiling support for Django [<a href="http://github.com/piranha">piranha</a>]</li>
+<li>PEP-8 code cleanup [<a href="http://github.com/piranha">piranha</a>]</li>
+</ul>
+</li>
+<li><p><strong>v0.3</strong> (16.03.2009)</p>
+
+<ul>
+<li>thread-safety [<a href="http://github.com/oxyum">oxyum</a>+<a href="http://github.com/piranha">piranha</a>]</li>
+<li>improved API</li>
+<li>Firefox Addon detached as a separate project FireLogger</li>
+</ul>
+</li>
+<li><p><strong>v0.2</strong> (24.11.2008)</p>
+
+<ul>
+<li>Django and WSGI middlewares [<a href="http://github.com/piranha">piranha</a>]</li>
+<li>added as firepython package to PyPI index [<a href="http://github.com/piranha">piranha</a>]</li>
+</ul>
+</li>
+<li><p><strong>v0.1</strong> (15.11.2008)</p>
+
+<ul>
+<li>public alpha release</li>
+<li>initial server-side support for Python and Google App Engine</li>
+<li>communication via response headers</li>
+<li>logging module functionality (debug, info, warning, error, critical)</li>
+<li>log record filtering by type</li>
+<li>log record searching</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Links</h2>
+
+<h3>Additional documentation</h3>
+
+<ul>
+<li><strong><a href="http://www.wdg.us/cf-firelogger">FireLogger for ColdFusion</a></strong> by Maxim Paperno</li>
+</ul>
+
+
+<h3>Articles</h3>
+
+<ul>
+<li><strong><a href="http://code.google.com/appengine/articles/firepython.html">Realtime logging to Firebug using FirePython</a></strong> by Antonin Hildebrand</li>
+<li><strong><a href="http://blogg.ingspree.net/blog/2008/11/24/firepython-no-prints/">FirePython — no prints?</a></strong> by Alexander Solovyov</li>
+<li><strong><a href="http://code.google.com/p/pyxer/wiki/FirePython">Integrating FirePython with Pyxer</a></strong> by Dirk Holtwick</li>
+<li><strong><a href="http://inchoo.net/ecommerce/firelogger-a-sexy-server-logger-console-in-firebug">FireLogger – a sexy server logger console in Firebug</a></strong> by <a href="http://inchoo.net/author/weiler">Ivan Weiler</a></li>
+</ul>
+
+
+<h3>Contributors</h3>
+
+<ul>
+<li><strong><a href="http://github.com/piranha">Alexander Solovyov</a></strong> - python server-side library, Django and WSGI middlewares.</li>
+<li><strong><a href="http://github.com/oxyum">Ivan Fedorov</a></strong> - helped out with threading issues.</li>
+<li><strong><a href="http://github.com/bslatkin">Brett Slatkin</a></strong> - added profiling feature.</li>
+<li><strong><a href="http://github.com/meatballhat">Daniel Buch</a></strong> - pythonification of the whole project, rewrote packaging scripts, added tests and demo site, big kudos!</li>
+<li><strong><a href="http://github.com/dg">David Grudl</a></strong> - various improvements to the PHP library</li>
+<li><strong><a href="http://www.worlddesign.com/">Maxim Paperno</a></strong> - ColdFusion server-side library</li>
+</ul>
+
+
+<h3>Also many thanks to</h3>
+
+<ul>
+<li><strong><a href="http://getfirebug.com/workingGroup">Joe Hewitt, John J. Barton, Jan Odvarko and others in the Firebug working group</a></strong></li>
+<li><strong><a href="http://www.christophdorn.com/">Christoph Dorn and FirePHP contributors</a></strong></li>
+<li><strong><a href="http://code.google.com/p/jsonpickle/">John Paulett for jsonpickle library</a></strong></li>
+<li><strong><a href="http://code.google.com/p/jrfonseca/wiki/Gprof2Dot">Jose Fonseca for gprof2dot library</a></strong></li>
+</ul>
+
+
+</div>
+
+<script>
+$(function() { 
+    var panes = $('.panes');
+    var tabs = $('.tabs');
+    var cur;
+    var items = $('.main-content-here > *');
+    items.each(function(i) {
+        var el = $(this);
+        var tag = el.attr('tagName');
+        if (tag=='SCRIPT') return;
+        if (tag=='NOSCRIPT') return;
+        if (tag=='STYLE') return;
+        if (el.hasClass('panes') || el.hasClass('tabs')) return;
+        if (el.attr('tagName')=='H2') {
+            var name = el.html();
+            var id = name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+            var li = $('<li/>');
+            var a = $('<a class=\"tbx\"/>').attr('href', '#'+id).html(name);
+            li.append(a);
+            a.append('<div class="shadow"></div>');
+            tabs.append(li);
+            cur = $('<div/>').addClass('wikistyle').addClass(id);
+            panes.append(cur);
+            el.remove();
+            cur.append($("<h2/>").html(name));
+        } else {
+            if (cur) {
+                cur.append(el);
+            }
+        }
+    });
+    $("ul.tabs").tabs("div.panes > div");
+    $("ul.tabs a").history();
+});
+</script>
+
+<script>
+    $(function() {
+        $(".product-thumbs-scrollable").scrollable({
+            size: 5
+        });
+
+        $(".product-thumbs-items img").click(function() {
+            var img = $(this);
+            var visible = $('.screenshot-box:visible');
+            var box = $(img.attr('rel'));
+            if (box[0] === visible[0]) return; // optimization to not fade when clicked same image or during initial load
+            visible.fadeOut();
+            box.fadeIn();
+        }).filter(":first").click(); // when page loads simulate a "click" on the first image
+    });
+</script>
+
+<div class="simple_overlay" id="overlay-gallery" style="display:none"> 
+    <a class="overlay-prev">prev</a> 
+    <a class="overlay-next">next</a> 
+    <div class="overlay-info"></div>
+    <img class="overlay-progress" src="http://firelogger.binaryage.com/base/img/twitter-loader.gif" /> 
+</div>
+
+<script>
+(function() {
+    $('.overlayable').overlay({
+        expose: '#f1f1f1',
+        target: '#overlay-gallery'
+    }).gallery({
+        disabledClass: 'disabled-overlay',
+        prev: '.overlay-prev',
+        next: '.overlay-next',
+        info: '.overlay-info',
+        progress: '.overlay-progress',
+        opacity: 1,
+        speed: 200, 
+        template: '[${index}/${total}] ${title}'
+    });
+})();
+</script>
+
+            </div>
+            
+            <div class="clear"></div>
+        </div>
+        <div id="tweets-section">
+            <div class="container" style="position: relative">
+                <ol id="tweets" class="statuses"></ol>
+            </div>
+        </div>
+        
+        <div id="footer">
+            <div class="container">
+                <div class="footer-separator"></div>
+                <div class="footerbox">
+                    
+                    <div class="facebook-like-button-wrapper">
+                        <fb:like width="650" href="http://firelogger.binaryage.com" layout="standard" show_faces="false" font="arial"></fb:like>
+                    </div>
+                    
+                    <div class="footer-links wf">
+                        
+                        <a href="javascript:GSFNFeedbackWidget.show()">feedback</a> | 
+                        
+                        
+                        <a href="http://github.com/binaryage/firelogger">source code</a> | 
+                        
+                        <a href="http://www.binaryage.com/about.html">contact</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+    
+        
+
+        
+    
+        
+        <div id="fb-root"></div>
+        <script type="text/javascript">
+            window.fbAsyncInit = function() {
+                FB.init({appId: '332451499524', status: true, cookie: true, xfbml: true});
+            };
+            (function() {
+                var e = document.createElement('script'); e.async = true;
+                e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+                document.getElementById('fb-root').appendChild(e);
+            }());
+        </script>
+        
+
+        
+        
+        <script type="text/javascript" charset="utf-8">
+            $(function() {
+                var initialized;
+                $('.topbar-testimonials').bind('click', function() {
+                    if (window.SSTracker) {
+                        SSTracker.pushState('praise');
+                    }
+            
+                    if (!initialized) {
+                        $("#tweets").tweet({
+                            user: "binaryage"
+                        });
+                        initialized = true;
+                    }
+                });
+        
+                // trigger page states
+                setTimeout(function() { // give other code some time to init
+                    var hash = location.hash.substring(1);
+                    if (hash.substring(0,2)=="o-") {
+                        $('#'+hash).trigger('click');
+                    }
+                }, 500);
+            });
+    
+            // localhost debug
+            $(function() {
+                var host = document.location.host;
+                if (host.substring(host.length-3)=='org') {
+                    $('a').each(function() {
+                        var el = $(this);
+                        var href = el.attr('href');
+                        if (href) {
+                            if (href.match('binaryage.com')) {
+                                href = href.replace('binaryage.com', 'binaryage.org');
+                            }
+                            var loc = document.location+"";
+                            if (href.substring(0, 4)!="http" && href.match(/\/[^.]+$/i)) { 
+                                // this is for local jekyll server inconsistency
+                                if (host.substring(loc.length-1)=="2") { 
+                                    // next website version
+                                    href += "2";
+                                }
+                                if (loc.substring(loc.length-6)=="2.html") { 
+                                    // next website version
+                                    href += "2";
+                                }
+                                href += ".html";
+                            }
+                            el.attr('href', href);
+                        }
+                    });
+                }
+            });
+            
+            (function(){
+                // store the referrer in cookie for later reuse
+                var parts = parseUri(document.location+"");
+                var referrer = parts.queryKey["referrer"];
+                if (referrer) {
+                    bacookie("bareferrer", referrer, {path: '/', expires: 14});
+                }
+            })();
+  
+            // cross-domain tracking
+            // http://code.google.com/apis/analytics/docs/tracking/gaTrackingSite.html
+            $('a').live('click', function() {
+                var href = $(this).attr("href")+"";
+                // pass referrer if available, FastSpring will report it on final order
+                var referrer = bacookie("bareferrer");
+                if (referrer) {
+                    href += (href.indexOf("?")==-1?"?":"&")+"referrer="+encodeURIComponent(referrer);
+                }
+                var current = document.location+"";
+                // just for switching domains between binaryage.com <-> fastspring.com
+                if ((current.match(/fastspring\.com/) && href.match(/binaryage\.com/)) || 
+                    (current.match(/binaryage\.com/) && href.match(/fastspring\.com/))) {
+                    _gaq.push(['_link', href]);
+                    return false;
+                }
+            });
+        </script>
+        
+
+        
+        <div id="getsatifucktion"></div>
+        <div id="getsatifucktion2"></div>
+        <script type="text/javascript" charset="utf-8">
+            $("#getsatifucktion").html(writeCapture.sanitize('<scr'+'ipt type="text/javascript" src="http://s3.amazonaws.com/getsatisfaction.com/javascripts/feedback-v2.js"></scr'+'ipt>', {
+                done: function() {
+                    if (typeof window.GSFN == "object") {
+                        window.GSFNFeedbackWidget = new GSFN.feedback_widget({
+                            container: "getsatifucktion2",
+                            display: "overlay",
+                            company: "binaryage",
+                            placement: "hidden",
+                            color: "#656565",
+                            style: "idea"
+                        });
+                    }
+                }
+            }));
+        </script>
+        
+
+        
+
+        
+        <script type="text/javascript">
+          var _gauges = _gauges || [];
+          (function() {
+            var t   = document.createElement('script');
+            t.type  = 'text/javascript';
+            t.async = true;
+            t.id    = 'gauges-tracker';
+            
+            t.setAttribute('data-site-id', '4f10d65d844d52139500000b');
+            
+            t.src = '//secure.gaug.es/track.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(t, s);
+          })();
+        </script>
+        
+
+        
+        <div class="suck-area">
+            <div class="container">
+                <div class="fixed-wrapper">
+                    <div class="suck-dialog suck-ie5" style="display:none">
+                        This page is using the latest HTML5 techniques. You are using old Internet Explorer 5. Please <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home">upgrade to Internet Explorer 9</a> for pixel-perfect experience. Thanks!
+                        <div class="suck-close" onclick="$(this).parent().addClass('suck-closed'); bacookie('suck-closed', '1', {path: '/'})"></div>
+                        <div class="suck-icon"></div>
+                    </div>
+                    <div class="suck-dialog suck-ie6" style="display:none">
+                        This page is using the latest HTML5 techniques. You are using old Internet Explorer 6. Please <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home">upgrade to Internet Explorer 9</a> for pixel-perfect experience. Thanks!
+                        <div class="suck-close" onclick="$(this).parent().addClass('suck-closed'); bacookie('suck-closed', '1', {path: '/'})"></div>
+                        <div class="suck-icon"></div>
+                    </div>
+                    <div class="suck-dialog suck-ie7" style="display:none">
+                        This page is using the latest HTML5 techniques. You are using old Internet Explorer 7. Please <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home">upgrade to Internet Explorer 9</a> for pixel-perfect experience. Thanks!
+                        <div class="suck-close" onclick="$(this).parent().addClass('suck-closed'); bacookie('suck-closed', '1', {path: '/'})"></div>
+                        <div class="suck-icon"></div>
+                    </div>
+                    <div class="suck-dialog suck-ie8" style="display:none">
+                        This page is using the latest HTML5 techniques. You are using old Internet Explorer 8. Please <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home">upgrade to Internet Explorer 9</a> for pixel-perfect experience. Thanks!
+                        <div class="suck-close" onclick="$(this).parent().addClass('suck-closed'); bacookie('suck-closed', '1', {path: '/'})"></div>
+                        <div class="suck-icon"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" charset="utf-8">
+            if (bacookie('suck-closed')) {
+                $('.suck-dialog').addClass('suck-closed');
+            }
+        </script>
+        
+    </body>
+</html>
