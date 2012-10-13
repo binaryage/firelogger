@@ -12,7 +12,7 @@ downloadsubtitle: and listen to your server
 meta_title: FireLogger is a sexy server logger console in Firebug
 meta_keywords: firebug,firefox,addon,firelogger,logging,python,php,binaryage,productivity,software,web,development
 meta_description: Your logging messages are displayed right under your fingerprints in Firebug
-meta_image: http://www.binaryage.com/base/img/icons/firelogger-256.png
+meta_image: http://www.binaryage.com/shared/img/icons/firelogger-256.png
 facebook: 1
 retweet: 1
 buzz: 1
@@ -25,12 +25,12 @@ ogmeta: {
     type: "product",
     title: "FireLogger",
     url: "http://firelogger.binaryage.com",
-    image: "http://www.binaryage.com/base/img/icons/firelogger-256.png"
+    image: "http://www.binaryage.com/shared/img/icons/firelogger-256.png"
 }
 shots: [{
     title: "FireLogger in action with PHP backend",
-    thumb: "/base/img/firelogger4php-mainshot.png",
-    full: "/base/img/firelogger4php-mainshot-full.png"
+    thumb: "/shared/img/firelogger4php-mainshot.png",
+    full: "/shared/img/firelogger4php-mainshot-full.png"
 }]
 buttons: <a href="http://firelogger-php-tests.binaryage.com/basic.php" class="button product-button-thumbup"><div><div><div class="trial-note">after restart</div>Visit a Test Page<div class="product-specs">to check that your addon works correctly</div></div></div></a>
 ---
