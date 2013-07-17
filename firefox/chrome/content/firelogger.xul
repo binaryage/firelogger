@@ -21,7 +21,7 @@
     <command id="cmd_FireLoggerFilterError" oncommand="Firebug.FireLogger.onFilterLogs('error')"/>
     <command id="cmd_FireLoggerFilterCritical" oncommand="Firebug.FireLogger.onFilterLogs('critical')"/>
     <command id="cmd_FireLoggerFilterAppengine" oncommand="Firebug.FireLogger.onFilterLogs('appengine')"/>
-    <command id="cmd_FireLoggerTogglePersist" oncommand="Firebug.FireLogger.togglePersist(FirebugContext)"/>
+    <command id="cmd_FireLoggerTogglePersist" oncommand="Firebug.FireLogger.togglePersist(Firebug.FireLogger.getCurrentContext())"/>
   </commandset>
   <toolbar id="fbToolbar" align="center">
     <hbox id="fbToolbarInner" insertbefore="fbDetachButton" flex="1" align="center">
