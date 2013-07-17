@@ -488,10 +488,10 @@ FBL.ns(function() {
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             updateFilterButtons: function(panel, states) {
-                var browser = panel.context.browser;
-                if (!browser) return;
+                var chrome = getCurrentChrome(panel.context);
+                if (!chrome) return;
                 for (var s in states) {
-                    var button = browser.chrome.$("fbFireLoggerFilter"+capitalize(s)+"Button");
+                    var button = chrome.$("fbFireLoggerFilter"+capitalize(s)+"Button");
                     button.checked = !states[s];
                 }
             },
@@ -895,6 +895,10 @@ FBL.ns(function() {
                 } else {
                     openWindow(null, url, features, args);
                 }
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            getCurrentContext: function() {
+                return getCurrentContext();
             }
         });
             
