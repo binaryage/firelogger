@@ -1642,7 +1642,7 @@ FBL.ns(function() {
         //
         Firebug.FireLoggerWatchesPanel = function () {};
         Firebug.FireLoggerWatchesPanel.prototype = extend(Firebug.DOMPanel.prototype, {
-            title: "Watches",
+            title: "Log Inspector",
             name: "fireloggerwatches",
             parentPanel: "firelogger"
         });
