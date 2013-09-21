@@ -7,7 +7,7 @@ product_subtitle: a sexy server logger console in Firebug
 download_alt: https://addons.mozilla.org/firefox/addon/firelogger/versions
 download: https://addons.mozilla.org/firefox/addon/firelogger
 repo: http://github.com/binaryage/firelogger
-downloadtitle: Install v1.2
+downloadtitle: Install v1.3
 downloadsubtitle: and listen to your server
 meta_title: FireLogger is a sexy server logger console in Firebug
 meta_keywords: firebug,firefox,addon,firelogger,logging,python,php,binaryage,productivity,software,web,development
@@ -58,10 +58,11 @@ buttons: <a href="http://firelogger-php-tests.binaryage.com/basic.php" class="bu
 Both Firefox and Firebug are moving targets. Please make sure you use compatible versions. I'm unable to test all possible combinations.
 
 <ul style="margin-bottom: 0px !important">
-<li><b>Version 1.2</b> works with Firebug 1.4 - 1.9 + Firefox 3.5 - 11.0</li>
+  <li><b>Version 1.3</b> works with Firebug 1.4 - 1.12</li>
 </ul>
 <a style="margin-top: 0px !important" href="javascript:$('.older-compatibility').toggle(); $(this).hide()">show compatibility of older versions &darr;</a>
 <ul class="older-compatibility" style="display:none">
+<li><b>Version 1.2</b> works with Firebug 1.4 - 1.9 + Firefox 3.5 - 11.0</li>
 <li><b>Version 1.1</b> works with Firebug 1.4 - 1.8.1 + Firefox 3.5 - 4.0</li>
 <li><b>Version 1.0</b> works with Firebug 1.4 - 1.7 + Firefox 3.5 - 4.0 and early alpha Firebug 1.7 + Firefox 3.5 - 4.0</li>
 <li><b>Version 0.9</b> works with Firebug 1.4 - 1.6 + Firefox 3.5 - 4.0 and early alpha Firebug 1.7 + Firefox 3.5 - 4.0</li>
@@ -77,7 +78,7 @@ Both Firefox and Firebug are moving targets. Please make sure you use compatible
 ## Python
 
 Prior to installing check how to install [FireLogger Addon](#firefox).
-You definitely need [Firebug 1.4 or higher][firebug]. 
+You definitely need [Firebug 1.4 or higher][firebug].
 You must also install a Firefox Addon called [FireLogger][firelogger].
 
 ### Installation
@@ -86,7 +87,7 @@ You must also install a Firefox Addon called [FireLogger][firelogger].
 
 ### Usage
 
-* **Django**: After installation, enable middleware by adding its path to `MIDDLEWARE_CLASSES: firepython.middleware.FirePythonDjango`. 
+* **Django**: After installation, enable middleware by adding its path to `MIDDLEWARE_CLASSES: firepython.middleware.FirePythonDjango`.
 * **WSGI**: After installation, enable middleware `firepython.middleware.FirePythonWSGI`.
 * **Custom**: Look for inspiration at [middleware.py][middleware-source]
 
@@ -179,6 +180,9 @@ Please follow documentation on a [separate homepage](http://www.wdg.us/cf-firelo
 
 ### FireLogger Firefox Addon
 
+* **v1.3** (29.08.2013):
+  * updated compatibility with Firebug 1.12.0
+
 * **v1.2** (14.01.2012):
   * do not send X-FireLogger header when Firebug's Logger panel is disabled
   * updated compatibility with Firebug 1.9
@@ -238,7 +242,7 @@ Please follow documentation on a [separate homepage](http://www.wdg.us/cf-firelo
 * **v0.2** (24.11.2008)
   * fixed Logger panel styles when Firebug window was detached from main window
 
-* **v0.1** (15.11.2008) 
+* **v0.1** (15.11.2008)
   * public alpha release
   * communication via response headers
   * logging module functionality (debug, info, warning, error, critical)
@@ -303,7 +307,7 @@ Please follow documentation on a [separate homepage](http://www.wdg.us/cf-firelo
   * Django and WSGI middlewares [[piranha][alexander]]
   * added as firepython package to PyPI index [[piranha][alexander]]
 
-* **v0.1** (15.11.2008) 
+* **v0.1** (15.11.2008)
   * public alpha release
   * initial server-side support for Python and Google App Engine
   * communication via response headers
