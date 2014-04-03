@@ -10,43 +10,34 @@
     <link rel="shortcut icon" href="http://static.binaryage.com/5604bda0_favicon.ico" type="image/x-icon"/>
     <link rel="icon" href="http://static.binaryage.com/5604bda0_favicon.ico" type="image/x-icon"/>
     <script type="text/javascript" charset="utf-8">
-      // give the custom font some time to load, otherwise enable simple font visibility
       setTimeout(function(){$("html").addClass("wf-fake-active")},2e3)
     </script>
     <style type="text/css">
-      .js .wf{opacity:0!important;filter:alpha(opacity=0)!important;-webkit-transition:opacity .5s ease 0s;-moz-transition:opacity .5s ease 0s;-o-transition:opacity .5s ease 0s;transition:opacity .5s ease 0s;font-smoothing:antialiased;-webkit-font-smoothing:antialiased}.wf-active .wf,.wf-fake-active .wf{opacity:1!important;filter:alpha(opacity=100)!important}
+      .js .wf{opacity:0 !important;filter:alpha(opacity=0) !important;-webkit-transition:opacity .5s ease 0;-moz-transition:opacity .5s ease 0;-o-transition:opacity .5s ease 0;transition:opacity .5s ease 0;font-smoothing:antialiased;-webkit-font-smoothing:antialiased}.wf-active .wf,.wf-fake-active .wf{opacity:1 !important;filter:alpha(opacity=100) !important}
     </style>
-    <link rel="stylesheet" href="http://static.binaryage.com/a9fa179c_shared_css_site.css" type="text/css"/>
+    <link rel="stylesheet" href="http://static.binaryage.com/167cd13d_shared_css_site.css" type="text/css"/>
     <script type="text/javascript" charset="utf-8">
-      /*
-      CSS Browser Selector v0.4.0 (Nov 02, 2010)
-      Rafael Lima (http://rafael.adm.br)
-      http://rafael.adm.br/css_browser_selector
-      License: http://creativecommons.org/licenses/by/2.5/
-      Contributors: http://rafael.adm.br/css_browser_selector#contributors
-      */
-      function css_browser_selector(e){var t=e.toLowerCase(),n=function(e){return t.indexOf(e)>-1},r="gecko",i="webkit",s="safari",o="opera",u="mobile",a=document.documentElement,f=[!/opera|webtv/i.test(t)&&/msie\s(\d)/.test(t)?"ie ie"+RegExp.$1:n("firefox/2")?r+" ff2":n("firefox/3.5")?r+" ff3 ff3_5":n("firefox/3.6")?r+" ff3 ff3_6":n("firefox/3")?r+" ff3":n("gecko/")?r:n("opera")?o+(/version\/(\d+)/.test(t)?" "+o+RegExp.$1:/opera(\s|\/)(\d+)/.test(t)?" "+o+RegExp.$2:""):n("konqueror")?"konqueror":n("blackberry")?u+" blackberry":n("android")?u+" android":n("chrome")?i+" chrome":n("iron")?i+" iron":n("applewebkit/")?i+" "+s+(/version\/(\d+)/.test(t)?" "+s+RegExp.$1:""):n("mozilla/")?r:"",n("j2me")?u+" j2me":n("iphone")?u+" iphone":n("ipod")?u+" ipod":n("ipad")?u+" ipad":n("mac")?"mac":n("darwin")?"mac":n("webtv")?"webtv":n("win")?"win"+(n("windows nt 6.0")?" vista":""):n("freebsd")?"freebsd":n("x11")||n("linux")?"linux":"","js"];c=f.join(" ");a.className+=" "+c;return c}css_browser_selector(navigator.userAgent)
+      function css_browser_selector(e){var r=e.toLowerCase(),o=function(e){return r.indexOf(e)>-1},i="gecko",n="webkit",t="safari",s="opera",f="mobile",a=document.documentElement,d=[!/opera|webtv/i.test(r)&&/msie\s(\d)/.test(r)?"ie ie"+RegExp.$1:o("firefox/2")?i+" ff2":o("firefox/3.5")?i+" ff3 ff3_5":o("firefox/3.6")?i+" ff3 ff3_6":o("firefox/3")?i+" ff3":o("gecko/")?i:o("opera")?s+(/version\/(\d+)/.test(r)?" "+s+RegExp.$1:/opera(\s|\/)(\d+)/.test(r)?" "+s+RegExp.$2:""):o("konqueror")?"konqueror":o("blackberry")?f+" blackberry":o("android")?f+" android":o("chrome")?n+" chrome":o("iron")?n+" iron":o("applewebkit/")?n+" "+t+(/version\/(\d+)/.test(r)?" "+t+RegExp.$1:""):o("mozilla/")?i:"",o("j2me")?f+" j2me":o("iphone")?f+" iphone":o("ipod")?f+" ipod":o("ipad")?f+" ipad":o("mac")?"mac":o("darwin")?"mac":o("webtv")?"webtv":o("win")?"win"+(o("windows nt 6.0")?" vista":""):o("freebsd")?"freebsd":o("x11")||o("linux")?"linux":"","js"];c=d.join(" ");a.className+=" "+c;return c}css_browser_selector(navigator.userAgent)
     </script>
     <script type="text/javascript" charset="utf-8">
-      if(!window.console){window.console={};function fn(){opera.postError(arguments)}["log","debug","info","warn","error","assert","dir","dirxml","group","groupEnd","time","timeEnd","count","trace","profile","profileEnd"].forEach(function(o){window.console[o]=fn})}!function(){var o=["log","debug","info","warn","error","assert","dir","dirxml","group","groupEnd","time","timeEnd","count","trace","profile","profileEnd"];if(!window.console){window.console={}}for(var n in o){window.console[o[n]]=window.console[o[n]]||function(){return}}}()
+      if(!window.console){window.console={};function fn(){opera.postError(arguments)}["log","debug","info","warn","error","assert","dir","dirxml","group","groupEnd","time","timeEnd","count","trace","profile","profileEnd"].forEach(function(o){window.console[o]=fn})}(function(){var o=["log","debug","info","warn","error","assert","dir","dirxml","group","groupEnd","time","timeEnd","count","trace","profile","profileEnd"];if(!window.console){window.console={}}for(var n in o){window.console[o[n]]=window.console[o[n]]||function(){return}}})()
     </script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
     <script type="text/javascript" charset="utf-8">
-      // https://github.com/carhartl/jquery-cookie
-      function bacookie(e,t,n){if(arguments.length>1&&String(t)!=="[object Object]"){n=n||{};if(t===null||t===undefined){n.expires=-1}if(typeof n.expires==="number"){var r=n.expires,i=n.expires=new Date;i.setDate(i.getDate()+r)}t=String(t);return document.cookie=[encodeURIComponent(e),"=",n.raw?t:encodeURIComponent(t),n.expires?"; expires="+n.expires.toUTCString():"",n.path?"; path="+n.path:"",n.domain?"; domain="+n.domain:"",n.secure?"; secure":""].join("")}n=t||{};var s,o=n.raw?function(e){return e}:decodeURIComponent;return(s=(new RegExp("(?:^|; )"+encodeURIComponent(e)+"=([^;]*)")).exec(document.cookie))?o(s[1]):null}
+      function bacookie(e,n,o){if(arguments.length>1&&String(n)!=="[object Object]"){o=o||{};if(n===null||n===undefined){o.expires=-1}if(typeof o.expires==="number"){var t=o.expires,r=o.expires=new Date;r.setDate(r.getDate()+t)}n=String(n);return document.cookie=[encodeURIComponent(e),"=",o.raw?n:encodeURIComponent(n),o.expires?"; expires="+o.expires.toUTCString():"",o.path?"; path="+o.path:"",o.domain?"; domain="+o.domain:"",o.secure?"; secure":""].join("")}o=n||{};var i,c=o.raw?function(e){return e}:decodeURIComponent;return(i=new RegExp("(?:^|; )"+encodeURIComponent(e)+"=([^;]*)").exec(document.cookie))?c(i[1]):null}
     </script>
     <script type="text/javascript" charset="utf-8">
       function parseUri(r){var e=parseUri.options,o=e.parser[e.strictMode?"strict":"loose"].exec(r),s={},t=14;while(t--)s[e.key[t]]=o[t]||"";s[e.q.name]={};s[e.key[12]].replace(e.q.parser,function(r,o,t){if(o)s[e.q.name][o]=t});return s}parseUri.options={strictMode:false,key:["source","protocol","authority","userInfo","user","password","host","port","relative","path","directory","file","query","anchor"],q:{name:"queryKey",parser:/(?:^|&)([^&=]*)=?([^&]*)/g},parser:{strict:/^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,loose:/^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/}}
     </script>
     <script type="text/javascript">
-      WebFontConfig={google:{families:["Play:regular,bold"]}};!function(){var t=document.createElement("script");t.src=("https:"==document.location.protocol?"https":"http")+"://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js";t.type="text/javascript";t.async="true";var e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(t,e)}()
+      WebFontConfig={google:{families:["Play:regular,bold"]}};(function(){var t=document.createElement("script");t.src=("https:"==document.location.protocol?"https":"http")+"://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js";t.type="text/javascript";t.async="true";var e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(t,e)})()
     </script>
     <script src="http://static.binaryage.com/c0e8173f_shared_js_code.js"></script>
     <script type="text/javascript">
       var _gaq=_gaq||[]
     </script>
     <script type="text/javascript">
-      _gaq.push(["_setAccount","UA-8404259-1"]);_gaq.push(["_addIgnoredRef",".binaryage.com"]);_gaq.push(["_setDomainName",".binaryage.com"]);_gaq.push(["_setAllowLinker",true]);_gaq.push(["_setAllowHash",false]);_gaq.push(["_trackPageview"]);!function(){var e=document.createElement("script");e.type="text/javascript";e.async=true;e.src=("https:"==document.location.protocol?"https://ssl":"http://www")+".google-analytics.com/ga.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)}()
+      _gaq.push(["_setAccount","UA-8404259-1"]);_gaq.push(["_addIgnoredRef",".binaryage.com"]);_gaq.push(["_setDomainName",".binaryage.com"]);_gaq.push(["_setAllowLinker",true]);_gaq.push(["_setAllowHash",false]);_gaq.push(["_trackPageview"]);(function(){var e=document.createElement("script");e.type="text/javascript";e.async=true;e.src=("https:"==document.location.protocol?"https://ssl":"http://www")+".google-analytics.com/ga.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})()
     </script>
   </head>
   <body id="page-firelogger-sharedroot404">
@@ -115,13 +106,13 @@
       $(function(){var e;$(".topbar-testimonials").bind("click",function(){if(window.SSTracker){SSTracker.pushState("praise")}if(!e){$("#tweets").tweet({user:"binaryage"});e=true}})})
     </script>
     <script type="text/javascript" charset="utf-8">
-      $(function(){setTimeout(function(){var e=location.hash.substring(1);if(e.substring(0,2)=="o-"){$("#"+e).trigger("click")}},500)})
+      $(function(){setTimeout(function(){var i=location.hash.substring(1);if(i.substring(0,2)=="o-"){$("#"+i).trigger("click")}},500)})
     </script>
     <script type="text/javascript" charset="utf-8">
-      $(function(){var t=document.location.host;if(t.substring(t.length-3)=="org"){$("a").each(function(){var a=$(this);var i=a.attr("href");if(i){if(i.match("binaryage.com")){i=i.replace("binaryage.com","binaryage.org")}var n=document.location+"";if(i.substring(0,4)!="http"&&i.match(/\/[^.]+$/i)){if(t.substring(n.length-1)=="2"){i+="2"}if(n.substring(n.length-6)=="2.html"){i+="2"}i+=".html"}a.attr("href",i)}})}})
+      $(function(){var a=document.location.host;if(a.substring(a.length-3)=="org"){$("a").each(function(){var a=$(this);var r=a.attr("href");if(r){if(r.match("binaryage.com")){r=r.replace("binaryage.com","binaryage.org")}var t=document.location+"";a.attr("href",r)}})}})
     </script>
     <script type="text/javascript" charset="utf-8">
-      !function(){var r=parseUri(document.location+"");var e=r.queryKey["referrer"];if(e){bacookie("bareferrer",e,{path:"/",expires:14})}}();$("a").live("click",function(){var r=$(this).attr("href")+"";var e=bacookie("bareferrer");if(e){r+=(r.indexOf("?")==-1?"?":"&")+"referrer="+encodeURIComponent(e)}var a=document.location+"";if(a.match(/fastspring\.com/)&&r.match(/binaryage\.com/)||a.match(/binaryage\.com/)&&r.match(/fastspring\.com/)){_gaq.push(["_link",r]);return false}})
+      (function(){var r=parseUri(document.location+"");var e=r.queryKey["referrer"];if(e){bacookie("bareferrer",e,{path:"/",expires:14})}})();$("a").live("click",function(){var r=$(this).attr("href")+"";var e=bacookie("bareferrer");if(e){r+=(r.indexOf("?")==-1?"?":"&")+"referrer="+encodeURIComponent(e)}var a=document.location+"";if(a.match(/fastspring\.com/)&&r.match(/binaryage\.com/)||a.match(/binaryage\.com/)&&r.match(/fastspring\.com/)){_gaq.push(["_link",r]);return false}})
     </script>
     <script type="text/javascript">
       var _gauges=_gauges||[];(function(){var e=document.createElement("script");e.type="text/javascript";e.async=true;e.id="gauges-tracker";e.setAttribute("data-site-id","4f10d65d844d52139500000b");e.src="//secure.gaug.es/track.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})()
