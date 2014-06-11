@@ -16,7 +16,6 @@ FireLogger is a sexy logger console integrated into [Firebug][firebug]. You'll n
 
 [firebug]: https://addons.mozilla.org/en-US/firefox/addon/1843
 [firelogger4py]: http://github.com/darwin/firepython
-[firelogger4rb]: http://github.com/darwin/firelogger.rb
 [firelogger4php]: http://github.com/darwin/firelogger.php
 [firelogger4js]: http://github.com/darwin/firelogger.js
 [firelogger4cfm]: http://cffirelogger.riaforge.org
