@@ -4,7 +4,7 @@ FireLogger is a sexy logger console integrated into [Firebug][firebug]. You'll n
 
 ## Supported server-side languages
 
-  * **[FireLogger for Pyton][firelogger4py]** (production ready)
+  * **[FireLogger for Python][firelogger4py]** (production ready)
   * **[FireLogger for PHP][firelogger4php]** (production ready)
   * **[FireLogger for Coldfusion][firelogger4cfm]** (production ready)
   * **[FireLogger for Java][webappender]** (production ready)
