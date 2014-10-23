@@ -13,8 +13,8 @@ FireLogger is a sexy logger console integrated into [Firebug][firebug]. You'll n
 <a href="http://firelogger.binaryage.com"><img src="http://firelogger.binaryage.com/shared/img/firelogger4php-mainshot.png"/></a>
 
 [firebug]: https://addons.mozilla.org/en-US/firefox/addon/1843
-[firelogger4py]: http://github.com/darwin/firepython
-[firelogger4php]: http://github.com/darwin/firelogger.php
+[firelogger4py]: https://github.com/binaryage/firelogger.py
+[firelogger4php]: https://github.com/binaryage/firelogger.php
 [firelogger4js]: http://github.com/darwin/firelogger.js
 [firelogger4cfm]: http://cffirelogger.riaforge.org
 [webappender]: https://github.com/clescot/webappender
