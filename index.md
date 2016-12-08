@@ -1,9 +1,10 @@
 ---
-layout: product
+layout: product-home
 title: FireLogger is a sexy server logger console in Firebug
 product: firelogger
 product_title: FireLogger
 product_subtitle: a sexy server logger console in Firebug
+product_icon: /shared/img/icons/firelogger-256.png
 download_alt: https://addons.mozilla.org/firefox/addon/firelogger/versions
 download: https://addons.mozilla.org/firefox/addon/firelogger
 repo: http://github.com/binaryage/firelogger
@@ -12,12 +13,13 @@ downloadsubtitle: and listen to your server
 meta_title: FireLogger is a sexy server logger console in Firebug
 meta_keywords: firebug,firefox,addon,firelogger,logging,python,php,binaryage,productivity,software,web,development
 meta_description: Your logging messages are displayed right under your fingerprints in Firebug
-meta_image: http://www.binaryage.com/shared/img/icons/firelogger-256.png
+meta_image: /shared/img/icons/firelogger-256.png
 facebook: 1
 retweet: 1
 buzz: 1
 fbsdk: 1
 flattr: http://firelogger.binaryage.com
+build_tabs: 1
 ogmeta: {
     site_name: "BinaryAge website",
     description: "FireLogger is a sexy server logger console in Firebug",
@@ -27,16 +29,14 @@ ogmeta: {
     url: "http://firelogger.binaryage.com",
     image: "http://www.binaryage.com/shared/img/icons/firelogger-256.png"
 }
-shots: [{
-    title: "FireLogger in action with PHP backend",
-    thumb: "/shared/img/firelogger4php-mainshot.png",
-    full: "/shared/img/firelogger4php-mainshot-full.png"
-}]
-buttons: <a href="http://firelogger-php-tests.binaryage.com/basic.php" class="button product-button-thumbup"><div><div><div class="trial-note">after restart</div>Visit a Test Page<div class="product-specs">to check that your addon works correctly</div></div></div></a>
 ---
+
+{% contentfor product-buttons %}
+{% endcontentfor %}
 
 ## Firefox
 
+<a href="/shared/img/firelogger4php-mainshot-full.png"><img src="/shared/img/firelogger4php-mainshot-full.png" width="800"></a>
 ### Firefox Addon
 
 * Your logging messages are displayed right under your fingerprints in Firebug
