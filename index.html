@@ -1,13 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://developers.facebook.com/schema/">
+<html lang="en" xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://developers.facebook.com/schema/" class="ba">
   <head>
-    <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
     <title>FireLogger is a sexy server logger console in Firebug</title>
-    <link rel="canonical" href="http://firelogger.binaryage.com"/>
+    <link rel="canonical" href="https://firelogger.binaryage.com/"/>
+    <link rel="shortcut icon" href="https://static.binaryage.com/5604bda0_favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="https://static.binaryage.com/5604bda0_favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="https://static.binaryage.com/a396bdad_shared_css_site.css" type="text/css"/>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="title" content="FireLogger is a sexy server logger console in Firebug"/>
     <meta name="description" content="Your logging messages are displayed right under your fingerprints in Firebug"/>
     <meta name="keywords" content="firebug,firefox,addon,firelogger,logging,python,php,binaryage,productivity,software,web,development"/>
-    <link rel="image_src" href="http://www.binaryage.com/shared/img/icons/firelogger-256.png"/>
+    <link rel="image_src" href="https://static.binaryage.com/2bff8d90_shared_img_icons_firelogger-256.png"/>
     <meta name="google-site-verification" content="N_xzdr6ymSUQFhAEvQg7f-sp1JAeJCdW2JuaRg-da0w"/>
     <meta property="fb:admins" content="antonin.hildebrand"/>
     <meta property="og:email" content="support@binaryage.com"/>
@@ -17,134 +21,92 @@
     <meta property="og:title" content="FireLogger"/>
     <meta property="og:url" content="http://firelogger.binaryage.com"/>
     <meta property="og:image" content="http://www.binaryage.com/shared/img/icons/firelogger-256.png"/>
-    <link href="http://feeds.feedburner.com/binaryage-blog" type="application/atom+xml" rel="alternate" title="Ideas from BinaryAge"/>
-    <link rel="shortcut icon" href="http://static.binaryage.com/5604bda0_favicon.ico" type="image/x-icon"/>
-    <link rel="icon" href="http://static.binaryage.com/5604bda0_favicon.ico" type="image/x-icon"/>
-    <script type="text/javascript" charset="utf-8">
-      setTimeout(function(){$("html").addClass("wf-fake-active")},2e3)
-    </script>
-    <style type="text/css">
-      .js .wf{opacity:0 !important;filter:alpha(opacity=0) !important;-webkit-transition:opacity .5s ease 0;-moz-transition:opacity .5s ease 0;-o-transition:opacity .5s ease 0;transition:opacity .5s ease 0;font-smoothing:antialiased;-webkit-font-smoothing:antialiased}.wf-active .wf,.wf-fake-active .wf{opacity:1 !important;filter:alpha(opacity=100) !important}
-    </style>
-    <link rel="stylesheet" href="http://static.binaryage.com/167cd13d_shared_css_site.css" type="text/css"/>
-    <script type="text/javascript" charset="utf-8">
-      function css_browser_selector(e){var r=e.toLowerCase(),o=function(e){return r.indexOf(e)>-1},i="gecko",n="webkit",t="safari",s="opera",f="mobile",a=document.documentElement,d=[!/opera|webtv/i.test(r)&&/msie\s(\d)/.test(r)?"ie ie"+RegExp.$1:o("firefox/2")?i+" ff2":o("firefox/3.5")?i+" ff3 ff3_5":o("firefox/3.6")?i+" ff3 ff3_6":o("firefox/3")?i+" ff3":o("gecko/")?i:o("opera")?s+(/version\/(\d+)/.test(r)?" "+s+RegExp.$1:/opera(\s|\/)(\d+)/.test(r)?" "+s+RegExp.$2:""):o("konqueror")?"konqueror":o("blackberry")?f+" blackberry":o("android")?f+" android":o("chrome")?n+" chrome":o("iron")?n+" iron":o("applewebkit/")?n+" "+t+(/version\/(\d+)/.test(r)?" "+t+RegExp.$1:""):o("mozilla/")?i:"",o("j2me")?f+" j2me":o("iphone")?f+" iphone":o("ipod")?f+" ipod":o("ipad")?f+" ipad":o("mac")?"mac":o("darwin")?"mac":o("webtv")?"webtv":o("win")?"win"+(o("windows nt 6.0")?" vista":""):o("freebsd")?"freebsd":o("x11")||o("linux")?"linux":"","js"];c=d.join(" ");a.className+=" "+c;return c}css_browser_selector(navigator.userAgent)
-    </script>
-    <script type="text/javascript" charset="utf-8">
-      if(!window.console){window.console={};function fn(){opera.postError(arguments)}["log","debug","info","warn","error","assert","dir","dirxml","group","groupEnd","time","timeEnd","count","trace","profile","profileEnd"].forEach(function(o){window.console[o]=fn})}(function(){var o=["log","debug","info","warn","error","assert","dir","dirxml","group","groupEnd","time","timeEnd","count","trace","profile","profileEnd"];if(!window.console){window.console={}}for(var n in o){window.console[o[n]]=window.console[o[n]]||function(){return}}})()
-    </script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
-    <script type="text/javascript" charset="utf-8">
-      function bacookie(e,n,o){if(arguments.length>1&&String(n)!=="[object Object]"){o=o||{};if(n===null||n===undefined){o.expires=-1}if(typeof o.expires==="number"){var t=o.expires,r=o.expires=new Date;r.setDate(r.getDate()+t)}n=String(n);return document.cookie=[encodeURIComponent(e),"=",o.raw?n:encodeURIComponent(n),o.expires?"; expires="+o.expires.toUTCString():"",o.path?"; path="+o.path:"",o.domain?"; domain="+o.domain:"",o.secure?"; secure":""].join("")}o=n||{};var i,c=o.raw?function(e){return e}:decodeURIComponent;return(i=new RegExp("(?:^|; )"+encodeURIComponent(e)+"=([^;]*)").exec(document.cookie))?c(i[1]):null}
-    </script>
-    <script type="text/javascript" charset="utf-8">
-      function parseUri(r){var e=parseUri.options,o=e.parser[e.strictMode?"strict":"loose"].exec(r),s={},t=14;while(t--)s[e.key[t]]=o[t]||"";s[e.q.name]={};s[e.key[12]].replace(e.q.parser,function(r,o,t){if(o)s[e.q.name][o]=t});return s}parseUri.options={strictMode:false,key:["source","protocol","authority","userInfo","user","password","host","port","relative","path","directory","file","query","anchor"],q:{name:"queryKey",parser:/(?:^|&)([^&=]*)=?([^&]*)/g},parser:{strict:/^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,loose:/^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/}}
-    </script>
-    <script type="text/javascript">
-      WebFontConfig={google:{families:["Play:regular,bold"]}};(function(){var t=document.createElement("script");t.src=("https:"==document.location.protocol?"https":"http")+"://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js";t.type="text/javascript";t.async="true";var e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(t,e)})()
-    </script>
-    <script src="http://static.binaryage.com/c0e8173f_shared_js_code.js"></script>
-    <script type="text/javascript">
-      var _gaq=_gaq||[]
-    </script>
-    <script type="text/javascript">
-      _gaq.push(["_setAccount","UA-8404259-1"]);_gaq.push(["_addIgnoredRef",".binaryage.com"]);_gaq.push(["_setDomainName",".binaryage.com"]);_gaq.push(["_setAllowLinker",true]);_gaq.push(["_setAllowHash",false]);_gaq.push(["_trackPageview"]);(function(){var e=document.createElement("script");e.type="text/javascript";e.async=true;e.src=("https:"==document.location.protocol?"https://ssl":"http://www")+".google-analytics.com/ga.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})()
-    </script>
-    <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+    <link href="https://feeds.feedburner.com/binaryage-blog" type="application/atom+xml" rel="alternate" title="Ideas from BinaryAge"/>
+    <script type="text/javascript" charset="utf-8">function parseUri(r){var e=parseUri.options,o=e.parser[e.strictMode?"strict":"loose"].exec(r),s={},t=14;while(t--)s[e.key[t]]=o[t]||"";s[e.q.name]={};s[e.key[12]].replace(e.q.parser,function(r,o,t){if(o)s[e.q.name][o]=t});return s}parseUri.options={strictMode:false,key:["source","protocol","authority","userInfo","user","password","host","port","relative","path","directory","file","query","anchor"],q:{name:"queryKey",parser:/(?:^|&)([^&=]*)=?([^&]*)/g},parser:{strict:/^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,loose:/^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/}}</script>
+    <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+    <script>WebFont.load({google:{families:["Play:400,700:latin"]}})</script>
+    <script src="https://static.binaryage.com/3e4de0bb_shared_js_code.js"></script>
+    <script type="text/javascript">window["ga"]=function(){}</script>
+    <script>window["ga"]=undefined;(function(e,n,a,t,i,o,r){e["GoogleAnalyticsObject"]=i;e[i]=e[i]||function(){(e[i].q=e[i].q||[]).push(arguments)},e[i].l=1*new Date;o=n.createElement(a),r=n.getElementsByTagName(a)[0];o.async=1;o.src=t;r.parentNode.insertBefore(o,r)})(window,document,"script","//www.google-analytics.com/analytics.js","ga");ga("create","UA-8404259-1","auto",{allowLinker:true});ga("send","pageview");ga("require","linker");ga("linker:autoLink",["fastspring.com"],true)</script>
   </head>
   <body id="page-firelogger-index">
-    <div id="topbar">
-      <div class="container topbar">
-        <div class="topbar-buttons">
-          <div class="topbar-labs wf">
-            labs
-          </div>
-          <div class="topbar-testimonials wf">
-            testimonials
+    <div id="header">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="relativize">
+              <a href="http://www.binaryage.com" title="BinaryAge Software">
+                <div class="binaryage-logo">
+                  <svg class="logo">
+                    <g class="logo-badge">
+                      <rect class="logo-badge-background" x="0" y="0" rx="4" ry="4" width="60" height="54"/>
+                      <path class="logo-letter-b" d=" M6,47 L6,17 12,17 12,25 29,25 29,47 Z M12,42 L12,30 23,30 23,42 Z"/>
+                      <path class="logo-letter-a" d=" M32,47 L32,34 49,34 49,30 32,30 32,25 54,25 54,47 Z M37,42 L37,39 49,39 49,42 Z"/>
+                    </g>
+                    <g class="logo-label" transform="translate(71, 22)">
+                      <g class="logo-word-binary">
+                        <path class="logo-label-letter-b" transform="translate(0, 0)" d=" M0,25 L0,0 5,0 5,7 20,7 20,25 Z M5,21 L5,11 15,11 15,21 Z"/>
+                        <path class="logo-label-letter-i" transform="translate(22, 0)" d=" M0,25 L0,7 5,7 5,25 Z M0,3 L5,3 5,0 0,0 Z"/>
+                        <path class="logo-label-letter-n" transform="translate(29, 0)" d=" M0,25 L0,7 20,7 20,25 15,25 15,11 5,11 5,25 Z"/>
+                        <path class="logo-label-letter-a" transform="translate(51, 0)" d=" M0,25 L0,14 15,14 15,11 0,11 0,7 20,7 20,25 Z M5,21 L5,18 15,18 15,21 Z"/>
+                        <path class="logo-label-letter-r" transform="translate(73, 0)" d=" M0,25 L0,7 20,7 20,11 5,11 5,25 Z"/>
+                        <path class="logo-label-letter-y" transform="translate(95, 0)" d=" M0,25 L0,7 5,7 5,21 15,21 15,7 20,7 20,32 0,32 0,28 15,28 15,25 Z"/>
+                      </g>
+                      <g class="logo-word-age" transform="translate(118, 0)">
+                        <path class="logo-label-letter-a" transform="translate(0, 0)" d=" M0,25 L0,14 15,14 15,11 0,11 0,7 20,7 20,25 Z M5,21 L5,18 15,18 15,21 Z"/>
+                        <path class="logo-label-letter-g" transform="translate(22, 0)" d=" M0,25 L0,7 20,7 20,32 0,32 0,28 15,28 15,25 Z M5,21 L5,11 15,11 15,21 Z"/>
+                        <path class="logo-label-letter-e" transform="translate(44, 0)" d=" M0,25 L0,7 20,7 20,18 5,18 5,21 20,21 20,25 Z M5,14 L5,11 15,11 15,14 Z"/>
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </a>
+            </div>
+            <div class="relativize">
+              <ul class="header-menu menu-selected-">
+                <li class="menu-item-store"><a href="http://www.binaryage.com/store"><i class="fa fa-shopping-cart"></i><span>store</span></a></li>
+                <li class="menu-item-products"><a href="http://www.binaryage.com"><i class="fa fa-star"></i><span>products</span></a></li>
+                <li class="menu-item-blog"><a href="http://blog.binaryage.com"><i class="fa fa-bullhorn"></i><span>blog</span></a></li>
+                <li class="menu-item-support"><a href="http://discuss.binaryage.com"><i class="fa fa-comments"></i><span>support</span></a></li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div id="header" class="menu-products">
-      <div class="container header">
-        <a href="http://www.binaryage.com" title="BinaryAge Software">
-          <div class="header-logo">
-            <div class="header-logo-hover"></div>
-          </div>
-        </a>
-        <div class="header-motto arrow"></div>
-        <div class="header-selector"></div>
-        <ul class="header-menu">
-          <li class="menu-item-store wf"><a href="http://www.binaryage.com/store"><span>store</span></a></li>
-          <li class="menu-item-products wf"><a href="http://www.binaryage.com"><span>products</span></a></li>
-          <li class="menu-item-blog wf"><a href="http://blog.binaryage.com"><span>blog</span></a></li>
-          <li class="menu-item-hints wf"><a href="http://hints.binaryage.com"><span>hints</span></a></li>
-          <li class="menu-item-support wf"><a href="http://discuss.binaryage.com"><span>support</span></a></li>
-        </ul>
-      </div>
-    </div>
-    <div id="main">
-      <div class="wf">
-        <div class="main-product" id="product-firelogger">
-          <div class="container">
-            <div class="main-product-left span-12">
-              <div class="product-logo-box">
-                <img class="product-icon" src="http://static.binaryage.com/dff2e903_shared_img_icons_firelogger-64.png"/>
+    <div id="main" class="cf">
+      <div id="firelogger-header" class="product-header">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="product-box">
+                <img class="product-icon" src="https://static.binaryage.com/2bff8d90_shared_img_icons_firelogger-256.png"/>
                 <div class="product-tagline">
-                  <h1 class="product-title">FireLogger</h1><div class="plusone-wrapper"><g:plusone size="medium"></g:plusone></div>
+                  <h1 class="product-title">FireLogger</h1>
                   <h2 class="product-subtitle">a sexy server logger console in Firebug</h2>
-                </div>
-              </div>
-              <div class="product-buttons-box">
-                <div class="product-buttons">
-                  <a id="o-download" href="https://addons.mozilla.org/firefox/addon/firelogger" class="button product-button-download">
-                    <div><div>Install v1.3<div class="product-specs">and listen to your server</div></div></div>
-                  </a>
-                  <a href="http://firelogger-php-tests.binaryage.com/basic.php" class="button product-button-thumbup"><div><div><div class="trial-note">after restart</div>Visit a Test Page<div class="product-specs">to check that your addon works correctly</div></div></div></a>
-                  <div class="clear"></div>
-                </div>
-                <div class="product-note-box">
-                </div>
-              </div>
-              <div class="social-box">
-                <div class="social-box-inner">
-                  <div class="retweet">
+                  <div class="product-social">
+                    <div class="social-box">
+                    </div>
                   </div>
-                  <script>
-                    $(".retweet").html(writeCapture.sanitize('<a href="http://twitter.com/share" class="twitter-share-button retweet" data-count="vertical" data-via="binaryage">Tweet</a><scr'+'ipt type="text/javascript" src="http://platform.twitter.com/widgets.js"></scr'+"ipt>"))
-                  </script>
-                  <div class="flattr">
-                  </div>
-                  <script>
-                    $(".flattr").html(writeCapture.sanitize("<scr"+'ipt>document.write(\'<iframe width="55" scrolling="no" height="62" frameborder="0" src="http://api.flattr.com/button/view/?uid=0&amp;url=\'+encodeURIComponent(\'http://firelogger.binaryage.com\')+\'&amp;language=&amp;hidden=0&amp;title=&amp;category=&amp;tags=&amp;description=" border="0" marginheight="0" marginwidth="0" allowtransparency="true"></iframe>\')</scr'+"ipt>"))
-                  </script>
                 </div>
-                <div class="clear"></div>
               </div>
             </div>
-            <div class="main-product-right span-12 last">
-              <div class="main-screenshot">
-                <div id="screenshot-box-1" class="screenshot-box no-shadow">
-                  <a id="o-shot1" href="http://static.binaryage.com/c079fa5c_shared_img_firelogger4php-mainshot-full.png" class="overlayable" title="FireLogger in action with PHP backend">
-                    <img src="http://static.binaryage.com/ddfd1510_shared_img_firelogger4php-mainshot.png"/>
-                    <div class="zoom-icon"></div>
-                  </a>
-                </div>
-                <div class="clear"></div>
-              </div>
+            <div class="col-md-6">
             </div>
           </div>
         </div>
-        <div class="main-tabs" id="tabs-firelogger">
-          <div class="container">
-            <div class="tab-bar">
-              <ul class="tabs"></ul>
-            </div>
-            <div class="panes"></div>
+      </div>
+      <div class="product-tabs-wrapper" id="tabs-firelogger">
+        <div class="container">
+          <div class="product-tabs doc-page" style="display:none">
+            <ul></ul>
           </div>
         </div>
-        <div class="main-content-here" style="display:none">
+      </div>
+      <div id="firelogger-content" class="product-content" style="display:none">
+        <div class="container">
           <h2>Firefox</h2>
+          <p><a href="https://static.binaryage.com/c079fa5c_shared_img_firelogger4php-mainshot-full.png"><img src="https://static.binaryage.com/c079fa5c_shared_img_firelogger4php-mainshot-full.png" width="800"/></a></p>
           <h3>Firefox Addon</h3>
           <ul>
             <li>Your logging messages are displayed right under your fingerprints in Firebug</li>
@@ -213,9 +175,9 @@
           <h4>How can I change the name of the default logger?</h4>
           <blockquote><p>logging.getLogger().name = "my logger"</p></blockquote>
           <h4>How can I open preferences?</h4>
-          <blockquote><p>Switch to the Logger panel and look at Firebug's toolbar. There is a green bug icon. It's a menu button! <a href="http://static.binaryage.com/83bc581d_images_FireLoggerMenuButton.png"><img src="http://static.binaryage.com/83bc581d_images_FireLoggerMenuButton.png"/></a><br/><a href="http://static.binaryage.com/7d1b9824_images_FireLoggerPreferences.png"><img src="http://static.binaryage.com/7d1b9824_images_FireLoggerPreferences.png"/></a></p></blockquote>
+          <blockquote><p>Switch to the Logger panel and look at Firebug's toolbar. There is a green bug icon. It's a menu button! <a href="https://static.binaryage.com/83bc581d_images_FireLoggerMenuButton.png"><img src="https://static.binaryage.com/83bc581d_images_FireLoggerMenuButton.png"/></a><br/><a href="https://static.binaryage.com/7d1b9824_images_FireLoggerPreferences.png"><img src="https://static.binaryage.com/7d1b9824_images_FireLoggerPreferences.png"/></a></p></blockquote>
           <h4>Clicking on source-file links in Logger panel does nothing. How can I open trace-back sources in TextMate?</h4>
-          <blockquote><p>Go to Firebug Menu -> Open With Editor -> Configure editors ... like this: <img src="http://static.binaryage.com/10704cce_images_TextMateWithFirePython.png" alt="TextMate hint"/></p></blockquote>
+          <blockquote><p>Go to Firebug Menu -> Open With Editor -> Configure editors ... like this: <img src="https://static.binaryage.com/10704cce_images_TextMateWithFirePython.png" alt="TextMate hint"/></p></blockquote>
           <h4>I was unable to download/install the FireLogger extension from addons.mozilla.org. Can you package latest version for me?</h4>
           <blockquote><p>Some other people have reported this problem too. You may <a href="http://getsatisfaction.com/xrefresh/topics/unable_to_download_rainbow_for_firebug">try this workaround</a>.</p></blockquote>
           <h4>How can I see the Python profiling graph?</h4>
@@ -223,9 +185,9 @@
               <li>enable this feature in FireLogger preferences</li>
               <li>set up an editor in External Editors in Firebug called "Graphviz" (the name is important!). It should be the path to the executable of a viewer for .dot graphs.</li>
               <li>reload the page and you should see an info log line containing profiling info. Clicking on the line launches the configured Graphviz viewer (a filename will be passed as the first parameter)
-                <a href="http://static.binaryage.com/a1271ab6_images_ExternalEditorsConfiguration.png"><img src="http://static.binaryage.com/a1271ab6_images_ExternalEditorsConfiguration.png"/></a><br/>
-                <a href="http://static.binaryage.com/d0cf81a1_images_FirePython-ProfilingGraphLog.png"><img src="http://static.binaryage.com/d0cf81a1_images_FirePython-ProfilingGraphLog.png"/></a><br/>
-              <a href="http://static.binaryage.com/14886680_images_FirePython-ProfilingGraphExample.png"><img src="http://static.binaryage.com/14886680_images_FirePython-ProfilingGraphExample.png" width="600"/></a></li>
+                <a href="https://static.binaryage.com/a1271ab6_images_ExternalEditorsConfiguration.png"><img src="https://static.binaryage.com/a1271ab6_images_ExternalEditorsConfiguration.png"/></a><br/>
+                <a href="https://static.binaryage.com/d0cf81a1_images_FirePython-ProfilingGraphLog.png"><img src="https://static.binaryage.com/d0cf81a1_images_FirePython-ProfilingGraphLog.png"/></a><br/>
+              <a href="https://static.binaryage.com/14886680_images_FirePython-ProfilingGraphExample.png"><img src="https://static.binaryage.com/14886680_images_FirePython-ProfilingGraphExample.png" width="600"/></a></li>
             </ol>
           </blockquote>
           <h4>How can I use AppStats support?</h4>
@@ -249,7 +211,7 @@ flog("Hello world!");
           <h4>Is there something similar for Ruby?</h4>
           <blockquote><p>Nope. I'd like to have one, but didn't find time to write server-side support. You are welcome to <a href="http://wiki.github.com/binaryage/firelogger">hack it</a>!</p></blockquote>
           <h4>Clicking on source-file links in Logger panel does nothing. How can I open trace-back sources in TextMate?</h4>
-          <blockquote><p>Go to Firebug Menu -> Open With Editor -> Configure editors ... like this: <img src="http://static.binaryage.com/10704cce_images_TextMateWithFirePython.png" alt="TextMate hint"/></p></blockquote>
+          <blockquote><p>Go to Firebug Menu -> Open With Editor -> Configure editors ... like this: <img src="https://static.binaryage.com/10704cce_images_TextMateWithFirePython.png" alt="TextMate hint"/></p></blockquote>
           <h4>I was unable to download/install FireLogger extension from addons.mozilla.org. Can you package latest version for me?</h4>
           <blockquote><p>Some other people reported this problem too. You may <a href="http://getsatisfaction.com/xrefresh/topics/unable_to_download_rainbow_for_firebug">try this workaround</a>.</p></blockquote>
           <h4>When I start Firefox and the page loads I don't see any log records. What's wrong?</h4>
@@ -475,61 +437,29 @@ flog("Hello world!");
             <li><strong><a href="http://code.google.com/p/jrfonseca/wiki/Gprof2Dot">Jose Fonseca for gprof2dot library</a></strong></li>
           </ul>
         </div>
-        <script>
-          $(function(){var a=$(".panes");var e=$(".tabs");var t;var s=$(".main-content-here > *");s.each(function(s){var r=$(this);var n=r.attr("tagName");if(n=="SCRIPT")return;if(n=="NOSCRIPT")return;if(n=="STYLE")return;if(r.hasClass("panes")||r.hasClass("tabs"))return;if(r.attr("tagName")=="H2"){var i=r.html();var d=i.toLowerCase().replace(/[^a-z0-9]/g,"-");var p=$("<li>");var v=$('<a class="tbx">').attr("href","#"+d).html(i);p.append(v);v.append('<div class="shadow"></div>');e.append(p);t=$("<div>").addClass("wikistyle").addClass(d);a.append(t);r.remove();t.append($("<h2>").html(i))}else{if(t){t.append(r)}}});$("ul.tabs").tabs("div.panes > div");$("ul.tabs a").history()})
-        </script>
-        <script>
-          $(function(){$(".product-thumbs-scrollable").scrollable({size:5});$(".product-thumbs-items img").click(function(){var t=$(this);var r=$(".screenshot-box:visible");var i=$(t.attr("rel"));if(i[0]===r[0])return;r.fadeOut();i.fadeIn()}).filter(":first").click()})
-        </script>
-        <div class="simple_overlay" id="overlay-gallery" style="display:none">
-          <a class="overlay-prev">prev</a>
-          <a class="overlay-next">next</a>
-          <div class="overlay-info"></div>
-          <img class="overlay-progress" src="http://static.binaryage.com/32e8f83d_shared_img_twitter-loader.gif"/>
-        </div>
-        <script>
-          (function(){$(".overlayable").overlay({expose:"#f1f1f1",target:"#overlay-gallery"}).gallery({disabledClass:"disabled-overlay",prev:".overlay-prev",next:".overlay-next",info:".overlay-info",progress:".overlay-progress",opacity:1,speed:200,template:"[${index}/${total}] ${title}"})})()
-        </script>
-      </div>
-      <div class="clear"></div>
-    </div>
-    <div id="tweets-section">
-      <div class="container" style="position: relative">
-        <ol id="tweets" class="statuses"></ol>
       </div>
     </div>
     <div id="footer">
       <div class="container">
-        <div class="footer-separator"></div>
-        <div class="footerbox">
-          <div class="facebook-like-button-wrapper">
-            <fb:like width="650" href="http://firelogger.binaryage.com" layout="standard" show_faces="false" font="arial"></fb:like>
+        <div class="row">
+          <div class="col-md-8">
           </div>
-          <div class="footer-links wf">
-            <a href="http://github.com/binaryage/firelogger">source code</a> |
-            <a href="http://www.binaryage.com/about.html">contact</a>
+          <div class="col-md-4">
+            <div class="footer-box-right">
+              <div class="footer-copyright">
+                <div class="footer-license">
+                  <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0"><img title="the website license" alt="Creative Commons License" style="border-width:0" src="https://static.binaryage.com/69a4ba35_shared_img_byccnd.png"/></a>
+                </div>
+                <a href="http://www.binaryage.com/about">BinaryAge Limited</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div id="fb-root"></div>
-    <script type="text/javascript">
-      window.fbAsyncInit=function(){FB.init({appId:"332451499524",status:true,cookie:true,xfbml:true})};(function(){var t=document.createElement("script");t.async=true;t.src=document.location.protocol+"//connect.facebook.net/en_US/all.js";document.getElementById("fb-root").appendChild(t)})()
-    </script>
-    <script type="text/javascript" charset="utf-8">
-      $(function(){var e;$(".topbar-testimonials").bind("click",function(){if(window.SSTracker){SSTracker.pushState("praise")}if(!e){$("#tweets").tweet({user:"binaryage"});e=true}})})
-    </script>
-    <script type="text/javascript" charset="utf-8">
-      $(function(){setTimeout(function(){var i=location.hash.substring(1);if(i.substring(0,2)=="o-"){$("#"+i).trigger("click")}},500)})
-    </script>
-    <script type="text/javascript" charset="utf-8">
-      $(function(){var a=document.location.host;if(a.substring(a.length-3)=="org"){$("a").each(function(){var a=$(this);var r=a.attr("href");if(r){if(r.match("binaryage.com")){r=r.replace("binaryage.com","binaryage.org")}var t=document.location+"";a.attr("href",r)}})}})
-    </script>
-    <script type="text/javascript" charset="utf-8">
-      (function(){var r=parseUri(document.location+"");var e=r.queryKey["referrer"];if(e){bacookie("bareferrer",e,{path:"/",expires:14})}})();$("a").live("click",function(){var r=$(this).attr("href")+"";var e=bacookie("bareferrer");if(e){r+=(r.indexOf("?")==-1?"?":"&")+"referrer="+encodeURIComponent(e)}var a=document.location+"";if(a.match(/fastspring\.com/)&&r.match(/binaryage\.com/)||a.match(/binaryage\.com/)&&r.match(/fastspring\.com/)){_gaq.push(["_link",r]);return false}})
-    </script>
-    <script type="text/javascript">
-      var _gauges=_gauges||[];(function(){var e=document.createElement("script");e.type="text/javascript";e.async=true;e.id="gauges-tracker";e.setAttribute("data-site-id","4f10d65d844d52139500000b");e.src="//secure.gaug.es/track.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})()
-    </script>
+    <script>(function(e,t,n){var a,c=e.getElementsByTagName(t)[0];if(e.getElementById(n))return;a=e.createElement(t);a.id=n;a.src="//connect.facebook.net/en_US/all.js#xfbml=1&appId=332451499524";c.parentNode.insertBefore(a,c)})(document,"script","facebook-jssdk")</script>
+    <script type="text/javascript" charset="utf-8">if(window.jQuery){$(function(){setTimeout(function(){var i=location.hash.substring(1);if(i.substring(0,2)=="o-"){$("#"+i).trigger("click")}},500)})}</script>
+    <script type="text/javascript">var _gauges=_gauges||[];(function(){var e=document.createElement("script");e.type="text/javascript";e.async=true;e.id="gauges-tracker";e.setAttribute("data-site-id","4f10d65d844d52139500000b");e.src="//secure.gaug.es/track.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})()</script>
   </body>
 </html>
