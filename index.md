@@ -8,17 +8,11 @@ product_icon: /shared/img/icons/firelogger-256.png
 download_alt: https://addons.mozilla.org/firefox/addon/firelogger/versions
 download: https://addons.mozilla.org/firefox/addon/firelogger
 repo: http://github.com/binaryage/firelogger
-downloadtitle: Install v1.3
-downloadsubtitle: and listen to your server
+downloadtitle: Install via Mozilla Addons
 meta_title: FireLogger is a sexy server logger console in Firebug
 meta_keywords: firebug,firefox,addon,firelogger,logging,python,php,binaryage,productivity,software,web,development
 meta_description: Your logging messages are displayed right under your fingerprints in Firebug
 meta_image: /shared/img/icons/firelogger-256.png
-facebook: 1
-retweet: 1
-buzz: 1
-fbsdk: 1
-flattr: http://firelogger.binaryage.com
 build_tabs: 1
 ogmeta: {
     site_name: "BinaryAge website",
@@ -32,6 +26,13 @@ ogmeta: {
 ---
 
 {% contentfor product-buttons %}
+<div class="product-buttons">
+  <div class="button-container">
+    <a href="{{page.download}}" id="o-download-button" class="button product-button-download">
+      <span><i class="fa fa-download fa-lg"></i>{{page.downloadtitle}}</span>
+    </a>
+  </div>
+</div>
 {% endcontentfor %}
 
 ## Firefox
