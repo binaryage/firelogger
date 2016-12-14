@@ -1,5 +1,5 @@
 ---
-layout: product-home
+layout: product
 title: FireLogger is a sexy server logger console in Firebug
 product: firelogger
 product_title: FireLogger
